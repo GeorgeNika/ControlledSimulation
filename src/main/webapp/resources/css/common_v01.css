@@ -1,0 +1,230 @@
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.new_temp_class{
+    background-color: #00dd1c;
+}
+.whole_setup_page {
+    height: 100%;
+    width: 100%;
+    /*background-image: url(../images/setup_background.jpg);*/
+    background-size: cover;
+    background-color: #00dd1c;
+}
+
+.whole_run_page {
+    height: 100%;
+    width: 100%;
+    background-image: url(../images/run_background.jpg);
+    background-size: cover;
+}
+
+.whole_history_page {
+    height: 100%;
+    width: 100%;
+    background-image: url(../images/history_background.jpg);
+    background-size: cover;
+}
+
+#general_header {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    opacity: 0.7;
+    background-color: #4c93ff;
+    color: #ffffff;
+}
+
+:hover#general_header {
+    opacity: 1;
+}
+
+#setup_header {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    opacity: 0.7;
+    background-color: #4c93ff;
+    color: #ffffff;
+}
+
+:hover#setup_header {
+    opacity: 1;
+}
+
+#history_header {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    opacity: 0.7;
+    background-color: #4c93ff;
+    color: #ffffff;
+
+}
+
+:hover#history_header {
+    opacity: 1;
+}
+
+#run_header {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    opacity: 0.7;
+    background-color: #4c93ff;
+    color: #ffffff;
+}
+
+:hover#run_header {
+    opacity: 1;
+}
+
+#info_header {
+    text-align: center;
+    color: #ffffff;
+    float: left;
+}
+
+.div70_with_overflow {
+    width: 100%;
+    height: 70%;
+    overflow: auto;
+}
+
+.full_line_header {
+    height: 10%;
+    width: 100%;
+    background-color: #4c93ff;
+    opacity: 0.7;
+}
+
+.left10_div {
+    height: 100%;
+    width: 10%;
+    float: left;
+    text-align: center;
+}
+
+.center80_div {
+    height: 100%;
+    width: 80%;
+    float: left;
+    text-align: center;
+}
+.center70_div {
+    height: 100%;
+    width: 70%;
+    float: left;
+    text-align: center;
+}
+
+.right10_div {
+    height: 100%;
+    width: 10%;
+    float: right;
+    text-align: center;
+}
+
+.left20_div {
+    height: 100%;
+    width: 20%;
+    float: left;
+    text-align: center;
+}
+
+.center60_div {
+    height: 100%;
+    width: 60%;
+    float: left;
+    text-align: center;
+}
+
+.right20_div {
+    height: 100%;
+    width: 20%;
+    float: right;
+    text-align: center;
+}
+
+.left33_div {
+    height: 100%;
+    width: 33%;
+    float: left;
+    text-align: center;
+}
+
+.center34_div {
+    height: 100%;
+    width: 34%;
+    float: left;
+    text-align: center;
+}
+
+.right33_div {
+    height: 100%;
+    width: 33%;
+    float: right;
+    text-align: center;
+}
+
+.left45_div {
+    height: 100%;
+    width: 45%;
+    float: left;
+    text-align: center;
+}
+.right45_div {
+    height: 100%;
+    width: 45%;
+    float: right;
+    text-align: center;
+}
+
+.space5_div {
+    width: 100%;
+    height: 5%;
+    text-align: center;
+}
+
+.space10_div {
+    width: 100%;
+    height: 10%;
+    text-align: center;
+}
+
+.space20_div {
+    width: 100%;
+    height: 20%;
+    text-align: center;
+}
+
+.space30_div {
+    width: 100%;
+    height: 30%;
+    text-align: center;
+}
+
+.space35_div {
+    width: 100%;
+    height: 35%;
+    text-align: center;
+}
+
+.round_button {
+    max-width: 98%;
+    max-height: 98%;
+    opacity: 0.7;
+}
+
+:hover.round_button {
+    opacity: 1;
+}

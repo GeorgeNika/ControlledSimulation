@@ -1,0 +1,67 @@
+package ua.george_nika.simulation.controller;
+
+import ua.george_nika.simulation.util.AppLog;
+import ua.george_nika.simulation.controller.entity.EntityController;
+import ua.george_nika.simulation.controller.error.NoNormalExtraControllerRegistered;
+import ua.george_nika.simulation.controller.experiment.ExperimentExtraController;
+import ua.george_nika.simulation.controller.generator.GeneratorExtraController;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by george on 16.12.2015.
+ */
+public class ControllerFactory {
+
+    private static Map<String, String> experimentControllerClassMap = new HashMap<>();
+    private static Map<String, String> generatorControllerClassMap = new HashMap<>();
+    private static Map<String, String> entityInfoControllerClassMap = new HashMap<>();
+
+    private static String LOGGER_NAME = AppLog.CONTROLLER;
+    private static String CLASS_NAME = ControllerFactory.class.getSimpleName();
+
+
+    private ControllerFactory() {
+    }
+
+    public static void registerExperimentControllerClassInFactory(String type, String fullClassName) {
+        experimentControllerClassMap.put(type, fullClassName);
+    }
+
+    public static void registerGeneratorControllerClassInFactory(String type, String fullClassName) {
+        generatorControllerClassMap.put(type, fullClassName);
+    }
+
+    public static void registerEntityInfoControllerClassInFactory(String type, String fullClassName) {
+        entityInfoControllerClassMap.put(type, fullClassName);
+    }
+
+    public static ExperimentExtraController getExperimentExtraControllerByType(String type) {
+        try {
+            return (ExperimentExtraController) Class.forName(experimentControllerClassMap.get(type)).newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
+            throw new NoNormalExtraControllerRegistered("Type -" + type, e);
+        }
+    }
+
+    public static GeneratorExtraController getGeneratorExtraControllerByType(String type) {
+        try {
+            return (GeneratorExtraController) Class.forName(generatorControllerClassMap.get(type)).newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
+            throw new NoNormalExtraControllerRegistered("Type -" + type, e);
+        }
+    }
+
+    public static EntityController getEntityInfoControllerByType(String type) {
+        try {
+            return (EntityController) Class.forName(entityInfoControllerClassMap.get(type)).newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
+            throw new NoNormalExtraControllerRegistered("Type -" + type, e);
+        }
+    }
+
+}

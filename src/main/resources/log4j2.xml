@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appenders>
+        <File name="MissingLogs" fileName="..\logs\simulation\missing_logs.log">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] [%logger{36}] %M - %msg%n"/>
+        </File>
+        <RollingRandomAccessFile name="UserAll" fileName="..\logs\simulation\user_all.log"
+                                 filePattern="..\logs\simulation\arch\user_all-%d{yyyy_MM_dd__HH_mm_ss}.log">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] %M - %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"></SizeBasedTriggeringPolicy>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="UserError" fileName="..\logs\simulation\user_error.log"
+                                 filePattern="..\logs\simulation\arch\user_error-%d{yyyy_MM_dd__HH_mm_ss}.log">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] [%logger{36}] %M - %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"></SizeBasedTriggeringPolicy>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="AppError" fileName="..\logs\simulation\app_error.log"
+                                 filePattern="..\logs\simulation\arch\error-%d{yyyy_MM_dd__HH_mm_ss}.log">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] [%logger{36}] %M - %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 MB"></SizeBasedTriggeringPolicy>
+            </Policies>
+        </RollingRandomAccessFile>
+        <File name="LoggerPool1" fileName="${sys:loggerPool1FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool2" fileName="${sys:loggerPool2FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool3" fileName="${sys:loggerPool3FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool4" fileName="${sys:loggerPool4FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool5" fileName="${sys:loggerPool5FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool6" fileName="${sys:loggerPool6FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool7" fileName="${sys:loggerPool7FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool8" fileName="${sys:loggerPool8FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+        <File name="LoggerPool9" fileName="${sys:loggerPool9FileName}">
+            <PatternLayout pattern="[%-5level] %d{DEFAULT} %M - %msg%n"/>
+        </File>
+    </appenders>
+    <loggers>
+        <Logger name="Controller" level="all" additivity="false">
+            <AppenderRef ref="UserAll"/>
+            <AppenderRef ref="UserError" level="error"/>
+        </Logger>
+        <Logger name="Dao" level="error" additivity="false">
+            <AppenderRef ref="AppError"/>
+        </Logger>
+        <Logger name="Model" level="error" additivity="false">
+            <AppenderRef ref="AppError"/>
+        </Logger>
+        <Logger name="Service" level="error" additivity="false">
+            <AppenderRef ref="AppError"/>
+        </Logger>
+        <Logger name="Util" level="error" additivity="false">
+            <AppenderRef ref="AppError"/>
+        </Logger>
+        <Logger name="LoggerPool1" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool1"/>
+        </Logger>
+        <Logger name="LoggerPool2" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool2"/>
+        </Logger>
+        <Logger name="LoggerPool3" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool3"/>
+        </Logger>
+        <Logger name="LoggerPool4" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool4"/>
+        </Logger>
+        <Logger name="LoggerPool5" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool5"/>
+        </Logger>
+        <Logger name="LoggerPool6" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool6"/>
+        </Logger>
+        <Logger name="LoggerPool7" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool7"/>
+        </Logger>
+        <Logger name="LoggerPool8" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool8"/>
+        </Logger>
+        <Logger name="LoggerPool9" level="all" additivity="false">
+            <AppenderRef ref="LoggerPool9"/>
+        </Logger>
+
+
+
+        <root level="all">
+            <AppenderRef ref="MissingLogs"/>
+        </root>
+    </loggers>
+
+</configuration>

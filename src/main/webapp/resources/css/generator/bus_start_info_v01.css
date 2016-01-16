@@ -1,0 +1,6 @@
+.whole_bus_start_info_page {
+    height: 100%;
+    width: 100%;
+    background-image: url(../../images/bus_start_info_background.jpg);
+    background-size: cover;
+}

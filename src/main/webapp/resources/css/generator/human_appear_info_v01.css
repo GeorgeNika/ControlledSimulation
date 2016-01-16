@@ -1,0 +1,6 @@
+.whole_human_appear_info_page {
+    height: 100%;
+    width: 100%;
+    background-image: url(../../images/human_appear_info_background.jpg);
+    background-size: cover;
+}
