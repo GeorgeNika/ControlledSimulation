@@ -17,4 +17,6 @@ public interface GeneratorHistoryDao {
 
     List<GeneratorHistory> getAllLazyGeneratorHistory();
 
+    List<GeneratorHistory> getAllLazyGeneratorHistoryByExperiment(int idExperimentHistory);
+
 }

@@ -181,7 +181,6 @@ public class ExperimentService {
     public void stopExperiment(Experiment experiment) {
         try {
             experiment.endExecution();
-            experimentHistoryService.closeExperimentHistory(experiment);
         } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in stop experiment id - " + experiment.getIdExperiment(), ex);
             throw new ExperimentException("Error in stop experiment id - " + experiment.getIdExperiment());

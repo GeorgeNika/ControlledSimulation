@@ -1,13 +1,18 @@
+/**
+ * springMVC form
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.form;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.util.AppConst;
+import ua.george_nika.simulation.util.TimeToStringUtil;
 
-/**
- * Created by george on 16.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class ExperimentForm {
 
     private String experimentName;
@@ -20,8 +25,8 @@ public class ExperimentForm {
 
     public ExperimentForm(Experiment experiment) {
         this.experimentName = experiment.getExperimentName();
-        this.startTime = experiment.getStartTime().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        this.endTime = experiment.getEndTime().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
+        this.startTime = TimeToStringUtil.getSafeString(experiment.getStartTime());
+        this.endTime = TimeToStringUtil.getSafeString(experiment.getEndTime());
         this.stepIntervalMs = experiment.getStepIntervalMs();
     }
 

@@ -1,8 +1,7 @@
 package ua.george_nika.simulation.controller.error;
 
-/**
- * Created by george on 16.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class NoNormalExtraControllerRegistered extends RuntimeException {
     public NoNormalExtraControllerRegistered() {
     }

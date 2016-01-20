@@ -29,7 +29,9 @@ public interface Generator {
 
     String getGeneratorType();
 
+    List<Entity> sendEntityListToEntity(Entity recipientEntity);
 
+    void receiveEntityListFromEntity(List<Entity> entityList, Entity donorEntity);
 
 
     public int getIdGenerator();

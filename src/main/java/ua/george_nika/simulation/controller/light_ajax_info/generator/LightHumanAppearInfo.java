@@ -1,10 +1,14 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
+/**
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
+package ua.george_nika.simulation.controller.light_ajax_info.generator;
 
 import ua.george_nika.simulation.model.generator.impl.HumanAppearInfo;
 
-/**
- * Created by george on 18.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class LightHumanAppearInfo {
 
     protected int idHumanAppearInfo;

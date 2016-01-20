@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.RelatedGeneratorData;
+import ua.george_nika.simulation.util.AppLog;
 
 /**
  * Created by george on 29.11.2015.
@@ -16,7 +17,7 @@ public class BusRoundEntity extends BusEntity {
     public static final String ENTITY_TYPE = "round_bus";
     protected static String entityInfoType = BusEntityInfo.ENTITY_INFO_TYPE;
 
-    protected long slightlyMoreHalfRoundDurationInMills;
+    protected long roundDurationInMills;
 
     static {
         EntityFactory.registerClassInFactory(ENTITY_TYPE, BusRoundEntity.class.getCanonicalName());
@@ -25,6 +26,7 @@ public class BusRoundEntity extends BusEntity {
     public String getEntityType() {
         return ENTITY_TYPE;
     }
+
     public String getEntityInfoType() {
         return entityInfoType;
     }
@@ -37,21 +39,31 @@ public class BusRoundEntity extends BusEntity {
         for (RelatedGeneratorData loopInfo : relationGeneratorDataList) {
             tempMills += loopInfo.getDelayMs();
         }
-        slightlyMoreHalfRoundDurationInMills = tempMills / 2 + 1000;   //
-        setNewRelationGeneratorSet();
+        roundDurationInMills = tempMills / 2 + 1;   // slightly more then half
+        addNewGeneratorToRelationGeneratorSet();
+        AppLog.info(entityHistory.getLoggerName(), entityHistory.getLogIdentifyMessage()
+                        + " init relation generator set for " + getEntityType()
+                        + " : count of relation - " + nextRelationGeneratorSet.size()
+        );
     }
 
     @Override
-    protected void setNewRelationGeneratorSet() {
-        nextRelationGeneratorSet.remove(relationGeneratorDataList.get(nextRelationPoint).getRelatedGenerator());
+    protected void addNewGeneratorToRelationGeneratorSet() {
+
+        // add new point if they near in this direction
+        int addQuantity = 0;
         for (RelatedGeneratorData loopInfo : relationGeneratorDataList) {
-            if (getMillsToRelationGeneratorInfo(loopInfo) < slightlyMoreHalfRoundDurationInMills) {
-                if (loopInfo.getRelatedGenerator().equals(relationGeneratorDataList.get(nextRelationPoint).getRelatedGenerator())){
+            if (getMillsToRelationGeneratorInfo(loopInfo) <= roundDurationInMills) {
+                if (loopInfo.getRelatedGenerator().equals(
+                        relationGeneratorDataList.get(nextRelationPoint).getRelatedGenerator())) {
                     continue;
                 }
                 nextRelationGeneratorSet.add(loopInfo.getRelatedGenerator());
+                addQuantity++;
             }
         }
+        AppLog.info(entityHistory.getLoggerName(), entityHistory.getLogIdentifyMessage()
+                + " add to relation set " + addQuantity + " generator(s)");
     }
 
     protected long getMillsToRelationGeneratorInfo(RelatedGeneratorData info) {
@@ -61,28 +73,28 @@ public class BusRoundEntity extends BusEntity {
         Generator tempGenerator = relationGeneratorDataList.get(nextRelationPoint).getRelatedGenerator();
         while (!tempGenerator.equals(info.getRelatedGenerator())) {
             if (currentForwardDirection) {
-                if (tempPoint >= relationGeneratorDataList.size()-1){
-                    if (repeatQuantity>1){
+                if (tempPoint >= relationGeneratorDataList.size() - 1) {
+                    if (repeatQuantity > 1) {
                         tempResult = relationGeneratorDataList.get(tempPoint).getDelayMs();
                         tempPoint = 0;
-                    }else{
+                    } else {
                         return Long.MAX_VALUE;
                     }
-                }else{
+                } else {
                     tempResult = relationGeneratorDataList.get(tempPoint).getDelayMs();
-                    tempPoint ++;
+                    tempPoint++;
                 }
             } else {
-                if (tempPoint <= 0){
-                    if (repeatQuantity>1){
+                if (tempPoint <= 0) {
+                    if (repeatQuantity > 1) {
                         tempResult = relationGeneratorDataList.get(relationGeneratorDataList.size() - 1).getDelayMs();
-                        tempPoint = relationGeneratorDataList.size()-1;
-                    }else{
+                        tempPoint = relationGeneratorDataList.size() - 1;
+                    } else {
                         return Long.MAX_VALUE;
                     }
-                }else{
+                } else {
                     tempResult = relationGeneratorDataList.get(tempPoint - 1).getDelayMs();
-                    tempPoint --;
+                    tempPoint--;
                 }
             }
             tempGenerator = relationGeneratorDataList.get(tempPoint).getRelatedGenerator();

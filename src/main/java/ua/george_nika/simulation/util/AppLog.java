@@ -127,7 +127,7 @@ public class AppLog {
     private static String getFileName(String addInfo) {
         final String DATE_TIME_FORMAT = "yyyy_MM_dd__HH_mm_ss";
         String dateTimeInfo = new DateTime().toString(DATE_TIME_FORMAT);
-        String fileName = "Log " + addInfo + " " + dateTimeInfo + ".log";
+        String fileName = "Log " + addInfo + " " + dateTimeInfo + ".txt";
         return fileName;
     }
 

@@ -1,3 +1,8 @@
+/**
+ * springMVC controller
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller;
 
 import org.springframework.stereotype.Controller;
@@ -9,9 +14,8 @@ import ua.george_nika.simulation.util.AppLog;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by george on 01.01.2016.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Controller
 public class ErrorController {
 
@@ -27,3 +31,4 @@ public class ErrorController {
         return "main/errorPage";
     }
 }
+

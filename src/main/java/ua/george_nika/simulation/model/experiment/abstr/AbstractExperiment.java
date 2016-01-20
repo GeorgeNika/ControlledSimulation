@@ -45,15 +45,16 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
     protected List<Generator> generatorList = new ArrayList<Generator>();
 
     @XmlTransient
-    protected MutableDateTime currentTime;
+    protected volatile MutableDateTime currentTime;
     @XmlTransient
     protected volatile AtomicBoolean running = new AtomicBoolean();
     @XmlTransient
     protected volatile AtomicBoolean paused = new AtomicBoolean();
     @XmlTransient
-    protected volatile AtomicBoolean workingState = new AtomicBoolean();
+    protected volatile Thread workingThread;
     @XmlTransient
-    protected ExperimentHistory experimentHistory;
+    protected volatile ExperimentHistory experimentHistory;
+
 
     public void startExecution() {
         checkIsExperimentCorrect();
@@ -62,8 +63,8 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
         afterInitAllGenerator();
         saveAllHistory();
 
-        Thread thread = new Thread(this);
-        thread.start();
+        workingThread = new Thread(this);
+        workingThread.start();
     }
 
     protected void checkIsExperimentCorrect() {
@@ -74,7 +75,6 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
         currentTime = startTime.toMutableDateTime();
         running.set(true);
         paused.set(false);
-        workingState.set(false);
         experimentHistory = ExperimentHistoryService.getNewExperimentHistory(this);
         AppLog.info(experimentHistory.getLoggerName(), experimentHistory.getLogIdentifyMessage()
                 + "start experiment : " + idExperiment + " - " + experimentName
@@ -116,8 +116,31 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
                 + "stop time : " + currentTime);
         paused.set(false);
         running.set(false);
-        updateAllHistory();
-        saveAllHistory();
+
+        // we must wait until workingThread is working
+        class WaitThread implements Runnable {
+            private Thread workingThread;
+
+            WaitThread(Thread workingThread) {
+                this.workingThread = workingThread;
+            }
+
+            @Override
+            public void run() {
+                try {
+                    workingThread.join();
+                } catch (InterruptedException e) {
+                    AppLog.error(experimentHistory.getLoggerName(),
+                            WaitThread.class.getCanonicalName(),
+                            experimentHistory.getLogIdentifyMessage()
+                                    + "Interrupt while waiting end of experiment ", e);
+                }
+                updateAllHistory();
+                saveAllHistory();
+                ExperimentHistoryService.closeExperimentHistory(experimentHistory);
+            }
+        }
+        new Thread(new WaitThread(workingThread)).start();
     }
 
     public void run() {
@@ -131,8 +154,6 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
             if (paused.get()) {
                 executePause();
                 continue;
-            } else {
-                workingState.set(true);
             }
 
             setNewExperimentTime();
@@ -151,7 +172,6 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
 
     protected void executePause() {
         try {
-            workingState.set(false);
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             endExecution();
@@ -193,10 +213,10 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
     }
 
     protected void updateAllHistory() {
-        experimentHistory.updateExperimentHistoryData(this);
         for (Generator loopGenerator : generatorList) {
             loopGenerator.updateGeneratorHistory();
         }
+        experimentHistory.updateExperimentHistoryData(this);
     }
 
 
@@ -300,3 +320,4 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
 
 
 }
+

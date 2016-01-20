@@ -18,6 +18,7 @@ import java.util.List;
 
 abstract public class AbstractEntity implements Entity {
 
+    protected int idEntity;
     protected DateTime creationTime;
     protected boolean needRemove = false;
 
@@ -42,8 +43,8 @@ abstract public class AbstractEntity implements Entity {
         AppLog.info(entityHistory.getLoggerName(), entityHistory.getLogIdentifyMessage()
                 + " init entity " + getEntityType() + " : " + "for generator " + generator.getGeneratorType() + " : "
                 + generator.getIdGenerator() + " - " + generator.getGeneratorName()
-                + " ( gen history id - " + entityHistory.getIdEntityHistory()
-                + " ) with history id - " + entityHistory.getIdEntityHistory());
+                + " "+generator.getGeneratorHistory().getLogIdentifyMessage()
+                + " with history id - " + entityHistory.getIdEntityHistory());
     }
 
     @Override
@@ -56,7 +57,7 @@ abstract public class AbstractEntity implements Entity {
         entityHistory.updateEntityHistory(this);
     }
 
-    public RelatedGeneratorData getNextRelationGeneratorInfo() {
+    public RelatedGeneratorData getNextRelationGeneratorData() {
         return relationGeneratorDataList.get(nextRelationPoint);
     }
 
@@ -72,5 +73,19 @@ abstract public class AbstractEntity implements Entity {
         this.currentTime.setMillis(newCurrentTime);
     }
 
+    public EntityHistory getEntityHistory() {
+        return entityHistory;
+    }
 
+    public void setEntityHistory(EntityHistory entityHistory) {
+        this.entityHistory = entityHistory;
+    }
+
+    public int getIdEntity() {
+        return idEntity;
+    }
+
+    public void setIdEntity(int idEntity) {
+        this.idEntity = idEntity;
+    }
 }

@@ -1,10 +1,14 @@
+/**
+ * springMVC form
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.form;
 
 import ua.george_nika.simulation.model.experiment.impl.RepeatExperiment;
 
-/**
- * Created by george on 25.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class RepeatExperimentExtraDataForm {
 
     private int repeat;

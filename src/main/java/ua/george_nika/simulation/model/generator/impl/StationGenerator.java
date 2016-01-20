@@ -5,6 +5,8 @@ import org.joda.time.Interval;
 import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
+import ua.george_nika.simulation.model.entity.impl.BusEntity;
+import ua.george_nika.simulation.model.entity.impl.HumanEntityInfo;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.*;
 import ua.george_nika.simulation.model.entity.Entity;
@@ -12,6 +14,7 @@ import ua.george_nika.simulation.model.generator.abstr.AbstractGenerator;
 import ua.george_nika.simulation.model.generator.error.EmptyHumanAppearInfoException;
 import ua.george_nika.simulation.model.generator.error.NoNextHumanAppearInfoException;
 import ua.george_nika.simulation.util.AppLog;
+import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -100,23 +103,36 @@ public class StationGenerator extends AbstractGenerator {
             tempEntity.initEntityAction(this, null, currentTime.toDateTime());
             dependentEntityList.add(tempEntity);
         }
+        StationGeneratorHistory stationGeneratorHistory =
+                ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
+        stationGeneratorHistory.setCreateEntity(stationGeneratorHistory.getCreateEntity() + quantityNewEntity);
     }
 
     public void executeDependentAction(MutableDateTime newCurrentTime) {
         for (Entity loopEntity : dependentEntityList) {
             loopEntity.executeMainAction(newCurrentTime);
         }
+        clearEntityList();
+    }
 
-        //clearingEntityList
+    protected void clearEntityList() {
         Iterator<Entity> tempIterator = dependentEntityList.iterator();
         Entity tempEntity;
+        int tempDestroyCount = 0;
         while (tempIterator.hasNext()) {
             tempEntity = tempIterator.next();
             if (tempEntity.isNeedRemove()) {
                 tempIterator.remove();
+                tempDestroyCount++;
             }
         }
-        // todo log about remove
+        if (tempDestroyCount > 0) {
+            StationGeneratorHistory stationGeneratorHistory =
+                    ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
+            stationGeneratorHistory.setDestroyEntity(stationGeneratorHistory.getDestroyEntity() + tempDestroyCount);
+            AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
+                    + "destroy " + getEntityType() + ". Quantity - " + tempDestroyCount);
+        }
     }
 
     protected int getNewEntityQuantity(MutableDateTime newCurrentTime) {
@@ -197,5 +213,62 @@ public class StationGenerator extends AbstractGenerator {
 
     public void setHumanAppearInfoList(List<HumanAppearInfo> humanAppearInfoList) {
         this.humanAppearInfoList = humanAppearInfoList;
+    }
+
+    @Override
+    public List<Entity> sendEntityListToEntity(Entity recipientEntity) {
+
+        List<Entity> resultSendEntityList = new ArrayList<>();
+        BusEntity busEntity = ClassTypeUtil.getCheckedClass(recipientEntity, BusEntity.class);
+        int sendEntityListMaxSize = busEntity.getCapacity() - busEntity.getEntityList().size();
+
+        // check all entity in this list
+        // and if it satisfy requirement then remove it from our list and send
+        Entity checkedEntity;
+        Iterator<Entity> tempIterator = this.dependentEntityList.iterator();
+        while ((tempIterator.hasNext()) && (resultSendEntityList.size() < sendEntityListMaxSize)) {
+            checkedEntity = tempIterator.next();
+            if (successRelation(checkedEntity, busEntity)) {
+                resultSendEntityList.add(checkedEntity);
+                tempIterator.remove();
+            }
+        }
+
+        StationGeneratorHistory stationGeneratorHistory =
+                ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
+        stationGeneratorHistory.setSendEntity(stationGeneratorHistory.getSendEntity() + resultSendEntityList.size());
+        AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
+                + " send " + getEntityType() + " to " + recipientEntity.getEntityType()
+                + " with " + recipientEntity.getEntityHistory().getLogIdentifyMessage()
+                + ". Quantity - " + resultSendEntityList.size());
+
+        return resultSendEntityList;
+    }
+
+    protected boolean successRelation(Entity checkedEntity, BusEntity busEntity) {
+        Set<Generator> nextRelationGeneratorSet = busEntity.getNextRelationGeneratorSet();
+        int busPrice = busEntity.getPrice();
+        if (nextRelationGeneratorSet.contains(
+                checkedEntity.getNextRelationGeneratorData().getRelatedGenerator())) {
+            HumanEntityInfo humanEntityInfo =
+                    ClassTypeUtil.getCheckedClass(checkedEntity.getEntityInfo(), HumanEntityInfo.class);
+            if (busPrice <= humanEntityInfo.getReasonablePriceInCent()) {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void receiveEntityListFromEntity(List<Entity> entityList, Entity donorEntity) {
+        StationGeneratorHistory stationGeneratorHistory =
+                ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
+        stationGeneratorHistory.setReceiveEntity(stationGeneratorHistory.getReceiveEntity() + entityList.size());
+        AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
+                + " receive " + getEntityType() + " from " + donorEntity.getEntityType()
+                + " with " + donorEntity.getEntityHistory().getLogIdentifyMessage()
+                + ". Quantity - " + entityList.size());
     }
 }

@@ -1,3 +1,8 @@
+/**
+ * springMVC controller
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.generator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +18,14 @@ import ua.george_nika.simulation.util.AppLog;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by george on 20.12.2015.
- */
+@SuppressWarnings("unused")
+
 @Controller
 public class RelatedGeneratorDataController {
     private static String LOGGER_NAME = AppLog.CONTROLLER;
 
     @Autowired
     RelatedGeneratorDataService relatedGeneratorDataService;
-
     @Autowired
     UserService userService;
 

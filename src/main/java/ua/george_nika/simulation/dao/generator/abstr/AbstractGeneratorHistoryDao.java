@@ -16,7 +16,6 @@ import java.util.List;
 abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements GeneratorHistoryDao {
 
 
-
     abstract protected GeneratorHistory getGeneratorHistoryFromData(List<Object> dataList);
 
     abstract protected List<Object> getDataFromGeneratorHistory(GeneratorHistory generatorHistory);
@@ -31,7 +30,7 @@ abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements
     @Override
     public void saveGeneratorHistory(GeneratorHistory generatorHistory) {
         List<Object> resultData = getDataFromGeneratorHistory(generatorHistory);
-        updateRecordDataById(generatorHistory.getIdGeneratorHistory(),resultData);
+        updateRecordDataById(generatorHistory.getIdGeneratorHistory(), resultData);
     }
 
     public GeneratorHistory getLazyGeneratorHistoryById(int idGeneratorHistory) {
@@ -47,6 +46,20 @@ abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements
         for (List<Object> loopData : resultDataListList) {
             tempGeneratorHistory = getGeneratorHistoryFromData(loopData);
             resultGeneratorHistoryList.add(tempGeneratorHistory);
+        }
+        return resultGeneratorHistoryList;
+    }
+
+    public List<GeneratorHistory> getAllLazyGeneratorHistoryByExperiment(int idExperimentHistory) {
+        List<GeneratorHistory> resultGeneratorHistoryList = new ArrayList<>();
+        List<List<Object>> resultDataListList = getAllRecordDataList();
+        GeneratorHistory tempGeneratorHistory;
+        for (List<Object> loopData : resultDataListList) {
+            tempGeneratorHistory = getGeneratorHistoryFromData(loopData);
+            // todo in future  make normal method with pagination sort and filter
+            if (tempGeneratorHistory.getIdExperimentHistory() == idExperimentHistory) {
+                resultGeneratorHistoryList.add(tempGeneratorHistory);
+            }
         }
         return resultGeneratorHistoryList;
     }

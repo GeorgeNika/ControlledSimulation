@@ -1,8 +1,12 @@
+/**
+ * springMVC form
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.form;
 
-/**
- * Created by george on 30.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class LoginForm {
 
     private String userName;

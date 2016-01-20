@@ -192,7 +192,11 @@
             datatype: 'json',
             data: {idGenerator: ${generator.idGenerator}},
             success: function (response) {
-                window.location.href = '${context}/generatorMainSetupPage';
+                if (response != true) {
+                    alert('ERROR. You should check your authentication.');
+                } else {
+                    window.location.href = '${context}/generatorMainSetupPage';
+                }
             }
         });
     }

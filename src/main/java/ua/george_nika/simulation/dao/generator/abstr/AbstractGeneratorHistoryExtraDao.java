@@ -25,4 +25,9 @@ abstract public class AbstractGeneratorHistoryExtraDao extends AbstractDao imple
         List<Object> resultData = getExtraDataFromGeneratorHistory(generatorHistory);
         updateRecordDataById(generatorHistory.getIdGeneratorHistory(), resultData);
     }
+
+    public void addExtraDataToGeneratorHistory(GeneratorHistory generatorHistory) {
+        List<Object> resultData = getSingleRecordDataById(generatorHistory.getIdGeneratorHistory());
+        fillExtraDataInGeneratorHistory(resultData, generatorHistory);
+    }
 }

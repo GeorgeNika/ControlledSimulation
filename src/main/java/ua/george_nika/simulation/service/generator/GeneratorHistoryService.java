@@ -49,7 +49,7 @@ public class GeneratorHistoryService {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in creating generator history for experiment id - " +
                     experiment.getIdExperiment() + " and generator id - " + generator.getIdGenerator(), ex);
             throw new GeneratorHistoryException("Error in creating generator history for experiment id - " +
-                    experiment.getIdExperiment()+ " and generator id - " + generator.getIdGenerator());
+                    experiment.getIdExperiment() + " and generator id - " + generator.getIdGenerator());
         }
     }
 
@@ -68,6 +68,35 @@ public class GeneratorHistoryService {
         }
     }
 
+    public GeneratorHistory getLazyGeneratorHistoryById(int idGeneratorHistory) {
+        try {
+            GeneratorHistory resultGeneratorHistory;
+            GeneratorHistoryDao generatorHistoryDao = DaoFactory.getGeneratorHistoryDao();
+            resultGeneratorHistory = generatorHistoryDao.getLazyGeneratorHistoryById(idGeneratorHistory);
+            return resultGeneratorHistory;
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy generator history by id history - "
+                    + idGeneratorHistory, ex);
+            throw new GeneratorHistoryException("Error in get lazy generator history by id history - "
+                    + idGeneratorHistory);
+        }
+    }
+
+    public GeneratorHistory getGeneratorHistoryById(int idGeneratorHistory) {
+        try {
+            GeneratorHistory resultGeneratorHistory = getLazyGeneratorHistoryById(idGeneratorHistory);
+            GeneratorHistoryExtraDao generatorHistoryExtraDao = DaoFactory.getGeneratorHistoryExtraDaoByType(
+                    resultGeneratorHistory.getGeneratorType());
+            generatorHistoryExtraDao.addExtraDataToGeneratorHistory(resultGeneratorHistory);
+            return resultGeneratorHistory;
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get generator history by id history - "
+                    + idGeneratorHistory, ex);
+            throw new GeneratorHistoryException("Error in get generator history by id history - "
+                    + idGeneratorHistory);
+        }
+    }
+
     public List<GeneratorHistory> getAllLazyGeneratorHistory() {
         try {
             List<GeneratorHistory> resultGeneratorHistoryList;
@@ -77,6 +106,20 @@ public class GeneratorHistoryService {
         } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy generator history", ex);
             throw new GeneratorHistoryException("Error in get all lazy generator history");
+        }
+    }
+
+    public List<GeneratorHistory> getAllLazyGeneratorHistoryByExperiment(int idExperimentHistory) {
+        try {
+            List<GeneratorHistory> resultGeneratorHistoryList;
+            GeneratorHistoryDao generatorHistoryDao = DaoFactory.getGeneratorHistoryDao();
+            resultGeneratorHistoryList = generatorHistoryDao.getAllLazyGeneratorHistoryByExperiment(idExperimentHistory);
+            return resultGeneratorHistoryList;
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy generator history by "
+                    + "experiment history id - " + idExperimentHistory, ex);
+            throw new GeneratorHistoryException("Error in get all lazy generator history by "
+                    + "experiment history id - " + idExperimentHistory);
         }
     }
 

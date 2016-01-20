@@ -186,7 +186,11 @@
             datatype: 'json',
             data: {idExperiment: ${experiment.idExperiment}},
             success: function (response) {
-                window.location.href = '${context}/experimentMainSetupPage';
+                if (response != true) {
+                    alert('ERROR. You should check your authentication.');
+                } else {
+                    window.location.href = '${context}/experimentMainSetupPage';
+                }
             }
         });
     }

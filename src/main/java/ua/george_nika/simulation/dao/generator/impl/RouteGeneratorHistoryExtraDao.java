@@ -19,10 +19,9 @@ import java.util.List;
  */
 @Repository
 public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtraDao {
-    //todo
     protected static final String TABLE_NAME = "gen_route_history";
     protected static final String ID_NAME = "id_generator_history";
-    protected static final int QUANTITY_OF_FIELDS = 2;
+    protected static final int QUANTITY_OF_FIELDS = 3;
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = RouteGeneratorHistoryExtraDao.class.getSimpleName();
@@ -40,7 +39,10 @@ public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtra
         fieldNameInTable.add(ID_NAME);
 
         fieldTypeInTable.add(TypeOfFiled.INT);
-        fieldNameInTable.add("entity_count");
+        fieldNameInTable.add("create_entity");
+
+        fieldTypeInTable.add(TypeOfFiled.INT);
+        fieldNameInTable.add("processed_entity");
 
     }
 
@@ -69,7 +71,8 @@ public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtra
                 ClassTypeUtil.getCheckedClass(generatorHistory, RouteGeneratorHistory.class);
 
         routeGeneratorHistory.setIdGeneratorHistory((Integer) dataList.get(0));
-        // todo routeGeneratorHistory.setIdGeneratorHistory((Integer) dataList.get(1));
+        routeGeneratorHistory.setCreateEntity((Integer) dataList.get(1));
+        routeGeneratorHistory.setProcessedEntity((Integer) dataList.get(2));
     }
 
     @Override
@@ -79,7 +82,8 @@ public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtra
                 ClassTypeUtil.getCheckedClass(generatorHistory, RouteGeneratorHistory.class);
 
         resultList.add(routeGeneratorHistory.getIdGeneratorHistory());
-        resultList.add(22);
+        resultList.add(routeGeneratorHistory.getCreateEntity());
+        resultList.add(routeGeneratorHistory.getProcessedEntity());
 
         return resultList;
     }

@@ -1,8 +1,11 @@
 package ua.george_nika.simulation.util;
 
+import ua.george_nika.simulation.model.entity.Entity;
+import ua.george_nika.simulation.model.entity.EntityHistory;
 import ua.george_nika.simulation.model.experiment.Experiment;
-import ua.george_nika.simulation.service.error.NoExperimentWithHistory;
-import ua.george_nika.simulation.service.error.RunningExperimentException;
+import ua.george_nika.simulation.model.generator.Generator;
+import ua.george_nika.simulation.service.error.NoSuchHistory;
+import ua.george_nika.simulation.service.error.RunningHistoryException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,35 +36,71 @@ public class RunningExperimentHolder {
             return runningExperimentList;
         } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get running experiment list", ex);
-            throw new RunningExperimentException("Error in get running experiment list");
+            throw new RunningHistoryException("Error in get running experiment list");
         }
     }
 
     public static synchronized void addRunningExperiment(Experiment experiment) {
-        try{
+        try {
             runningExperimentList.add(experiment);
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in add experiment to running experiment list", ex);
-            throw new RunningExperimentException("Error in add experiment to running experiment list");
+            throw new RunningHistoryException("Error in add experiment to running experiment list");
         }
 
     }
 
-    public static synchronized Experiment getExperimentByExperimentHistoryId(int idExperimentHistory) {
+    public static synchronized Experiment getRunningExperiment(int idExperimentHistory) {
         try {
             for (Experiment loopExp : runningExperimentList) {
                 if (loopExp.getExperimentHistory().getIdExperimentHistory() == idExperimentHistory) {
                     return loopExp;
                 }
             }
-            throw new NoExperimentWithHistory();
+            throw new NoSuchHistory();
         } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in getting experiment by history id - " +
                     idExperimentHistory, ex);
-            throw new RunningExperimentException("Error in getting experiment by history id - " +
+            throw new RunningHistoryException("Error in getting experiment by history id - " +
                     idExperimentHistory);
         }
+    }
 
+    public static synchronized Generator getRunningGenerator(int idExperimentHistory, int idGeneratorHistory) {
+        try {
+            Experiment experiment = getRunningExperiment(idExperimentHistory);
+            for (Generator loopGen : experiment.getGeneratorList()) {
+                if (loopGen.getGeneratorHistory().getIdGeneratorHistory() == idGeneratorHistory) {
+                    return loopGen;
+                }
+            }
+            throw new NoSuchHistory();
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in getting generator by history id - " +
+                    idExperimentHistory + " in experiment with history id - " + idExperimentHistory, ex);
+            throw new RunningHistoryException("Error in getting generator by history id - " +
+                    idExperimentHistory + " in experiment with history id - " + idExperimentHistory);
+        }
+    }
+
+    public static synchronized Entity getRunningEntity(int idExperimentHistory, int idGeneratorHistory,
+                                                       int idEntityHistory) {
+        try {
+            Generator generator = getRunningGenerator(idExperimentHistory, idGeneratorHistory);
+            for (Entity loopEntity : generator.getDependentEntityList()) {
+                if (loopEntity.getEntityHistory().getIdEntityHistory() == idEntityHistory) {
+                    return loopEntity;
+                }
+            }
+            throw new NoSuchHistory();
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in getting entity by history id - " + idEntityHistory
+                    + " in generator with history id - " + idExperimentHistory
+                    + " in experiment with history id - " + idExperimentHistory, ex);
+            throw new RunningHistoryException("Error in getting entity by history id - " + idEntityHistory
+                    + " in generator with history id - " + idExperimentHistory
+                    + " in experiment with history id - " + idExperimentHistory);
+        }
     }
 
 

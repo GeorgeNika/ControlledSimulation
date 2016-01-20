@@ -1,10 +1,14 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
+/**
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
+package ua.george_nika.simulation.controller.light_ajax_info.generator;
 
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
 
-/**
- * Created by george on 12.01.2016.
- */
+@SuppressWarnings("unused")
+
 public class LightGeneratorRunInfo {
 
     private int idGeneratorHistory;
@@ -14,7 +18,7 @@ public class LightGeneratorRunInfo {
     private String infoString;
 
     public LightGeneratorRunInfo(GeneratorHistory generatorHistory) {
-        this.idGeneratorHistory = generatorHistory.getIdGenerator();
+        this.idGeneratorHistory = generatorHistory.getIdGeneratorHistory();
         this.idGenerator = generatorHistory.getIdGenerator();
         this.generatorName = generatorHistory.getGeneratorName();
         this.generatorType = generatorHistory.getGeneratorType();

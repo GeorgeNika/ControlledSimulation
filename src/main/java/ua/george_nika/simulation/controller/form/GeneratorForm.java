@@ -1,10 +1,14 @@
+/**
+ * springMVC form
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.form;
 
 import ua.george_nika.simulation.model.generator.Generator;
 
-/**
- * Created by george on 16.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class GeneratorForm {
 
     private String generatorName;

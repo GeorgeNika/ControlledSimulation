@@ -3,17 +3,21 @@ package ua.george_nika.simulation.model.generator.impl;
 import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
+import ua.george_nika.simulation.model.entity.impl.BusEntity;
+import ua.george_nika.simulation.model.entity.impl.BusHistory;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.*;
 import ua.george_nika.simulation.model.entity.Entity;
 import ua.george_nika.simulation.model.generator.abstr.AbstractGenerator;
 import ua.george_nika.simulation.util.AppLog;
+import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -59,7 +63,7 @@ public class RouteGenerator extends AbstractGenerator {
             long busStartTimeMs = experimentStartTime.getMillis() + loopInfo.getStartTimeMs();
             if ((newCurrentTime.getMillis() > busStartTimeMs) && (currentTime.getMillis() <= busStartTimeMs)) {
                 AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
-                                + "create new " + getEntityType() + ". id - " + loopInfo.getIdBusStartInfo()
+                                + " Create new entity " + getEntityType() + ". id - " + loopInfo.getIdBusStartInfo()
                                 + " : start time(ms) - " + loopInfo.getStartTimeMs()
                                 + " : repeat quantity - " + loopInfo.getRepeatQuantity()
                                 + " : forward " + loopInfo.isForwardDirection()
@@ -68,6 +72,10 @@ public class RouteGenerator extends AbstractGenerator {
                 Entity tempEntity = EntityFactory.getEntityByType(getEntityType());
                 tempEntity.initEntityAction(this, loopInfo, experimentStartTime.plus(loopInfo.getStartTimeMs()));
                 dependentEntityList.add(tempEntity);
+
+                RouteGeneratorHistory routeGeneratorHistory = ClassTypeUtil.getCheckedClass(
+                        generatorHistory, RouteGeneratorHistory.class);
+                routeGeneratorHistory.setCreateEntity(routeGeneratorHistory.getCreateEntity() + 1);
             }
         }
     }
@@ -75,6 +83,28 @@ public class RouteGenerator extends AbstractGenerator {
     public void executeDependentAction(MutableDateTime newCurrentTime) {
         for (Entity loopEntity : dependentEntityList) {
             loopEntity.executeMainAction(newCurrentTime);
+        }
+
+        clearEntityList();
+    }
+
+    protected void clearEntityList() {
+        Iterator<Entity> tempIterator = dependentEntityList.iterator();
+        Entity tempEntity;
+        int tempDestroyCount = 0;
+        while (tempIterator.hasNext()) {
+            tempEntity = tempIterator.next();
+            if (tempEntity.isNeedRemove()) {
+                BusHistory busHistory = ClassTypeUtil.getCheckedClass(tempEntity.getEntityHistory(), BusHistory.class);
+                RouteGeneratorHistory routeGeneratorHistory =
+                        ClassTypeUtil.getCheckedClass(generatorHistory, RouteGeneratorHistory.class);
+                routeGeneratorHistory.setProcessedEntityFromDestroyedBus(
+                        routeGeneratorHistory.getProcessedEntityFromDestroyedBus() + busHistory.getProcessedEntity());
+                tempIterator.remove();
+                tempDestroyCount++;
+                AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
+                        + "destroy " + getEntityType() + ". Quantity - " + tempDestroyCount);
+            }
         }
     }
 
@@ -84,5 +114,19 @@ public class RouteGenerator extends AbstractGenerator {
 
     public void setBusStartInfoList(List<BusStartInfo> busStartInfoList) {
         this.busStartInfoList = busStartInfoList;
+    }
+
+
+
+    @Override
+    public List<Entity> sendEntityListToEntity(Entity recipientEntity) {
+        // send empty list
+        List<Entity> resultList = new ArrayList<>();
+        return resultList;
+    }
+
+    @Override
+    public void receiveEntityListFromEntity(List<Entity> entityList, Entity donorEntity) {
+        // do nothing
     }
 }

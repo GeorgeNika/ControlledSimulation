@@ -10,6 +10,7 @@ import ua.george_nika.simulation.model.generator.Generator;
 abstract public class AbstractEntityHistory implements EntityHistory {
 
     private int idEntityHistory;
+    private int idEntity;
     private int idGenerator;
     private int idGeneratorHistory;
     private String entityType;
@@ -21,6 +22,7 @@ abstract public class AbstractEntityHistory implements EntityHistory {
 
 
     public void setInitialEntityHistoryData(Generator generator, Entity entity){
+        this.idEntity = entity.getIdEntity();
         this.idGenerator = generator.getIdGenerator();
         this.idGeneratorHistory = generator.getGeneratorHistory().getIdGeneratorHistory();
         this.entityType = entity.getEntityType();
@@ -46,6 +48,14 @@ abstract public class AbstractEntityHistory implements EntityHistory {
 
     public void setIdEntityHistory(int idEntityHistory) {
         this.idEntityHistory = idEntityHistory;
+    }
+
+    public int getIdEntity() {
+        return idEntity;
+    }
+
+    public void setIdEntity(int idEntity) {
+        this.idEntity = idEntity;
     }
 
     public int getIdGenerator() {

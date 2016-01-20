@@ -12,6 +12,14 @@ import ua.george_nika.simulation.model.generator.abstr.AbstractGeneratorHistory;
 @Component
 public class StationGeneratorHistory extends AbstractGeneratorHistory {
 
+    protected int createEntity;
+    protected int sendEntity;
+    protected int receiveEntity;
+    protected int destroyEntity;
+
+    protected int currentEntityCount;
+
+
     static {
         GeneratorHistoryFactory.registerClassInFactory(StationGenerator.GENERATOR_TYPE,
                 StationGeneratorHistory.class.getCanonicalName());
@@ -21,17 +29,61 @@ public class StationGeneratorHistory extends AbstractGeneratorHistory {
 
     @Override
     protected void updateGeneratorHistoryExtraData(Generator generator) {
-        // todo
+        currentEntityCount = generator.getDependentEntityList().size();
     }
 
     @Override
     public String getRunInfoString() {
-        //todo
-        return "here must be info about working generator";
+        return "current entity count - "+currentEntityCount;
     }
 
     @Override
     protected void setInitialGeneratorHistoryExtraData(Generator generator) {
+        this.createEntity = 0;
+        this.sendEntity = 10;
+        this.receiveEntity = 10;
+        this.destroyEntity = 0;
 
+        this.currentEntityCount=0;
+    }
+
+    public int getCreateEntity() {
+        return createEntity;
+    }
+
+    public void setCreateEntity(int createEntity) {
+        this.createEntity = createEntity;
+    }
+
+    public int getSendEntity() {
+        return sendEntity;
+    }
+
+    public void setSendEntity(int sendEntity) {
+        this.sendEntity = sendEntity;
+    }
+
+    public int getReceiveEntity() {
+        return receiveEntity;
+    }
+
+    public void setReceiveEntity(int receiveEntity) {
+        this.receiveEntity = receiveEntity;
+    }
+
+    public int getDestroyEntity() {
+        return destroyEntity;
+    }
+
+    public void setDestroyEntity(int destroyEntity) {
+        this.destroyEntity = destroyEntity;
+    }
+
+    public int getCurrentEntityCount() {
+        return currentEntityCount;
+    }
+
+    public void setCurrentEntityCount(int currentEntityCount) {
+        this.currentEntityCount = currentEntityCount;
     }
 }

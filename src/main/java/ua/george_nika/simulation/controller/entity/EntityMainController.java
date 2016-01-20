@@ -1,3 +1,7 @@
+/**
+ * springMVC controller
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
 package ua.george_nika.simulation.controller.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,7 @@ import ua.george_nika.simulation.service.entity.EntityInfoService;
 import ua.george_nika.simulation.service.generator.GeneratorService;
 import ua.george_nika.simulation.controller.ControllerFactory;
 import ua.george_nika.simulation.controller.generator.GeneratorController;
-import ua.george_nika.simulation.controller.light_ajax_info.LightEntityInfo;
+import ua.george_nika.simulation.controller.light_ajax_info.entity.LightEntityInfo;
 import ua.george_nika.simulation.util.AppLog;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,19 +26,16 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 15.12.2015.
- */
+@SuppressWarnings("unused")
+
 @Controller
 public class EntityMainController {
     private static String LOGGER_NAME = AppLog.CONTROLLER;
 
     @Autowired
     GeneratorController generatorController;
-
     @Autowired
     EntityInfoService entityInfoService;
-
     @Autowired
     GeneratorService generatorService;
 
@@ -77,6 +78,4 @@ public class EntityMainController {
         resultEntityTypeList.addAll(EntityFactory.getAllRegisteredEntityType());
         return resultEntityTypeList;
     }
-
-
 }

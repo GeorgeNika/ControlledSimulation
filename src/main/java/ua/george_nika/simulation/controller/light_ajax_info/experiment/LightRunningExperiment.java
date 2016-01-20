@@ -1,4 +1,4 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
+package ua.george_nika.simulation.controller.light_ajax_info.experiment;
 
 import org.joda.time.format.DateTimeFormat;
 import ua.george_nika.simulation.model.experiment.Experiment;

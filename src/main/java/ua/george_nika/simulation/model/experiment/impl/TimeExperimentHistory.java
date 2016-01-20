@@ -35,7 +35,6 @@ public class TimeExperimentHistory extends AbstractExperimentHistory{
     protected void updateExperimentHistoryExtraData(Experiment experiment) {
         TimeExperiment timeExperiment = ClassTypeUtil.getCheckedClass(experiment, TimeExperiment.class);
         this.minTimeMs = timeExperiment.getMinTime();
-        // todo this.time = timeExperiment.
     }
 
     public long getMinTimeMs() {

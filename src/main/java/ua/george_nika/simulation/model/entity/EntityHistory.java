@@ -12,27 +12,33 @@ public interface EntityHistory {
 
     void updateEntityHistory(Entity entity);
 
-    String getLogIdentifyMessage() ;
+    String getRunInfoString();
+
+    String getLogIdentifyMessage();
 
 
 
-    public int getIdEntityHistory() ;
+    public int getIdEntityHistory();
 
-    public void setIdEntityHistory(int idEntityHistory) ;
+    public void setIdEntityHistory(int idEntityHistory);
 
-    public int getIdGenerator() ;
+    public int getIdEntity();
 
-    public void setIdGenerator(int idGenerator) ;
+    public void setIdEntity(int idEntity);
 
-    public int getIdGeneratorHistory() ;
+    public int getIdGenerator();
 
-    public void setIdGeneratorHistory(int idGeneratorHistory) ;
+    public void setIdGenerator(int idGenerator);
 
-    public String getEntityType() ;
+    public int getIdGeneratorHistory();
 
-    public void setEntityType(String entityType) ;
+    public void setIdGeneratorHistory(int idGeneratorHistory);
 
-    public String getLoggerName() ;
+    public String getEntityType();
 
-    public void setLoggerName(String loggerName) ;
+    public void setEntityType(String entityType);
+
+    public String getLoggerName();
+
+    public void setLoggerName(String loggerName);
 }

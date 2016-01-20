@@ -16,7 +16,7 @@
              onclick="window.location.href='${context}/runMainPage'">
     </div>
     <div class="center70_div" id="info_header">
-        <span>${experimentHistory.experimentName}</span>
+        <span>${experimentHistory.idExperimentHistory} - ${experimentHistory.experimentName}</span>
     </div>
     <div class="right20_div">
         <div class="left33_div">
@@ -95,7 +95,9 @@
         event.stopPropagation();
     }
     function generatorHref(data) {
-        alert('Sorry, This page under construction');
+        var tempId = $(data.target).parent().attr('id');
+        var searchId = tempId.substring(4, tempId.length);
+        window.location.href = '${context}/generatorRunPage/${experimentHistory.idExperimentHistory}/' + searchId;
     }
     function useObtainedData(data) {
         $("#currentTime").html(data.currentDateTime);

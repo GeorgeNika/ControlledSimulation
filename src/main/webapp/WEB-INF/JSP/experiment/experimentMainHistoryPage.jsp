@@ -42,7 +42,16 @@
 </div>
 <script src="${context}/resources/js/adaptive_size_v01.js"></script>
 <script>
-
+    function downloadLogFile(event) {
+        var tempId = $(event.target).attr('id');
+        var searchId = tempId.substring(4, tempId.length);
+        window.open("${context}/downloadLogFile/"+searchId);
+    }
+    function downloadXmlFile(event) {
+        var tempId = $(event.target).attr('id');
+        var searchId = tempId.substring(4, tempId.length);
+        window.open("${context}/downloadXmlFile/"+searchId);
+    }
     function experimentHref(data) {
         var tempId = $(data.target).parent().attr('id');
         var searchId = tempId.substring(4, tempId.length);
@@ -65,12 +74,22 @@
                     + "<td>" + experimentList[ind].startTime + "</td>"
                     + "<td>" + experimentList[ind].endTime + "</td>"
                     + "<td>" + experimentList[ind].lastPoint + "</td>"
-                    + "<td>" + experimentList[ind].created + "</td>"
-                    + "<td>" + experimentList[ind].updated + "</td>"
+                    + "<td>" + "<img src='${context}/resources/images/button_download_log.png' alt='log' "
+                    + "id='idDL" + index + "'>" + "</td>"
+                    + "<td>" + "<img src='${context}/resources/images/button_download_xml.png' alt='log' "
+                    + "id='idDX" + index + "'>" + "</td>"
                     + "</tr>"
             );
             $(document).off("click", "#idEH" + index);
             $(document).on("click", "#idEH" + index, experimentHref);
+
+            $(document).off("click", "#idDL" + index);
+            $(document).on("click", "#idDL" + index, downloadLogFile);
+            $("#idDL" + index).addClass('round_button');
+
+            $(document).off("click", "#idDX" + index);
+            $(document).on("click", "#idDX" + index, downloadXmlFile);
+            $("#idDX" + index).addClass('round_button');
         }
     }
     function getAjaxContent(sendData) {

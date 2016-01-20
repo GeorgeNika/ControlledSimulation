@@ -10,4 +10,6 @@ public interface GeneratorHistoryExtraDao {
     void createNewGeneratorHistoryExtraRecordById(int idGeneratorHistory);
 
     void saveGeneratorHistoryExtraData(GeneratorHistory generatorHistory);
+
+    void addExtraDataToGeneratorHistory(GeneratorHistory generatorHistory);
 }

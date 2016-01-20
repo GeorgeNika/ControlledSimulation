@@ -1,3 +1,8 @@
+/**
+ * springMVC controller
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +15,7 @@ import ua.george_nika.simulation.util.AppLog;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by george on 01.12.2015.
- */
+@SuppressWarnings("unused")
 
 @Controller
 public class MainPageController {

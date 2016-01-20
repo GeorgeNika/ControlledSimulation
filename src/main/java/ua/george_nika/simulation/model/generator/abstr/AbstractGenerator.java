@@ -16,6 +16,7 @@ import ua.george_nika.simulation.util.DateTimeXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,12 +69,20 @@ abstract public class AbstractGenerator implements Generator {
         experimentStartTime = experiment.getStartTime();
         currentTime = experimentStartTime.toMutableDateTime();
         generatorHistory = GeneratorHistoryService.getNewGeneratorHistory(experiment, this);
+        logAboutInitAction();
+    }
+
+    public void afterInitAction(Experiment experiment) {
+       logAboutAfterInitAction();
+    }
+
+    protected void logAboutInitAction(){
         AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                 + "init generator " + getGeneratorType() + " : " + idGenerator + " - " + generatorName
                 + " with history id - " + generatorHistory.getIdGeneratorHistory());
     }
 
-    public void afterInitAction(Experiment experiment) {
+    protected void logAboutAfterInitAction(){
         AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                 + "after init generator");
     }
@@ -88,10 +97,10 @@ abstract public class AbstractGenerator implements Generator {
 
     @Override
     public void updateGeneratorHistory() {
-        generatorHistory.updateGeneratorHistory(this);
         for (Entity loopEntity : dependentEntityList) {
             loopEntity.updateEntityHistory();
         }
+        generatorHistory.updateGeneratorHistory(this);
     }
 
     public void setNewCurrentTime(MutableDateTime newCurrentTime) {
@@ -100,7 +109,6 @@ abstract public class AbstractGenerator implements Generator {
             loopEntity.setNewCurrentTime(newCurrentTime);
         }
     }
-
 
     protected Generator getGeneratorById(List<Generator> generatorList, int idGenerator) {
         for (Generator loopGenerator : generatorList) {

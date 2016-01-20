@@ -39,8 +39,9 @@ public class HumanEntity extends AbstractEntity {
 
     public void setEntityInfo(EntityInfo entityInfo) {
         HumanEntityInfo humanEntityInfo = ClassTypeUtil.getCheckedClass(entityInfo, HumanEntityInfo.class);
-        this.delayTimeToRemoveMs = ((HumanEntityInfo) entityInfo).getDelayTimeToRemoveMs();
-        this.reasonablePriceInCent = ((HumanEntityInfo) entityInfo).getReasonablePriceInCent();
+        this.idEntity = humanEntityInfo.getIdEntityInfo();
+        this.delayTimeToRemoveMs = humanEntityInfo.getDelayTimeToRemoveMs();
+        this.reasonablePriceInCent = humanEntityInfo.getReasonablePriceInCent();
     }
 
     public EntityInfo getEntityInfo() {
@@ -48,10 +49,10 @@ public class HumanEntity extends AbstractEntity {
     }
 
     public void initEntityAction(Generator generator, Object specialInfo, DateTime creationTime) {
-        // we can not use super because we no need entityHistory
+        // we are not use super because we no need entityHistory
         // super.initEntityAction(generator, specialInfo, creationTime);
 
-        this.creationTime = generator.getExperimentStartTime();
+        this.creationTime = creationTime;
         this.relationGeneratorDataList = generator.getRelatedGeneratorDataList();
         setEntityInfo(generator.getEntityInfo());
 
@@ -71,12 +72,12 @@ public class HumanEntity extends AbstractEntity {
 
     @Override
     public void saveEntityHistory() {
-        // do nothing because we no need entityHistory
+        // do nothing because we no need entityHistory for human
     }
 
     @Override
     public void updateEntityHistory() {
-        // do nothing because we no need entityHistory
+        // do nothing because we no need entityHistory for human
     }
 
 }

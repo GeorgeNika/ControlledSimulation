@@ -22,6 +22,8 @@ public class AppSimulationExceptionResolver extends SimpleMappingExceptionResolv
                                          Object objectHandler,
                                          Exception ex) {
         try {
+            // todo in future. Convert all user-friendly exception to UserException
+            // and show they message in error page.
             HttpSession session = request.getSession();
             Throwable causeException = ex.getCause() == null ? ex : ex.getCause();
             if (causeException instanceof AccessDeniedException) {

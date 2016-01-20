@@ -1,3 +1,8 @@
+/**
+ * springMVC controller
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.experiment;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +23,21 @@ import ua.george_nika.simulation.util.AppLog;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by george on 23.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Controller
 public class SimpleExperimentController implements ExperimentExtraController {
-    private static String LOGGER_NAME = AppLog.CONTROLLER;
-
     public static final String EXPERIMENT_SETUP_JSP_PAGE = "simpleExperimentSetupPage";
     public static final String EXPERIMENT_RUN_JSP_PAGE = "experimentCommonRunPage";
     public static final String EXPERIMENT_HISTORY_JSP_PAGE = "simpleExperimentHistoryPage";
+
     private static String experimentType = SimpleExperiment.EXPERIMENT_TYPE;
+    private static String LOGGER_NAME = AppLog.CONTROLLER;
 
     @Autowired
     ExperimentService experimentService;
-
     @Autowired
     UserService userService;
-
     @Autowired
     ExperimentController experimentController;
 
@@ -60,27 +62,30 @@ public class SimpleExperimentController implements ExperimentExtraController {
     }
 
     @Override
-    public void addExtraDataToSetupPage(HttpServletRequest request, HttpSession session, Model model, Experiment experiment) {
+    public void addExtraDataToSetupPage(HttpServletRequest request, HttpSession session, Model model,
+                                        Experiment experiment) {
         model.addAttribute("simpleExperimentExtraDataForm",
                 new SimpleExperimentExtraDataForm((SimpleExperiment) experiment));
     }
 
     @Override
-    public void addExtraDataToRunPage(HttpServletRequest request, HttpSession session, Model model, Experiment experiment) {
-
+    public void addExtraDataToRunPage(HttpServletRequest request, HttpSession session, Model model,
+                                      Experiment experiment) {
+        // do nothing
     }
 
     @Override
     public void addExtraDataToHistoryPage(HttpServletRequest request, HttpSession session, Model model,
                                           ExperimentHistory experimentHistory) {
-
+        // do nothing
     }
 
     @RequestMapping("/editSimpleExperimentExtraDataAction/{idExperiment}")
     public String editSimpleExperimentExtraDataAction
             (HttpServletRequest request, HttpSession session, Model model,
              @PathVariable("idExperiment") int idExperiment,
-             @ModelAttribute("simpleExperimentExtraDataForm") SimpleExperimentExtraDataForm simpleExperimentExtraDataForm) {
+             @ModelAttribute
+                     ("simpleExperimentExtraDataForm") SimpleExperimentExtraDataForm simpleExperimentExtraDataForm) {
         AppLog.userInfo(LOGGER_NAME, session, "Edit simple experiment extra data for experiment id - " + idExperiment);
         userService.checkPermission(session);
         Experiment tempExperiment = experimentService.getExperimentById(idExperiment);

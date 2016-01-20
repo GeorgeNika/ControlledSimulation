@@ -1,10 +1,14 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
+/**
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
+package ua.george_nika.simulation.controller.light_ajax_info.entity;
 
 import ua.george_nika.simulation.model.entity.EntityInfo;
 
-/**
- * Created by george on 18.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class LightEntityInfo {
 
     private int idEntityInfo;

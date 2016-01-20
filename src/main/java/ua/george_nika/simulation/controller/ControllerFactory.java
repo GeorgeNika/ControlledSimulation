@@ -1,3 +1,8 @@
+/**
+ * used for getting extra controllers
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller;
 
 import ua.george_nika.simulation.util.AppLog;
@@ -9,9 +14,6 @@ import ua.george_nika.simulation.controller.generator.GeneratorExtraController;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by george on 16.12.2015.
- */
 public class ControllerFactory {
 
     private static Map<String, String> experimentControllerClassMap = new HashMap<>();
@@ -20,7 +22,6 @@ public class ControllerFactory {
 
     private static String LOGGER_NAME = AppLog.CONTROLLER;
     private static String CLASS_NAME = ControllerFactory.class.getSimpleName();
-
 
     private ControllerFactory() {
     }

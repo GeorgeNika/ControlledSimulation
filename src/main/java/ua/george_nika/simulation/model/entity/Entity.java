@@ -31,9 +31,15 @@ public interface Entity {
 
     String getEntityInfoType();
 
+    RelatedGeneratorData getNextRelationGeneratorData();
 
 
-    // todo разобраться что она делает и почему здесь
-    RelatedGeneratorData getNextRelationGeneratorInfo();
+    public EntityHistory getEntityHistory();
+
+    public void setEntityHistory(EntityHistory entityHistory);
+
+    public int getIdEntity();
+
+    public void setIdEntity(int idEntity);
 
 }

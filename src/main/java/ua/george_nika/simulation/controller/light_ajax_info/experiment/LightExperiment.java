@@ -1,12 +1,15 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
-
-import org.joda.time.format.DateTimeFormat;
-import ua.george_nika.simulation.model.experiment.Experiment;
-import ua.george_nika.simulation.util.AppConst;
-
 /**
- * Created by george on 22.12.2015.
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
  */
+
+package ua.george_nika.simulation.controller.light_ajax_info.experiment;
+
+import ua.george_nika.simulation.model.experiment.Experiment;
+import ua.george_nika.simulation.util.TimeToStringUtil;
+
+@SuppressWarnings("unused")
+
 public class LightExperiment {
 
     protected int idExperiment;
@@ -22,11 +25,11 @@ public class LightExperiment {
         this.idExperiment = experiment.getIdExperiment();
         this.experimentType = experiment.getExperimentType();
         this.experimentName = experiment.getExperimentName();
-        this.startTime = experiment.getStartTime().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        this.endTime = experiment.getEndTime().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
+        this.startTime = TimeToStringUtil.getSafeString(experiment.getStartTime());
+        this.endTime = TimeToStringUtil.getSafeString(experiment.getEndTime());
         this.stepIntervalMs = experiment.getStepIntervalMs();
-        this.created = experiment.getCreated().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        this.updated = experiment.getUpdated().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
+        this.created = TimeToStringUtil.getSafeString(experiment.getCreated());
+        this.updated = TimeToStringUtil.getSafeString(experiment.getUpdated());
     }
 
     public int getIdExperiment() {

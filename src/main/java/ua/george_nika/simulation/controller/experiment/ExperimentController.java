@@ -1,11 +1,16 @@
+/**
+ * springMVC controller
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.experiment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ua.george_nika.simulation.controller.light_ajax_info.LightExperimentHistory;
-import ua.george_nika.simulation.controller.light_ajax_info.LightRunningExperiment;
+import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightExperimentHistory;
+import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightRunningExperiment;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.ExperimentFactory;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
@@ -16,8 +21,8 @@ import ua.george_nika.simulation.service.experiment.ExperimentService;
 import ua.george_nika.simulation.service.generator.GeneratorService;
 import ua.george_nika.simulation.controller.ControllerFactory;
 import ua.george_nika.simulation.controller.form.ExperimentForm;
-import ua.george_nika.simulation.controller.light_ajax_info.LightExperiment;
-import ua.george_nika.simulation.controller.light_ajax_info.LightGenerator;
+import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightExperiment;
+import ua.george_nika.simulation.controller.light_ajax_info.generator.LightGenerator;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.RunningExperimentHolder;
 
@@ -25,25 +30,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-/**
- * Created by george on 22.12.2015.
- */
+@SuppressWarnings("unused")
+
 @Controller
 public class ExperimentController {
     private static String LOGGER_NAME = AppLog.CONTROLLER;
 
     @Autowired
     ExperimentService experimentService;
-
     @Autowired
     ExperimentHistoryService experimentHistoryService;
-
     @Autowired
     GeneratorService generatorService;
-
     @Autowired
     UserService userService;
-
 
     @RequestMapping("/experimentMainSetupPage")
     public String experimentMainSetupPage(HttpServletRequest request, HttpSession session, Model model) {
@@ -89,6 +89,7 @@ public class ExperimentController {
         ExperimentExtraController experimentExtraController =
                 ControllerFactory.getExperimentExtraControllerByType(tempEH.getExperimentType());
         model.addAttribute("experimentHistory", tempEH);
+        model.addAttribute("lightExperimentHistory", new LightExperimentHistory(tempEH));
         experimentExtraController.addExtraDataToHistoryPage(request, session, model, tempEH);
         String resultJSPPage = experimentExtraController.getExperimentHistoryJSPPage();
         return "experiment/" + resultJSPPage;
@@ -99,7 +100,7 @@ public class ExperimentController {
     public List<LightExperiment> getExperimentList(HttpServletRequest request, HttpSession session, Model model) {
         AppLog.userInfo(LOGGER_NAME, session, "Get experiment list");
         List<Experiment> tempExperimentList = experimentService.getAllLazyExperiment();
-        List<LightExperiment> resultLightExperimentList = new ArrayList<LightExperiment>();
+        List<LightExperiment> resultLightExperimentList = new ArrayList<>();
         for (Experiment loopExperiment : tempExperimentList) {
             resultLightExperimentList.add(new LightExperiment(loopExperiment));
         }
@@ -185,10 +186,11 @@ public class ExperimentController {
                                                               @RequestParam(value = "idExperiment") int idExperiment) {
         AppLog.userInfo(LOGGER_NAME, session, "Get generator list for experiment id - " + idExperiment);
         Experiment tempE = experimentService.getExperimentById(idExperiment);
-        List<LightGenerator> resultLightGeneratorList = new ArrayList<LightGenerator>();
+        List<LightGenerator> resultLightGeneratorList = new ArrayList<>();
         for (Generator loopGenerator : tempE.getGeneratorList()) {
             resultLightGeneratorList.add(new LightGenerator(loopGenerator));
         }
+        //sort by generator type and name
         Collections.sort(resultLightGeneratorList, new Comparator<LightGenerator>() {
             @Override
             public int compare(LightGenerator o1, LightGenerator o2) {
@@ -209,7 +211,7 @@ public class ExperimentController {
 
         AppLog.userInfo(LOGGER_NAME, session, "Get non used generator list for experiment id - " + idExperiment);
         userService.checkPermission(session);
-        List<LightGenerator> resultLightGeneratorList = new ArrayList<LightGenerator>();
+        List<LightGenerator> resultLightGeneratorList = new ArrayList<>();
         Set<Integer> experimentGeneratorIdList = new HashSet<>();
         for (Generator loopG : generatorService.getAllGeneratorByExperimentId(idExperiment)) {
             experimentGeneratorIdList.add(loopG.getIdGenerator());
@@ -255,7 +257,7 @@ public class ExperimentController {
                                     @PathVariable("idExperimentHistory") int idExperimentHistory) {
 
         AppLog.userInfo(LOGGER_NAME, session, "Go to experiment run page with history id - " + idExperimentHistory);
-        Experiment experiment = RunningExperimentHolder.getExperimentByExperimentHistoryId(idExperimentHistory);
+        Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
         model.addAttribute("experimentHistory", experiment.getExperimentHistory());
         ExperimentExtraController experimentExtraController =
                 ControllerFactory.getExperimentExtraControllerByType(experiment.getExperimentType());
@@ -280,15 +282,10 @@ public class ExperimentController {
     public List<LightRunningExperiment> getRunningExperimentList(HttpServletRequest request,
                                                                  HttpSession session, Model model) {
 
-        //AppLog.userInfo(LOGGER_NAME, session,"Get running experiment list" );
-        // it's disabled, because it's happened very often.
-
         List<LightRunningExperiment> resultList = new ArrayList<>();
-
         for (Experiment loopExp : RunningExperimentHolder.getRunningExperimentList()) {
             resultList.add(new LightRunningExperiment(loopExp));
         }
-
         return resultList;
     }
 
@@ -298,7 +295,7 @@ public class ExperimentController {
                                   @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
         AppLog.userInfo(LOGGER_NAME, session, "Stop running experiment with history id - " + idExperimentHistory);
         userService.checkPermission(session);
-        Experiment experiment = RunningExperimentHolder.getExperimentByExperimentHistoryId(idExperimentHistory);
+        Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
         experimentService.stopExperiment(experiment);
         return true;
     }
@@ -309,7 +306,7 @@ public class ExperimentController {
                                    @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
         AppLog.userInfo(LOGGER_NAME, session, "Pause running experiment with history id - " + idExperimentHistory);
         userService.checkPermission(session);
-        Experiment experiment = RunningExperimentHolder.getExperimentByExperimentHistoryId(idExperimentHistory);
+        Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
         experimentService.pauseExperiment(experiment);
         return true;
     }
@@ -320,7 +317,7 @@ public class ExperimentController {
                                       @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
         AppLog.userInfo(LOGGER_NAME, session, "Continue running experiment with history id - " + idExperimentHistory);
         userService.checkPermission(session);
-        Experiment experiment = RunningExperimentHolder.getExperimentByExperimentHistoryId(idExperimentHistory);
+        Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
         experimentService.continueExperiment(experiment);
         return true;
     }

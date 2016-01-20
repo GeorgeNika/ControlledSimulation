@@ -1,16 +1,20 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
+/**
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
 
-import org.joda.time.format.DateTimeFormat;
+package ua.george_nika.simulation.controller.light_ajax_info.experiment;
+
+import ua.george_nika.simulation.controller.light_ajax_info.generator.LightGeneratorRunInfo;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.Generator;
-import ua.george_nika.simulation.util.AppConst;
+import ua.george_nika.simulation.util.TimeToStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 12.01.2016.
- */
+@SuppressWarnings("unused")
+
 public class LightOneRunningExperiment {
 
     private List<LightGeneratorRunInfo> generatorRunInfoList = new ArrayList<>();
@@ -18,12 +22,7 @@ public class LightOneRunningExperiment {
     private boolean paused;
 
     public LightOneRunningExperiment(Experiment experiment) {
-        if (experiment.getCurrentTime() != null) {
-            this.currentDateTime = experiment.getCurrentTime().toString(
-                    DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        } else {
-            this.currentDateTime = "";
-        }
+        this.currentDateTime = TimeToStringUtil.getSafeString(experiment.getCurrentTime());
         this.paused = experiment.getPaused().get();
         for (Generator loopGenerator : experiment.getGeneratorList()) {
             generatorRunInfoList.add(new LightGeneratorRunInfo(loopGenerator.getGeneratorHistory()));

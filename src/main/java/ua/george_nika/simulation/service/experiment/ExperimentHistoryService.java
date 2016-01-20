@@ -42,7 +42,9 @@ public class ExperimentHistoryService {
             experimentHistoryExtraDao.createNewExperimentHistoryExtraRecordById(idExperimentHistory);
 
             //create log and xml file
-            String infoString = experiment.getIdExperiment() + " " + experiment.getExperimentName();
+            String infoString = experimentHistory.getIdExperimentHistory() + " "
+                    + experiment.getExperimentType() + " "
+                    + experiment.getIdExperiment() + " " + experiment.getExperimentName();
             experimentHistory.setLoggerName(AppLog.getEmptyLoggerName(infoString));
             experimentHistory.setLogFile(AppLog.getLoggerFileName(experimentHistory.getLoggerName()));
             experimentHistory.setXmlFile(XmlUtil.saveExperimentToXml(experiment, infoString));
@@ -74,14 +76,15 @@ public class ExperimentHistoryService {
         }
     }
 
-    public static void closeExperimentHistory(Experiment experiment) {
+    public static void closeExperimentHistory(ExperimentHistory experimentHistory) {
         try {
-            // todo дождаться окончания работы експеримента
-            ExperimentHistory experimentHistory = experiment.getExperimentHistory();
             AppLog.freeLoggerName(experimentHistory.getLoggerName());
-            // todo zip xml and log file
+            // todo ?in future?    zip  - xml and log file
         } catch (RuntimeException ex) {
-            // todo
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in saving data for experiment history id - " +
+                    experimentHistory.getIdExperimentHistory(), ex);
+            throw new ExperimentHistoryException("Error in saving data for experiment history id - " +
+                    experimentHistory.getIdExperimentHistory());
         }
     }
 

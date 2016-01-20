@@ -1,12 +1,15 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
-
-import org.joda.time.format.DateTimeFormat;
-import ua.george_nika.simulation.model.generator.Generator;
-import ua.george_nika.simulation.util.AppConst;
-
 /**
- * Created by george on 15.12.2015.
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
  */
+
+package ua.george_nika.simulation.controller.light_ajax_info.generator;
+
+import ua.george_nika.simulation.model.generator.Generator;
+import ua.george_nika.simulation.util.TimeToStringUtil;
+
+@SuppressWarnings("unused")
+
 public class LightGenerator {
 
     private int idGenerator;
@@ -25,17 +28,8 @@ public class LightGenerator {
         this.entityType = generator.getEntityType();
         this.idEntity = generator.getIdEntityInfo();
         this.entityQuantity = generator.getEntityQuantity();
-        if (generator.getCreated() != null) {
-            this.created = generator.getCreated().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        } else {
-            this.created = "";
-        }
-        if (generator.getUpdated() != null) {
-            this.updated = generator.getUpdated().toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        } else {
-            this.updated = "";
-        }
-
+        this.created = TimeToStringUtil.getSafeString(generator.getCreated());
+        this.updated = TimeToStringUtil.getSafeString(generator.getUpdated());
     }
 
     public int getIdGenerator() {

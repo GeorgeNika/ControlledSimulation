@@ -1,13 +1,18 @@
+/**
+ * springMVC form
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.form;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import ua.george_nika.simulation.model.experiment.impl.SimpleExperiment;
 import ua.george_nika.simulation.util.AppConst;
+import ua.george_nika.simulation.util.TimeToStringUtil;
 
-/**
- * Created by george on 25.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class SimpleExperimentExtraDataForm {
 
     private String infoString;
@@ -22,8 +27,7 @@ public class SimpleExperimentExtraDataForm {
         this.infoString = simpleExperiment.getInfoString();
         this.infoInt = simpleExperiment.getInfoInt();
         this.infoLong = simpleExperiment.getInfoLong();
-        this.infoStartTime = simpleExperiment.getInfoStartTime()
-                .toString(DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
+        this.infoStartTime = TimeToStringUtil.getSafeString(simpleExperiment.getInfoStartTime());
     }
 
     public void updateExtraDataExperiment(SimpleExperiment simpleExperiment) {

@@ -1,12 +1,15 @@
-package ua.george_nika.simulation.controller.light_ajax_info;
-
-import org.joda.time.format.DateTimeFormat;
-import ua.george_nika.simulation.model.experiment.ExperimentHistory;
-import ua.george_nika.simulation.util.AppConst;
-
 /**
- * Created by george on 22.12.2015.
+ * used for send request when get ajax response
+ * after lecture  JavaDoc + UnitTest = Documentation
  */
+
+package ua.george_nika.simulation.controller.light_ajax_info.experiment;
+
+import ua.george_nika.simulation.model.experiment.ExperimentHistory;
+import ua.george_nika.simulation.util.TimeToStringUtil;
+
+@SuppressWarnings("unused")
+
 public class LightExperimentHistory {
 
     protected int idExperimentHistory;
@@ -25,14 +28,10 @@ public class LightExperimentHistory {
         this.experimentType = experimentHistory.getExperimentType();
         this.experimentName = experimentHistory.getExperimentName();
         this.generatorQuantity = experimentHistory.getGeneratorQuantity();
-        this.executeDate = experimentHistory.getExecuteDate().toString(
-                DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        this.startTime = experimentHistory.getExperimentStart().toString(
-                DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        this.endTime = experimentHistory.getExperimentEnd().toString(
-                DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
-        this.lastPoint = experimentHistory.getLastPoint().toString(
-                DateTimeFormat.forPattern(AppConst.DATE_TIME_FORMAT));
+        this.executeDate = TimeToStringUtil.getSafeString(experimentHistory.getExecuteDate());
+        this.startTime = TimeToStringUtil.getSafeString(experimentHistory.getExperimentStart());
+        this.endTime = TimeToStringUtil.getSafeString(experimentHistory.getExperimentEnd());
+        this.lastPoint = TimeToStringUtil.getSafeString(experimentHistory.getLastPoint());
     }
 
     public int getIdExperimentHistory() {

@@ -1,14 +1,14 @@
+/**
+ * springMVC form
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.controller.form;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import ua.george_nika.simulation.model.experiment.impl.SimpleExperiment;
 import ua.george_nika.simulation.model.experiment.impl.TimeExperiment;
-import ua.george_nika.simulation.util.AppConst;
 
-/**
- * Created by george on 25.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class TimeExperimentExtraDataForm {
 
     private int idStartGenerator;

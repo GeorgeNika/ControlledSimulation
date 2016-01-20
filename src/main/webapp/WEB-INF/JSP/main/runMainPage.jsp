@@ -58,7 +58,7 @@
                         <input type="file" name="file" id="multipartFile"/>
                         <br/>
                         <br/>
-                        <input type="submit" class="simple_button" value="Upload file"/>
+                        <input type="submit" class="simple_button" value="Upload and Run file"/>
                         <br/>
                     </form>
                 </td>
