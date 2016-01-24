@@ -19,8 +19,6 @@ public interface Entity {
 
     void updateEntityHistory();
 
-    EntityInfo getEntityInfo();
-
     void executeMainAction(MutableDateTime newCurrentTime);
 
     void setNewCurrentTime(MutableDateTime newCurrentTime);
@@ -41,5 +39,9 @@ public interface Entity {
     public int getIdEntity();
 
     public void setIdEntity(int idEntity);
+
+    public DateTime getCreationTime() ;
+
+    public void setCreationTime(DateTime creationTime) ;
 
 }

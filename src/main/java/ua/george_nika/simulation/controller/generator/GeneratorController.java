@@ -10,8 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.george_nika.simulation.controller.light_ajax_info.generator.LightGeneratorHistory;
-import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightOneRunningExperiment;
-import ua.george_nika.simulation.model.experiment.Experiment;
+import ua.george_nika.simulation.dao.filter.GeneratorFilter;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.GeneratorFactory;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
@@ -26,6 +25,7 @@ import ua.george_nika.simulation.controller.form.GeneratorForm;
 import ua.george_nika.simulation.controller.light_ajax_info.generator.LightGenerator;
 import ua.george_nika.simulation.controller.light_ajax_info.generator.LightRelationGeneratorData;
 import ua.george_nika.simulation.util.AppLog;
+import ua.george_nika.simulation.util.SortUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -125,33 +125,27 @@ public class GeneratorController {
         return resultLightGeneratorList;
     }
 
-    @RequestMapping("/ajax/getGeneratorHistoryList")
+    @RequestMapping("/ajax/getGeneratorHistoryListByFilter")
     @ResponseBody
-    public List<LightGeneratorHistory> getGeneratorHistoryList(HttpServletRequest request, HttpSession session,
-                                                               Model model) {
-        AppLog.userInfo(LOGGER_NAME, session, "Get generator history list");
-        List<GeneratorHistory> tempGeneratorHistoryList = generatorHistoryService.getAllLazyGeneratorHistory();
-        List<LightGeneratorHistory> resultLightGeneratorHistoryList = new ArrayList<>();
-        for (GeneratorHistory loopGeneratorHistory : tempGeneratorHistoryList) {
-            resultLightGeneratorHistoryList.add(new LightGeneratorHistory(loopGeneratorHistory));
-        }
-        return resultLightGeneratorHistoryList;
-    }
-
-    @RequestMapping("/ajax/getGeneratorHistoryListByExperiment")
-    @ResponseBody
-    public List<LightGeneratorHistory> getGeneratorHistoryListByExperiment(
-            HttpServletRequest request, HttpSession session, Model model,
-            @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
-
-        AppLog.userInfo(LOGGER_NAME, session, "Get generator history list by experiment history id - "
-                + idExperimentHistory);
+    public List<LightGeneratorHistory> getGeneratorHistoryListByFilter
+            (HttpServletRequest request, HttpSession session, Model model,
+             @RequestParam(value = "filterIdExperiment") int filterIdExperiment,
+             @RequestParam(value = "filterIdExperimentHistory") int filterIdExperimentHistory,
+             @RequestParam(value = "filterIdGenerator") int filterIdGenerator,
+             @RequestParam(value = "filterIdGeneratorHistory") int filterIdGeneratorHistory) {
+        AppLog.userInfo(LOGGER_NAME, session, "Get generator history list by filter");
+        GeneratorFilter generatorFilter = new GeneratorFilter();
+        generatorFilter.setIdExperiment(filterIdExperiment);
+        generatorFilter.setIdExperimentHistory(filterIdExperimentHistory);
+        generatorFilter.setIdGenerator(filterIdGenerator);
+        generatorFilter.setIdGeneratorHistory(filterIdGeneratorHistory);
         List<GeneratorHistory> tempGeneratorHistoryList
-                = generatorHistoryService.getAllLazyGeneratorHistoryByExperiment(idExperimentHistory);
+                = generatorHistoryService.getLazyGeneratorHistoryListByFilter(generatorFilter);
         List<LightGeneratorHistory> resultLightGeneratorHistoryList = new ArrayList<>();
         for (GeneratorHistory loopGeneratorHistory : tempGeneratorHistoryList) {
             resultLightGeneratorHistoryList.add(new LightGeneratorHistory(loopGeneratorHistory));
         }
+        SortUtil.sortLightGeneratorHistoryList(resultLightGeneratorHistoryList);
         return resultLightGeneratorHistoryList;
     }
 
@@ -215,16 +209,4 @@ public class GeneratorController {
         generatorService.deleteGeneratorById(idGenerator);
         return true;
     }
-
-    @RequestMapping("/ajax/getGeneratorRunList")
-    @ResponseBody
-    public LightOneRunningExperiment getGeneratorRunList(
-            HttpServletRequest request, HttpSession session, Model model,
-            @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
-
-        Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
-        return new LightOneRunningExperiment(experiment);
-    }
-
-
 }

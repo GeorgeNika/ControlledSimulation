@@ -18,17 +18,19 @@ abstract public class AbstractEntityHistoryExtraDao extends AbstractDao implemen
 
 
     @Override
-    public int createNewEntityHistoryExtraRecordAndGetId() {
-        return createEmptyRecordAndGetNewId();
+    public void createNewEntityHistoryExtraRecordById(int idEntityHistory) {
+        createEmptyRecordWithId(idEntityHistory);
     }
 
     @Override
     public void saveEntityHistoryExtraData(EntityHistory entityHistory) {
-        updateRecordDataById(entityHistory.getIdEntityHistory(), getExtraDataFromEntityHistory(entityHistory));
+        List<Object> resultData = getExtraDataFromEntityHistory(entityHistory);
+        updateRecordDataById(entityHistory.getIdEntityHistory(), resultData);
     }
 
     @Override
     public void addExtraDataToEntityHistory(EntityHistory entityHistory) {
-
+        List<Object> resultData = getSingleRecordDataById(entityHistory.getIdEntityHistory());
+        fillExtraDataInEntityHistory(resultData, entityHistory);
     }
 }

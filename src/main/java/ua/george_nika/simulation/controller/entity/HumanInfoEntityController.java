@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ua.george_nika.simulation.model.entity.EntityHistory;
 import ua.george_nika.simulation.model.entity.EntityInfo;
 import ua.george_nika.simulation.model.entity.impl.HumanEntityInfo;
 import ua.george_nika.simulation.service.UserService;
@@ -28,19 +29,17 @@ import java.util.List;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 
 @Controller
-public class HumanEntityController implements EntityController {
+public class HumanInfoEntityController implements EntityInfoExtraController {
 
     public static final String ENTITY_INFO_SETUP_JSP_PAGE = "humanEntityInfoSetupPage";
-    public static final String ENTITY_INFO_RUN_JSP_PAGE = "humanEntityInfoRunPage";
-    public static final String ENTITY_INFO_HISTORY_JSP_PAGE = "humanEntityInfoHistoryPage";
 
     private static String entityInfoType = HumanEntityInfo.ENTITY_INFO_TYPE;
     private static String LOGGER_NAME = AppLog.CONTROLLER;
-    private static String CLASS_NAME = HumanEntityController.class.getSimpleName();
+    private static String CLASS_NAME = HumanInfoEntityController.class.getSimpleName();
 
     static {
         ControllerFactory.registerEntityInfoControllerClassInFactory(entityInfoType,
-                HumanEntityController.class.getCanonicalName());
+                HumanInfoEntityController.class.getCanonicalName());
     }
 
     @Autowired
@@ -53,16 +52,6 @@ public class HumanEntityController implements EntityController {
         return ENTITY_INFO_SETUP_JSP_PAGE;
     }
 
-    @Override
-    public String getEntityInfoRunJSPPage() {
-        return ENTITY_INFO_RUN_JSP_PAGE;
-    }
-
-    @Override
-    public String getEntityInfoHistoryJSPPage() {
-        return ENTITY_INFO_HISTORY_JSP_PAGE;
-    }
-
     @RequestMapping("ajax/getHumanEntityInfoList")
     @ResponseBody
     public List<LightHumanEntityInfo> getHumanEntityInfoList(
@@ -70,7 +59,7 @@ public class HumanEntityController implements EntityController {
 
         AppLog.userInfo(LOGGER_NAME, session, "Get human entity info list");
         List<LightHumanEntityInfo> resultLightInfoList = new ArrayList<>();
-        for (EntityInfo loopEntityInfo : entityInfoService.getEntityInfoListByType(HumanEntityInfo.ENTITY_INFO_TYPE)) {
+        for (EntityInfo loopEntityInfo : entityInfoService.getEntityInfoListByType(entityInfoType)) {
             HumanEntityInfo humanEntityInfo = ClassTypeUtil.getCheckedClass(loopEntityInfo, HumanEntityInfo.class);
             resultLightInfoList.add(new LightHumanEntityInfo(humanEntityInfo));
         }
@@ -93,7 +82,7 @@ public class HumanEntityController implements EntityController {
     public boolean createHumanEntityInfo(HttpServletRequest request, HttpSession session, Model model) {
         AppLog.userInfo(LOGGER_NAME, session, "Create new human entity info");
         userService.checkPermission(session);
-        entityInfoService.createEntityInfoByType(HumanEntityInfo.ENTITY_INFO_TYPE);
+        entityInfoService.createEntityInfoByType(entityInfoType);
         return true;
     }
 
@@ -103,7 +92,7 @@ public class HumanEntityController implements EntityController {
                                          @RequestParam(value = "idEntityInfo") int idEntityInfo) {
         AppLog.userInfo(LOGGER_NAME, session, "Delete human entity info id - " + idEntityInfo);
         userService.checkPermission(session);
-        entityInfoService.deleteEntityInfoByTypeById(HumanEntityInfo.ENTITY_INFO_TYPE, idEntityInfo);
+        entityInfoService.deleteEntityInfoByTypeById(entityInfoType, idEntityInfo);
         return true;
     }
 
@@ -120,7 +109,7 @@ public class HumanEntityController implements EntityController {
         HumanEntityInfo humanEntityInfo = ClassTypeUtil.getCheckedClass(entityInfo, HumanEntityInfo.class);
         humanEntityInfo.setReasonablePriceInCent(reasonablePriceInCent);
         humanEntityInfo.setDelayTimeToRemoveMs(delayTimeToRemoveMs);
-        entityInfoService.updateEntityInfoByTypeById(HumanEntityInfo.ENTITY_INFO_TYPE, humanEntityInfo);
+        entityInfoService.updateEntityInfoByTypeById(entityInfoType, humanEntityInfo);
         return true;
     }
 }

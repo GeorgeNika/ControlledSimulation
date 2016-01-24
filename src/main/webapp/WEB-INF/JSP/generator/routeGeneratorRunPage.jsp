@@ -38,7 +38,7 @@
     </div>
 </div>
 <div class="space5_div" id="info_string">
-    <span>Current time - <span id="currentTime">no info</span></span>
+    <span>Current time - <span id="currentTime">current time  -----  no info -----</span></span>
 </div>
 <div class="common_table">
     <table id="mainTable">

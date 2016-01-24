@@ -13,6 +13,8 @@ abstract public class AbstractGeneratorHistory implements GeneratorHistory {
     protected int idExperiment;
     protected int idGeneratorHistory;
     protected int idGenerator;
+    protected int createEntity;
+    protected int destroyEntity;
     protected String generatorName;
     protected String generatorType;
     protected String loggerName;
@@ -37,6 +39,15 @@ abstract public class AbstractGeneratorHistory implements GeneratorHistory {
     public void updateGeneratorHistory(Generator generator) {
 
         updateGeneratorHistoryExtraData(generator);
+    }
+
+    public void addEntity(int quantity){
+        createEntity += quantity;
+    }
+
+    @Override
+    public void destroyEntity(int quantity) {
+        destroyEntity += quantity;
     }
 
     @Override
@@ -98,5 +109,21 @@ abstract public class AbstractGeneratorHistory implements GeneratorHistory {
 
     public void setIdExperiment(int idExperiment) {
         this.idExperiment = idExperiment;
+    }
+
+    public int getCreateEntity() {
+        return createEntity;
+    }
+
+    public void setCreateEntity(int createEntity) {
+        this.createEntity = createEntity;
+    }
+
+    public int getDestroyEntity() {
+        return destroyEntity;
+    }
+
+    public void setDestroyEntity(int destroyEntity) {
+        this.destroyEntity = destroyEntity;
     }
 }

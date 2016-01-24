@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ua.george_nika.simulation.controller.light_ajax_info.generator.LightStationGeneratorRunningInfo;
+import ua.george_nika.simulation.controller.light_ajax_info.generator.LightStationGeneratorRunInfo;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
@@ -25,12 +25,11 @@ import ua.george_nika.simulation.controller.ControllerFactory;
 import ua.george_nika.simulation.controller.light_ajax_info.generator.LightHumanAppearInfo;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.RunningExperimentHolder;
+import ua.george_nika.simulation.util.SortUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
@@ -113,13 +112,7 @@ public class StationGeneratorController implements GeneratorExtraController {
         for (HumanAppearInfo loopInfo : stationService.getHumanAppearInfoList(idGenerator)) {
             resultInfoList.add(new LightHumanAppearInfo(loopInfo));
         }
-        //sort by start time
-        Collections.sort(resultInfoList, new Comparator<LightHumanAppearInfo>() {
-            @Override
-            public int compare(LightHumanAppearInfo o1, LightHumanAppearInfo o2) {
-                return Integer.compare(o1.getStartTimeMs(), o2.getStartTimeMs());
-            }
-        });
+        SortUtil.sortLightHumanAppearInfoList(resultInfoList);
         return resultInfoList;
     }
 
@@ -166,7 +159,8 @@ public class StationGeneratorController implements GeneratorExtraController {
                                        @RequestParam(value = "idHumanAppearInfo") int idHumanAppearInfo,
                                        @RequestParam(value = "startTimeMs") int startTimeMs,
                                        @RequestParam(value = "endTimeMs") int endTimeMs,
-                                       @RequestParam(value = "percent") double percent) {
+                                       @RequestParam(value = "percent") double percent,
+                                       @RequestParam(value = "variation") double variation) {
         AppLog.userInfo(LOGGER_NAME, session, "Edit human appear info id - " + idHumanAppearInfo +
                 " for generator id - " + idGenerator);
         userService.checkPermission(session);
@@ -175,6 +169,7 @@ public class StationGeneratorController implements GeneratorExtraController {
         humanAppearInfo.setStartTimeMs(startTimeMs);
         humanAppearInfo.setEndTimeMs(endTimeMs);
         humanAppearInfo.setPercent(percent);
+        humanAppearInfo.setVariation(variation);
 
         stationService.updateHumanAppearInfo(humanAppearInfo);
         return true;
@@ -182,13 +177,13 @@ public class StationGeneratorController implements GeneratorExtraController {
 
     @RequestMapping("/ajax/getStationGeneratorRunInfo")
     @ResponseBody
-    public LightStationGeneratorRunningInfo getStationGeneratorRunInfo(
+    public LightStationGeneratorRunInfo getStationGeneratorRunInfo(
             HttpServletRequest request, HttpSession session, Model model,
             @RequestParam(value = "idExperimentHistory") int idExperimentHistory,
             @RequestParam(value = "idGeneratorHistory") int idGeneratorHistory) {
 
         Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
         Generator generator = RunningExperimentHolder.getRunningGenerator(idExperimentHistory, idGeneratorHistory);
-        return new LightStationGeneratorRunningInfo(experiment, generator);
+        return new LightStationGeneratorRunInfo(experiment, generator);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Created by george on 26.11.2015.
@@ -14,10 +15,13 @@ public class HumanAppearInfo {
 
     protected int idHumanAppearInfo;
     protected int IdGenerator;
-    private int startTimeMs;
-    private int endTimeMs;
-    private double percent;
+    protected int startTimeMs;
+    protected int endTimeMs;
+    protected double percent;
+    protected double variation;
 
+    @XmlTransient
+    protected double currentVariationRatio;
 
     public HumanAppearInfo() {
     }
@@ -61,5 +65,21 @@ public class HumanAppearInfo {
 
     public void setPercent(double percent) {
         this.percent = percent;
+    }
+
+    public double getVariation() {
+        return variation;
+    }
+
+    public void setVariation(double variation) {
+        this.variation = variation;
+    }
+
+    public double getCurrentVariationRatio() {
+        return currentVariationRatio;
+    }
+
+    public void setCurrentVariationRatio(double currentVariationRatio) {
+        this.currentVariationRatio = currentVariationRatio;
     }
 }

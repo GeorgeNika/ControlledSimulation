@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightExperimentHistory;
+import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightOneRunningExperiment;
 import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightRunningExperiment;
+import ua.george_nika.simulation.dao.filter.ExperimentFilter;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.ExperimentFactory;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
@@ -25,6 +27,7 @@ import ua.george_nika.simulation.controller.light_ajax_info.experiment.LightExpe
 import ua.george_nika.simulation.controller.light_ajax_info.generator.LightGenerator;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.RunningExperimentHolder;
+import ua.george_nika.simulation.util.SortUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -107,17 +110,34 @@ public class ExperimentController {
         return resultLightExperimentList;
     }
 
-    @RequestMapping("/ajax/getExperimentHistoryList")
+    @RequestMapping("/ajax/getExperimentHistoryListByFilter")
     @ResponseBody
-    public List<LightExperimentHistory> getExperimentHistoryList(HttpServletRequest request, HttpSession session,
-                                                                 Model model) {
-        AppLog.userInfo(LOGGER_NAME, session, "Get experiment history list");
-        List<ExperimentHistory> tempExperimentHistoryList = experimentHistoryService.getAllLazyExperimentHistory();
+    public List<LightExperimentHistory> getExperimentHistoryListByFilter(
+            HttpServletRequest request, HttpSession session, Model model,
+            @RequestParam(value = "filterIdExperiment") int filterIdExperiment,
+            @RequestParam(value = "filterIdExperimentHistory") int filterIdExperimentHistory) {
+        AppLog.userInfo(LOGGER_NAME, session, "Get experiment history list by filter");
+        ExperimentFilter experimentFilter = new ExperimentFilter();
+        experimentFilter.setIdExperiment(filterIdExperiment);
+        experimentFilter.setIdExperimentHistory(filterIdExperimentHistory);
+        List<ExperimentHistory> tempExperimentHistoryList
+                = experimentHistoryService.getLazyExperimentHistoryListByFilter(experimentFilter);
         List<LightExperimentHistory> resultLightExperimentHistoryList = new ArrayList<>();
         for (ExperimentHistory loopExperimentHistory : tempExperimentHistoryList) {
             resultLightExperimentHistoryList.add(new LightExperimentHistory(loopExperimentHistory));
         }
         return resultLightExperimentHistoryList;
+    }
+
+    @RequestMapping("/ajax/deleteExperimentHistory")
+    @ResponseBody
+    public boolean deleteExperimentHistory(HttpServletRequest request, HttpSession session, Model model,
+                                           @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
+
+        AppLog.userInfo(LOGGER_NAME, session, "Delete experiment history id - " + idExperimentHistory);
+        userService.checkPermission(session);
+        experimentHistoryService.deleteExperimentHistoryById(idExperimentHistory);
+        return true;
     }
 
     @RequestMapping("/ajax/getExperimentTypeList")
@@ -190,16 +210,7 @@ public class ExperimentController {
         for (Generator loopGenerator : tempE.getGeneratorList()) {
             resultLightGeneratorList.add(new LightGenerator(loopGenerator));
         }
-        //sort by generator type and name
-        Collections.sort(resultLightGeneratorList, new Comparator<LightGenerator>() {
-            @Override
-            public int compare(LightGenerator o1, LightGenerator o2) {
-                if (o1.getGeneratorType().equals(o2.getGeneratorType())) {
-                    return o1.getGeneratorName().compareTo(o2.getGeneratorName());
-                }
-                return o1.getGeneratorType().compareTo(o2.getGeneratorType());
-            }
-        });
+        SortUtil.sortLightGeneratorList(resultLightGeneratorList);
         return resultLightGeneratorList;
     }
 
@@ -266,17 +277,6 @@ public class ExperimentController {
         return "experiment/" + resultJSPPage;
     }
 
-    @RequestMapping("/ajax/runExperiment")
-    @ResponseBody
-    public boolean runExperiment(HttpServletRequest request, HttpSession session, Model model,
-                                 @RequestParam(value = "idExperiment") int idExperiment) {
-        AppLog.userInfo(LOGGER_NAME, session, "Start experiment id - " + idExperiment);
-        userService.checkPermission(session);
-        Experiment experiment = experimentService.getExperimentById(idExperiment);
-        experimentService.startExperiment(experiment);
-        return true;
-    }
-
     @RequestMapping("/ajax/getRunningExperimentList")
     @ResponseBody
     public List<LightRunningExperiment> getRunningExperimentList(HttpServletRequest request,
@@ -287,6 +287,27 @@ public class ExperimentController {
             resultList.add(new LightRunningExperiment(loopExp));
         }
         return resultList;
+    }
+
+    @RequestMapping("/ajax/getOneRunningExperiment")
+    @ResponseBody
+    public LightOneRunningExperiment getOneRunningExperiment(
+            HttpServletRequest request, HttpSession session, Model model,
+            @RequestParam(value = "idExperimentHistory") int idExperimentHistory) {
+
+        Experiment experiment = RunningExperimentHolder.getRunningExperiment(idExperimentHistory);
+        return new LightOneRunningExperiment(experiment);
+    }
+
+    @RequestMapping("/ajax/runExperiment")
+    @ResponseBody
+    public boolean runExperiment(HttpServletRequest request, HttpSession session, Model model,
+                                 @RequestParam(value = "idExperiment") int idExperiment) {
+        AppLog.userInfo(LOGGER_NAME, session, "Start experiment id - " + idExperiment);
+        userService.checkPermission(session);
+        Experiment experiment = experimentService.getExperimentById(idExperiment);
+        experimentService.startExperiment(experiment);
+        return true;
     }
 
     @RequestMapping("/ajax/stopExperiment")

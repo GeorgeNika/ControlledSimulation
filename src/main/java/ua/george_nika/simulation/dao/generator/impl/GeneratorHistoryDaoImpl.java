@@ -20,7 +20,7 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
 
     private static final String TABLE_NAME = "generator_history";
     private static final String ID_NAME = "id_generator_history";
-    private static final int QUANTITY_OF_FIELDS = 6;
+    private static final int QUANTITY_OF_FIELDS = 8;
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = GeneratorDaoImpl.class.getSimpleName();
@@ -46,6 +46,12 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
 
         fieldTypeInTable.add(TypeOfFiled.STRING);
         fieldNameInTable.add("generator_type");
+
+        fieldTypeInTable.add(TypeOfFiled.INT);
+        fieldNameInTable.add("create_entity_count");
+
+        fieldTypeInTable.add(TypeOfFiled.INT);
+        fieldNameInTable.add("destroy_entity_count");
     }
 
     protected String getTableName() {
@@ -77,6 +83,8 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
         result.setIdExperiment((Integer) dataList.get(3));
         result.setGeneratorName(dataList.get(4) == null ? "" : (String) dataList.get(4));
         result.setGeneratorType(dataList.get(5) == null ? "" : (String) dataList.get(5));
+        result.setCreateEntity((Integer) dataList.get(6));
+        result.setDestroyEntity((Integer) dataList.get(7));
 
         return result;
     }
@@ -91,6 +99,8 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
         resultList.add(generatorHistory.getIdExperiment());
         resultList.add(generatorHistory.getGeneratorName());
         resultList.add(generatorHistory.getGeneratorType());
+        resultList.add(generatorHistory.getCreateEntity());
+        resultList.add(generatorHistory.getDestroyEntity());
 
         return resultList;
     }

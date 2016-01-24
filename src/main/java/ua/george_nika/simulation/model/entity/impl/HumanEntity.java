@@ -44,10 +44,6 @@ public class HumanEntity extends AbstractEntity {
         this.reasonablePriceInCent = humanEntityInfo.getReasonablePriceInCent();
     }
 
-    public EntityInfo getEntityInfo() {
-        return new HumanEntityInfo(delayTimeToRemoveMs, reasonablePriceInCent);
-    }
-
     public void initEntityAction(Generator generator, Object specialInfo, DateTime creationTime) {
         // we are not use super because we no need entityHistory
         // super.initEntityAction(generator, specialInfo, creationTime);
@@ -80,4 +76,11 @@ public class HumanEntity extends AbstractEntity {
         // do nothing because we no need entityHistory for human
     }
 
+    public int getReasonablePriceInCent() {
+        return reasonablePriceInCent;
+    }
+
+    public void setReasonablePriceInCent(int reasonablePriceInCent) {
+        this.reasonablePriceInCent = reasonablePriceInCent;
+    }
 }

@@ -16,9 +16,10 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 @Component
 public class RouteGeneratorHistory extends AbstractGeneratorHistory {
 
-    protected int createEntity;
     protected int processedEntity;
+    protected long totalAmount;
     protected int processedEntityFromDestroyedBus; // for save info when depend entity destroyed
+    protected long totalAmountFromDestroyedBus; // for save info when depend entity destroyed
 
 
     protected int currentEntityCount;
@@ -35,13 +36,16 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
         currentEntityCount = generator.getDependentEntityList().size();
         int tempCurrentCount = 0;
         int tempAllCount = 0;
+        long tempTotalAmount = 0;
         for (Entity loopEntity : generator.getDependentEntityList()) {
             BusHistory busHistory = ClassTypeUtil.getCheckedClass(loopEntity.getEntityHistory(), BusHistory.class);
             tempCurrentCount += busHistory.getCurrentEntityCount();
             tempAllCount += busHistory.getProcessedEntity();
+            tempTotalAmount += busHistory.getTotalAmount();
         }
         currentDependEntityCount = tempCurrentCount;
         processedEntity = tempAllCount + processedEntityFromDestroyedBus;
+        totalAmount = tempTotalAmount + totalAmountFromDestroyedBus;
     }
 
     @Override
@@ -50,24 +54,24 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
                 + " : dependent entity count - " + currentDependEntityCount;
     }
 
+    public void addHistoryAboutDestroyedEntity(Entity entity){
+        BusEntity busEntity = ClassTypeUtil.getCheckedClass(entity, BusEntity.class);
+        BusHistory busHistory = ClassTypeUtil.getCheckedClass(entity.getEntityHistory(), BusHistory.class);
+        processedEntityFromDestroyedBus += busHistory.getProcessedEntity();
+        totalAmountFromDestroyedBus = processedEntityFromDestroyedBus * busEntity.getPrice();
+    }
+
     @Override
     protected void setInitialGeneratorHistoryExtraData(Generator generator) {
         this.createEntity = 0;
         this.processedEntity = 0;
+        this.totalAmount = 0;
         this.processedEntityFromDestroyedBus = 0;
 
         this.currentEntityCount = 0;
         this.currentDependEntityCount = 0;
     }
 
-
-    public int getCreateEntity() {
-        return createEntity;
-    }
-
-    public void setCreateEntity(int createEntity) {
-        this.createEntity = createEntity;
-    }
 
     public int getProcessedEntity() {
         return processedEntity;
@@ -83,5 +87,37 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
 
     public void setProcessedEntityFromDestroyedBus(int processedEntityFromDestroyedBus) {
         this.processedEntityFromDestroyedBus = processedEntityFromDestroyedBus;
+    }
+
+    public long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public long getTotalAmountFromDestroyedBus() {
+        return totalAmountFromDestroyedBus;
+    }
+
+    public void setTotalAmountFromDestroyedBus(long totalAmountFromDestroyedBus) {
+        this.totalAmountFromDestroyedBus = totalAmountFromDestroyedBus;
+    }
+
+    public int getCurrentEntityCount() {
+        return currentEntityCount;
+    }
+
+    public void setCurrentEntityCount(int currentEntityCount) {
+        this.currentEntityCount = currentEntityCount;
+    }
+
+    public int getCurrentDependEntityCount() {
+        return currentDependEntityCount;
+    }
+
+    public void setCurrentDependEntityCount(int currentDependEntityCount) {
+        this.currentDependEntityCount = currentDependEntityCount;
     }
 }

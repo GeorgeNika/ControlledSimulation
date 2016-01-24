@@ -16,6 +16,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 public class BusHistory extends AbstractEntityHistory {
 
     protected int processedEntity;
+    protected long totalAmount;
+
     protected int currentEntityCount;
     protected String nextRelationGeneratorName;
     protected MutableDateTime nextRelationGeneratorTime;
@@ -29,6 +31,7 @@ public class BusHistory extends AbstractEntityHistory {
     protected void setInitialEntityHistoryExtraData(Generator generator, Entity entity) {
         this.processedEntity = 0;
         this.currentEntityCount = 0;
+        this.totalAmount = 0;
         this.nextRelationGeneratorName = "not set yet";
         BusEntity busEntity = ClassTypeUtil.getCheckedClass(entity, BusEntity.class);
         this.nextRelationGeneratorTime = new MutableDateTime(busEntity.getNextRelationTime());
@@ -38,6 +41,17 @@ public class BusHistory extends AbstractEntityHistory {
     protected void updateEntityHistoryExtraData(Entity entity) {
         BusEntity busEntity = ClassTypeUtil.getCheckedClass(entity, BusEntity.class);
         currentEntityCount = busEntity.getEntityList().size();
+    }
+
+    public void addEntityIntoHistory(Entity entity, int quantity){
+        BusEntity busEntity = ClassTypeUtil.getCheckedClass(entity, BusEntity.class);
+        processedEntity += quantity;
+        totalAmount = processedEntity * busEntity.price;
+    }
+
+    public void setNextRelationPoint(Generator generator, MutableDateTime nextTime){
+        nextRelationGeneratorName = generator.getGeneratorName();
+        nextRelationGeneratorTime = nextTime;
     }
 
     @Override
@@ -60,6 +74,14 @@ public class BusHistory extends AbstractEntityHistory {
 
     public void setCurrentEntityCount(int currentEntityCount) {
         this.currentEntityCount = currentEntityCount;
+    }
+
+    public long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(long totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public String getNextRelationGeneratorName() {

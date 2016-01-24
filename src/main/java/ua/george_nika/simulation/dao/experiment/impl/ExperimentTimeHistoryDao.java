@@ -24,7 +24,7 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
 
     private static final String TABLE_NAME = "experiment_time_history";
     private static final String ID_NAME = "id_experiment_history";
-    private static final int QUANTITY_OF_FIELDS = 4;
+    private static final int QUANTITY_OF_FIELDS = 6;
 
 
     private static String LOGGER_NAME = AppLog.DAO;
@@ -47,8 +47,14 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
         fieldTypeInTable.add(TypeOfFiled.INT);
         fieldNameInTable.add("id_start_generator");
 
+        fieldTypeInTable.add(TypeOfFiled.STRING);
+        fieldNameInTable.add("start_generator_name");
+
         fieldTypeInTable.add(TypeOfFiled.INT);
         fieldNameInTable.add("id_end_generator");
+
+        fieldTypeInTable.add(TypeOfFiled.STRING);
+        fieldNameInTable.add("end_generator_name");
 
     }
 
@@ -80,7 +86,9 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
         timeExperimentHistory.setIdExperiment((Integer) dataList.get(0));
         timeExperimentHistory.setMinTimeMs((Long) dataList.get(1));
         timeExperimentHistory.setIdStartGenerator((Integer) dataList.get(2));
-        timeExperimentHistory.setIdEndGenerator((Integer) dataList.get(3));
+        timeExperimentHistory.setStartGeneratorName((String) dataList.get(3));
+        timeExperimentHistory.setIdEndGenerator((Integer) dataList.get(4));
+        timeExperimentHistory.setEndGeneratorName((String) dataList.get(5));
 
     }
 
@@ -93,7 +101,9 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
         resultList.add(timeExperimentHistory.getIdExperiment());
         resultList.add(timeExperimentHistory.getMinTimeMs());
         resultList.add(timeExperimentHistory.getIdStartGenerator());
+        resultList.add(timeExperimentHistory.getStartGeneratorName());
         resultList.add(timeExperimentHistory.getIdEndGenerator());
+        resultList.add(timeExperimentHistory.getEndGeneratorName());
 
         return resultList;
     }

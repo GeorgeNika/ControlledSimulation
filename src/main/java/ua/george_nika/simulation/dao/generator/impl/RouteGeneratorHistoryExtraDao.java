@@ -39,10 +39,10 @@ public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtra
         fieldNameInTable.add(ID_NAME);
 
         fieldTypeInTable.add(TypeOfFiled.INT);
-        fieldNameInTable.add("create_entity");
-
-        fieldTypeInTable.add(TypeOfFiled.INT);
         fieldNameInTable.add("processed_entity");
+
+        fieldTypeInTable.add(TypeOfFiled.LONG);
+        fieldNameInTable.add("total_amount");
 
     }
 
@@ -71,8 +71,8 @@ public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtra
                 ClassTypeUtil.getCheckedClass(generatorHistory, RouteGeneratorHistory.class);
 
         routeGeneratorHistory.setIdGeneratorHistory((Integer) dataList.get(0));
-        routeGeneratorHistory.setCreateEntity((Integer) dataList.get(1));
-        routeGeneratorHistory.setProcessedEntity((Integer) dataList.get(2));
+        routeGeneratorHistory.setProcessedEntity((Integer) dataList.get(1));
+        routeGeneratorHistory.setTotalAmount((Long) dataList.get(2));
     }
 
     @Override
@@ -82,8 +82,8 @@ public class RouteGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtra
                 ClassTypeUtil.getCheckedClass(generatorHistory, RouteGeneratorHistory.class);
 
         resultList.add(routeGeneratorHistory.getIdGeneratorHistory());
-        resultList.add(routeGeneratorHistory.getCreateEntity());
         resultList.add(routeGeneratorHistory.getProcessedEntity());
+        resultList.add(routeGeneratorHistory.getTotalAmount());
 
         return resultList;
     }

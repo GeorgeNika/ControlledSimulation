@@ -1,33 +1,39 @@
+/**
+ * Work`s with zip
+ */
+
 package ua.george_nika.simulation.util;
 
-import org.springframework.stereotype.Service;
+import ua.george_nika.simulation.util.error.ZipException;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * Created by george on 10.12.2015.
- */
 public class ZipUtil {
+    private static String LOGGER_NAME = AppLog.UTIL;
+    private static String CLASS_NAME = ZipUtil.class.getSimpleName();
 
-    public void someZip() {
-        try (ZipOutputStream zOut = new ZipOutputStream(new FileOutputStream("ZipTry.zip"))) {
-            ZipEntry zipEntry = new ZipEntry("george/ua/ZipTry.java");
+    public static String createZipFile(String pathName, String fileName) {
+        String newFileName = fileName+".zip";
+        String newFullFileName = pathName+newFileName;
+        try (ZipOutputStream zOut = new ZipOutputStream(new FileOutputStream(newFullFileName))) {
+            ZipEntry zipEntry = new ZipEntry(fileName);
             zOut.putNextEntry(zipEntry);
-//            try (FileInputStream in = new FileInputStream("Test.txt")) {
-//                byte[] bytes = new byte[1024];
-//                int length;
-//                while ((length = in.read(bytes)) >= 0) {
-//                    zOut.write(bytes, 0, length);
-//                }
-//            }
-            String s= "hdssssssssssssssssssssssssssssss";
-            zOut.write(s.getBytes(), 0,s.length());
+            try (FileInputStream in = new FileInputStream(pathName+fileName)) {
+                byte[] bytes = new byte[1024];
+                int length;
+                while ((length = in.read(bytes)) >= 0) {
+                    zOut.write(bytes, 0, length);
+                }
+            }
             zOut.closeEntry();
         } catch (IOException e) {
-            e.printStackTrace();
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error. Can not zip file - " + pathName + fileName, e);
+            throw new ZipException("Error. Can not zip file - " + pathName + fileName, e);
         }
+        return newFileName;
     }
 }

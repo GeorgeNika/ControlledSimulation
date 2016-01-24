@@ -13,7 +13,7 @@
 <div class="full_line_header">
     <div class="left10_div">
         <img src="${context}/resources/images/button_back.png" alt="back" class="round_button"
-             onclick="window.location.href='${context}/experimentMainHistoryPage'">
+             onclick="window.location.href='${context}/generatorMainHistoryPage'">
     </div>
     <div class="center80_div" id="info_header">
         <span> ${generatorHistory.idExperimentHistory} -

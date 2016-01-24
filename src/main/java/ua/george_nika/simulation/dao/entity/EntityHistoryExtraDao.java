@@ -7,7 +7,7 @@ import ua.george_nika.simulation.model.entity.EntityHistory;
  */
 public interface EntityHistoryExtraDao {
 
-    int createNewEntityHistoryExtraRecordAndGetId();
+    void createNewEntityHistoryExtraRecordById(int idEntityHistory);
 
     void saveEntityHistoryExtraData(EntityHistory entityHistory);
 

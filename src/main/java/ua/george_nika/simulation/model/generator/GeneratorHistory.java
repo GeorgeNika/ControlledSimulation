@@ -1,6 +1,5 @@
 package ua.george_nika.simulation.model.generator;
 
-import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 
 /**
@@ -16,33 +15,44 @@ public interface GeneratorHistory {
 
     String getLogIdentifyMessage();
 
+    void addEntity(int quantity);
+
+    void destroyEntity(int quantity);
 
 
-    public int getIdGeneratorHistory() ;
+    public int getIdGeneratorHistory();
 
-    public void setIdGeneratorHistory(int idGeneratorHistory) ;
+    public void setIdGeneratorHistory(int idGeneratorHistory);
 
-    public int getIdGenerator() ;
+    public int getIdGenerator();
 
-    public void setIdGenerator(int idGenerator) ;
+    public void setIdGenerator(int idGenerator);
 
-    public int getIdExperimentHistory() ;
+    public int getIdExperimentHistory();
 
-    public void setIdExperimentHistory(int idExperimentHistory) ;
+    public void setIdExperimentHistory(int idExperimentHistory);
 
-    public int getIdExperiment() ;
+    public int getIdExperiment();
 
-    public void setIdExperiment(int idExperiment) ;
+    public void setIdExperiment(int idExperiment);
 
-    public String getGeneratorName() ;
+    public String getGeneratorName();
 
-    public void setGeneratorName(String generatorName) ;
+    public void setGeneratorName(String generatorName);
 
-    public String getGeneratorType() ;
+    public String getGeneratorType();
 
-    public void setGeneratorType(String generatorType) ;
+    public void setGeneratorType(String generatorType);
 
-    public String getLoggerName() ;
+    public String getLoggerName();
 
-    public void setLoggerName(String loggerName) ;
+    public void setLoggerName(String loggerName);
+
+    public int getCreateEntity();
+
+    public void setCreateEntity(int createEntity);
+
+    public int getDestroyEntity();
+
+    public void setDestroyEntity(int destroyEntity);
 }

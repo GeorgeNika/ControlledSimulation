@@ -6,6 +6,7 @@ import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
 import ua.george_nika.simulation.model.entity.impl.BusEntity;
+import ua.george_nika.simulation.model.entity.impl.HumanEntity;
 import ua.george_nika.simulation.model.entity.impl.HumanEntityInfo;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.*;
@@ -41,6 +42,19 @@ public class StationGenerator extends AbstractGenerator {
 
     public String getGeneratorType() {
         return GENERATOR_TYPE;
+    }
+
+    @Override
+    public void initAction(Experiment experiment) {
+        super.initAction(experiment);
+
+        // fill current variation for human appear info
+        for (HumanAppearInfo loopHAInfo : humanAppearInfoList) {
+            // fix current variation between  -variation and +variation
+            double currentVariation = loopHAInfo.getVariation() * (2 * Math.random() - 1);
+
+            loopHAInfo.setCurrentVariationRatio((100 + currentVariation) / 100);
+        }
     }
 
     public void afterInitAction(Experiment experiment) {
@@ -103,9 +117,7 @@ public class StationGenerator extends AbstractGenerator {
             tempEntity.initEntityAction(this, null, currentTime.toDateTime());
             dependentEntityList.add(tempEntity);
         }
-        StationGeneratorHistory stationGeneratorHistory =
-                ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
-        stationGeneratorHistory.setCreateEntity(stationGeneratorHistory.getCreateEntity() + quantityNewEntity);
+        generatorHistory.addEntity(quantityNewEntity);
     }
 
     public void executeDependentAction(MutableDateTime newCurrentTime) {
@@ -122,14 +134,14 @@ public class StationGenerator extends AbstractGenerator {
         while (tempIterator.hasNext()) {
             tempEntity = tempIterator.next();
             if (tempEntity.isNeedRemove()) {
+                tempEntity.updateEntityHistory();
+                tempEntity.saveEntityHistory();
                 tempIterator.remove();
                 tempDestroyCount++;
             }
         }
         if (tempDestroyCount > 0) {
-            StationGeneratorHistory stationGeneratorHistory =
-                    ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
-            stationGeneratorHistory.setDestroyEntity(stationGeneratorHistory.getDestroyEntity() + tempDestroyCount);
+            generatorHistory.destroyEntity(tempDestroyCount);
             AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                     + "destroy " + getEntityType() + ". Quantity - " + tempDestroyCount);
         }
@@ -144,7 +156,7 @@ public class StationGenerator extends AbstractGenerator {
             try {
                 tempHumanAppearInfo = getHumanAppearInfo(tempCurrentTime);
                 tempInterval = new Interval(tempCurrentTime, getNextTime(tempHumanAppearInfo, newCurrentTime));
-                result += getQuantityOfNewEntityForInterval(tempHumanAppearInfo, tempInterval);
+                result += getNewEntityQuantityForInterval(tempHumanAppearInfo, tempInterval);
                 tempCurrentTime.add(tempInterval.toDuration());
             } catch (EmptyHumanAppearInfoException e) {
                 try {
@@ -196,14 +208,15 @@ public class StationGenerator extends AbstractGenerator {
         }
     }
 
-    protected int getQuantityOfNewEntityForInterval(HumanAppearInfo intervalInfo, Interval newInterval) {
-        int result;
-        long fullIntervalDuration = intervalInfo.getEndTimeMs() - intervalInfo.getStartTimeMs();
-        long smallIntervalDuration = newInterval.toDurationMillis();
+    protected int getNewEntityQuantityForInterval(HumanAppearInfo intervalInfo, Interval newInterval) {
+        double fullIntervalDuration = intervalInfo.getEndTimeMs() - intervalInfo.getStartTimeMs();
+        double smallIntervalDuration = newInterval.toDurationMillis();
+        double percentOfSmallInterval = (smallIntervalDuration * 100) / fullIntervalDuration;
 
-        double percentOfCurrentPeriod = ((double) smallIntervalDuration) / fullIntervalDuration * 100;
-        double quantityEntityForCurrentInterval = intervalInfo.getPercent() * entityQuantity / 100;
-        result = (int) Math.round(quantityEntityForCurrentInterval * percentOfCurrentPeriod / 100);
+        double entityQuantityForFullInterval = intervalInfo.getPercent() * entityQuantity
+                * intervalInfo.getCurrentVariationRatio() / 100;
+
+        int result = (int) Math.round(entityQuantityForFullInterval * percentOfSmallInterval / 100);
         return result;
     }
 
@@ -236,7 +249,7 @@ public class StationGenerator extends AbstractGenerator {
 
         StationGeneratorHistory stationGeneratorHistory =
                 ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
-        stationGeneratorHistory.setSendEntity(stationGeneratorHistory.getSendEntity() + resultSendEntityList.size());
+        stationGeneratorHistory.sendEntity(resultSendEntityList.size());
         AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                 + " send " + getEntityType() + " to " + recipientEntity.getEntityType()
                 + " with " + recipientEntity.getEntityHistory().getLogIdentifyMessage()
@@ -250,9 +263,8 @@ public class StationGenerator extends AbstractGenerator {
         int busPrice = busEntity.getPrice();
         if (nextRelationGeneratorSet.contains(
                 checkedEntity.getNextRelationGeneratorData().getRelatedGenerator())) {
-            HumanEntityInfo humanEntityInfo =
-                    ClassTypeUtil.getCheckedClass(checkedEntity.getEntityInfo(), HumanEntityInfo.class);
-            if (busPrice <= humanEntityInfo.getReasonablePriceInCent()) {
+            HumanEntity humanEntity = ClassTypeUtil.getCheckedClass(checkedEntity, HumanEntity.class);
+            if (busPrice <= humanEntity.getReasonablePriceInCent()) {
                 return true;
             }
             return false;
@@ -265,7 +277,7 @@ public class StationGenerator extends AbstractGenerator {
     public void receiveEntityListFromEntity(List<Entity> entityList, Entity donorEntity) {
         StationGeneratorHistory stationGeneratorHistory =
                 ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
-        stationGeneratorHistory.setReceiveEntity(stationGeneratorHistory.getReceiveEntity() + entityList.size());
+        stationGeneratorHistory.receiveEntity(entityList.size());
         AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                 + " receive " + getEntityType() + " from " + donorEntity.getEntityType()
                 + " with " + donorEntity.getEntityHistory().getLogIdentifyMessage()

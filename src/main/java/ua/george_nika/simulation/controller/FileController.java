@@ -51,7 +51,7 @@ public class FileController {
         ExperimentHistory expHistory = experimentHistoryService.getLazyExperimentHistoryById(idExperimentHistory);
         AppLog.userInfo(LOGGER_NAME, session, "Download Xml file " + expHistory.getXmlFile()
                 + " from experiment with history id - " + idExperimentHistory);
-        downloadFile(request, session, response, AppConst.XML_PATH, expHistory.getXmlFile());
+        downloadFile(request, session, response, AppConst.getPathXml(), expHistory.getXmlFile());
     }
 
     @RequestMapping("/downloadLogFile/{idExperimentHistory}")
@@ -60,7 +60,7 @@ public class FileController {
         ExperimentHistory expHistory =   experimentHistoryService.getLazyExperimentHistoryById(idExperimentHistory);
         AppLog.userInfo(LOGGER_NAME, session, "Download Log file " + expHistory.getLogFile()
                 + " from experiment with history id - " + idExperimentHistory);
-        downloadFile(request, session, response, AppConst.LOG_PATH, expHistory.getLogFile());
+        downloadFile(request, session, response, AppConst.getPathLog(), expHistory.getLogFile());
     }
 
     // put file in response

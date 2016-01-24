@@ -15,13 +15,13 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 
-public class LightRouteGeneratorRunningInfo {
+public class LightRouteGeneratorRunInfo {
 
     private List<LightEntityRunInfo> entityRunInfoList = new ArrayList<>();
     private String currentDateTime;
     private boolean paused;
 
-    public LightRouteGeneratorRunningInfo(Experiment experiment, Generator generator) {
+    public LightRouteGeneratorRunInfo(Experiment experiment, Generator generator) {
         this.currentDateTime = TimeToStringUtil.getSafeString(experiment.getCurrentTime());
         this.paused = experiment.getPaused().get();
         for (Entity loopEntity : generator.getDependentEntityList()) {

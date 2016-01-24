@@ -22,7 +22,7 @@ public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExt
 
     protected static final String TABLE_NAME = "gen_station_history";
     protected static final String ID_NAME = "id_generator_history";
-    protected static final int QUANTITY_OF_FIELDS = 5;
+    protected static final int QUANTITY_OF_FIELDS = 3;
 
 
     private static String LOGGER_NAME = AppLog.DAO;
@@ -41,16 +41,10 @@ public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExt
         fieldNameInTable.add(ID_NAME);
 
         fieldTypeInTable.add(TypeOfFiled.INT);
-        fieldNameInTable.add("create_count");
-
-        fieldTypeInTable.add(TypeOfFiled.INT);
         fieldNameInTable.add("send_count");
 
         fieldTypeInTable.add(TypeOfFiled.INT);
         fieldNameInTable.add("receive_count");
-
-        fieldTypeInTable.add(TypeOfFiled.INT);
-        fieldNameInTable.add("destroy_count");
     }
 
     protected String getTableName() {
@@ -78,10 +72,8 @@ public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExt
                 ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
 
         stationGeneratorHistory.setIdGeneratorHistory((Integer) dataList.get(0));
-        stationGeneratorHistory.setCreateEntity((Integer) dataList.get(1));
-        stationGeneratorHistory.setSendEntity((Integer) dataList.get(2));
-        stationGeneratorHistory.setReceiveEntity((Integer) dataList.get(3));
-        stationGeneratorHistory.setDestroyEntity((Integer) dataList.get(4));
+        stationGeneratorHistory.setSendEntity((Integer) dataList.get(1));
+        stationGeneratorHistory.setReceiveEntity((Integer) dataList.get(2));
     }
 
     @Override
@@ -91,10 +83,8 @@ public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExt
                 ClassTypeUtil.getCheckedClass(generatorHistory, StationGeneratorHistory.class);
 
         resultList.add(stationGeneratorHistory.getIdGeneratorHistory());
-        resultList.add(stationGeneratorHistory.getCreateEntity());
         resultList.add(stationGeneratorHistory.getSendEntity());
         resultList.add(stationGeneratorHistory.getReceiveEntity());
-        resultList.add(stationGeneratorHistory.getDestroyEntity());
 
         return resultList;
     }

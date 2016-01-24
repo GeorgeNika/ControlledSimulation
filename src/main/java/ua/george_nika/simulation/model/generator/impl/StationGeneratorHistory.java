@@ -12,10 +12,8 @@ import ua.george_nika.simulation.model.generator.abstr.AbstractGeneratorHistory;
 @Component
 public class StationGeneratorHistory extends AbstractGeneratorHistory {
 
-    protected int createEntity;
     protected int sendEntity;
     protected int receiveEntity;
-    protected int destroyEntity;
 
     protected int currentEntityCount;
 
@@ -25,35 +23,33 @@ public class StationGeneratorHistory extends AbstractGeneratorHistory {
                 StationGeneratorHistory.class.getCanonicalName());
     }
 
-
-
     @Override
     protected void updateGeneratorHistoryExtraData(Generator generator) {
         currentEntityCount = generator.getDependentEntityList().size();
     }
 
+    public void sendEntity(int quantity){
+        sendEntity += quantity;
+    }
+
+    public void receiveEntity(int quantity){
+        receiveEntity += quantity;
+    }
     @Override
     public String getRunInfoString() {
-        return "current entity count - "+currentEntityCount;
+        return "current entity count - " + currentEntityCount;
     }
 
     @Override
     protected void setInitialGeneratorHistoryExtraData(Generator generator) {
         this.createEntity = 0;
-        this.sendEntity = 10;
-        this.receiveEntity = 10;
+        this.sendEntity = 0;
+        this.receiveEntity = 0;
         this.destroyEntity = 0;
 
-        this.currentEntityCount=0;
+        this.currentEntityCount = 0;
     }
 
-    public int getCreateEntity() {
-        return createEntity;
-    }
-
-    public void setCreateEntity(int createEntity) {
-        this.createEntity = createEntity;
-    }
 
     public int getSendEntity() {
         return sendEntity;
@@ -71,13 +67,6 @@ public class StationGeneratorHistory extends AbstractGeneratorHistory {
         this.receiveEntity = receiveEntity;
     }
 
-    public int getDestroyEntity() {
-        return destroyEntity;
-    }
-
-    public void setDestroyEntity(int destroyEntity) {
-        this.destroyEntity = destroyEntity;
-    }
 
     public int getCurrentEntityCount() {
         return currentEntityCount;

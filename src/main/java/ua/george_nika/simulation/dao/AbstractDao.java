@@ -2,6 +2,7 @@ package ua.george_nika.simulation.dao;
 
 import org.joda.time.DateTime;
 import ua.george_nika.simulation.dao.error.*;
+import ua.george_nika.simulation.dao.filter.DaoFilter;
 import ua.george_nika.simulation.util.AppLog;
 
 import java.sql.*;
@@ -13,11 +14,13 @@ import java.util.List;
  */
 abstract public class AbstractDao {
 
+    private static String LOGGER_NAME = AppLog.DAO;
+    private static String CLASS_NAME = AbstractDao.class.getSimpleName();
+
     protected List<TypeOfFiled> fieldTypeInTable = new ArrayList<>();
     protected List<String> fieldNameInTable = new ArrayList<>();
 
-    private static String LOGGER_NAME = AppLog.DAO;
-    private static String CLASS_NAME = AbstractDao.class.getSimpleName();
+
 
     abstract protected String getTableName();
 
@@ -51,7 +54,7 @@ abstract public class AbstractDao {
                     resultDataList.add(getDataFromResultSet(i, resultSet));
                 }
 
-            }else{
+            } else {
                 AppLog.error(LOGGER_NAME, CLASS_NAME, "no result in table " + getTableName() + " ; " +
                         "field - " + getIdName() + " ; value - " + id);
                 throw new NoResultDaoException("table - " + getTableName() + " ; " +
@@ -127,6 +130,64 @@ abstract public class AbstractDao {
         return resultDataListList;
     }
 
+    protected List<List<Object>> getRecordDataListByFilter(DaoFilter daoFilter) {
+        List<String> filterFieldNameList = new ArrayList<>();
+        List<Integer> filterFieldValueList = new ArrayList<>();
+        daoFilter.setFilterInfo(filterFieldNameList, filterFieldValueList);
+
+        StringBuilder tempSql = new StringBuilder();
+        tempSql.append("SELECT * FROM ").append(getTableName());
+        if (filterFieldNameList.size() > 0) {
+            tempSql.append(" WHERE ");
+        }
+        for (int i = 0; i < filterFieldNameList.size(); i++) {
+            tempSql.append(filterFieldNameList.get(i)).append(" = ").append(filterFieldValueList.get(i));
+            if (i < filterFieldNameList.size() - 1) {
+                tempSql.append(" and ");
+            }
+        }
+        tempSql.append(" ORDER BY ").append(getIdName()).append(" ;");
+        String sql = tempSql.toString();
+
+        List<List<Object>> resultDataListList = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pStatement = null;
+        ResultSet resultSet = null;
+        try {
+            conn = DaoFactory.getConnection();
+            pStatement = conn.prepareStatement(sql);
+            resultSet = pStatement.executeQuery();
+            List<Object> resultDataList;
+            while (resultSet.next()) {
+                resultDataList = new ArrayList<>();
+                // fields in jdbc starts from 1 instead 0
+                for (int i = 1; i <= getQuantityOfFields(); i++) {
+                    resultDataList.add(getDataFromResultSet(i, resultSet));
+                }
+                resultDataListList.add(resultDataList);
+            }
+        } catch (SQLException e) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (pStatement != null) {
+                    pStatement.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
+            }
+        }
+        return resultDataListList;
+    }
+
     protected List<List<Object>> getAllRecordDataListByIntField(String field, int value) {
         String sql = "SELECT * FROM " + getTableName() + " " +
                 "WHERE " + field + "=? " + " ORDER BY " + getIdName() + " ;";
@@ -150,7 +211,7 @@ abstract public class AbstractDao {
                 resultDataListList.add(resultDataList);
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;",e);
+            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
             throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
         } finally {
             try {

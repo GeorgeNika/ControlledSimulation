@@ -1,3 +1,10 @@
+/**
+ * Facade for log framework
+ *
+ * now in application use log4j2
+ *
+ */
+
 package ua.george_nika.simulation.util;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,9 +18,8 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by george on 02.12.2015.
- */
+@SuppressWarnings("unused")
+
 public class AppLog {
 
     private static String CLASS_NAME = AppLog.class.getSimpleName();
@@ -109,7 +115,8 @@ public class AppLog {
             throw new NoEmptyLoggerInPool("No empty Logger in Pool");
         }
         currentLoggerFileName.put(loggerName, getFileName(addInfo));
-        System.setProperty(loggerFileName.get(loggerName), AppConst.LOG_PATH + currentLoggerFileName.get(loggerName));
+        System.setProperty(loggerFileName.get(loggerName),
+                AppConst.getPathLog() + currentLoggerFileName.get(loggerName));
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         ctx.reconfigure();
         return loggerName;
@@ -127,8 +134,7 @@ public class AppLog {
     private static String getFileName(String addInfo) {
         final String DATE_TIME_FORMAT = "yyyy_MM_dd__HH_mm_ss";
         String dateTimeInfo = new DateTime().toString(DATE_TIME_FORMAT);
-        String fileName = "Log " + addInfo + " " + dateTimeInfo + ".txt";
-        return fileName;
+        return "Log " + addInfo + " " + dateTimeInfo + ".txt";
     }
 
     public static synchronized void freeLoggerName(String loggerName) {

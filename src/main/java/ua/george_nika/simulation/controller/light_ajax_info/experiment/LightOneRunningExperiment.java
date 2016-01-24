@@ -8,6 +8,7 @@ package ua.george_nika.simulation.controller.light_ajax_info.experiment;
 import ua.george_nika.simulation.controller.light_ajax_info.generator.LightGeneratorRunInfo;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.Generator;
+import ua.george_nika.simulation.util.SortUtil;
 import ua.george_nika.simulation.util.TimeToStringUtil;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class LightOneRunningExperiment {
         for (Generator loopGenerator : experiment.getGeneratorList()) {
             generatorRunInfoList.add(new LightGeneratorRunInfo(loopGenerator.getGeneratorHistory()));
         }
+        SortUtil.sortLightGeneratorRunInfoList(generatorRunInfoList);
     }
 
     public List<LightGeneratorRunInfo> getGeneratorRunInfoList() {

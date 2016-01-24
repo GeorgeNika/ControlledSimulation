@@ -1,10 +1,13 @@
+/**
+ * Returned inherited class or throw exception
+ */
+
 package ua.george_nika.simulation.util;
 
 import ua.george_nika.simulation.service.error.WrongTypeException;
 
-/**
- * Created by george on 14.01.2016.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 public class ClassTypeUtil {
 
     private static String LOGGER_NAME = AppLog.UTIL;

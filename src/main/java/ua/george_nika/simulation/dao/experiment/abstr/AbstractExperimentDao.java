@@ -1,5 +1,6 @@
 package ua.george_nika.simulation.dao.experiment.abstr;
 
+import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.AbstractDao;
 import ua.george_nika.simulation.dao.experiment.ExperimentDao;
@@ -35,12 +36,12 @@ abstract public class AbstractExperimentDao extends AbstractDao implements Exper
 
     public int createEmptyExperimentByTypeAndGetNewId(String experimentType) {
         int resultId = createEmptyRecordWithOneFieldAndGetNewId(
-                AppConst.EXP_TYPE_IN_EXP_MAIN_TABLE, experimentType, TypeOfFiled.STRING);
+                DaoConst.EXP_TYPE_IN_EXP_MAIN_TABLE, experimentType, TypeOfFiled.STRING);
         return resultId;
     }
 
     public void changeExperimentType(int idExperiment, String newExperimentType) {
-        setValueToFieldById(AppConst.EXP_TYPE_IN_EXP_MAIN_TABLE, newExperimentType, TypeOfFiled.STRING, idExperiment);
+        setValueToFieldById(DaoConst.EXP_TYPE_IN_EXP_MAIN_TABLE, newExperimentType, TypeOfFiled.STRING, idExperiment);
     }
 
     public void updateLazyExperiment(Experiment experiment) {

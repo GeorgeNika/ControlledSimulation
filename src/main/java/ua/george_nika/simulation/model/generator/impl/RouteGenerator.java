@@ -72,10 +72,7 @@ public class RouteGenerator extends AbstractGenerator {
                 Entity tempEntity = EntityFactory.getEntityByType(getEntityType());
                 tempEntity.initEntityAction(this, loopInfo, experimentStartTime.plus(loopInfo.getStartTimeMs()));
                 dependentEntityList.add(tempEntity);
-
-                RouteGeneratorHistory routeGeneratorHistory = ClassTypeUtil.getCheckedClass(
-                        generatorHistory, RouteGeneratorHistory.class);
-                routeGeneratorHistory.setCreateEntity(routeGeneratorHistory.getCreateEntity() + 1);
+                generatorHistory.addEntity(1);
             }
         }
     }
@@ -91,19 +88,19 @@ public class RouteGenerator extends AbstractGenerator {
     protected void clearEntityList() {
         Iterator<Entity> tempIterator = dependentEntityList.iterator();
         Entity tempEntity;
-        int tempDestroyCount = 0;
         while (tempIterator.hasNext()) {
             tempEntity = tempIterator.next();
             if (tempEntity.isNeedRemove()) {
+                generatorHistory.destroyEntity(1);
                 BusHistory busHistory = ClassTypeUtil.getCheckedClass(tempEntity.getEntityHistory(), BusHistory.class);
                 RouteGeneratorHistory routeGeneratorHistory =
                         ClassTypeUtil.getCheckedClass(generatorHistory, RouteGeneratorHistory.class);
-                routeGeneratorHistory.setProcessedEntityFromDestroyedBus(
-                        routeGeneratorHistory.getProcessedEntityFromDestroyedBus() + busHistory.getProcessedEntity());
+                routeGeneratorHistory.addHistoryAboutDestroyedEntity(tempEntity);
+                tempEntity.updateEntityHistory();
+                tempEntity.saveEntityHistory();
                 tempIterator.remove();
-                tempDestroyCount++;
                 AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
-                        + "destroy " + getEntityType() + ". Quantity - " + tempDestroyCount);
+                        + "destroy " + getEntityType() + " - "+busHistory.getIdEntityHistory());
             }
         }
     }

@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
 public class SimpleExperimentController implements ExperimentExtraController {
     public static final String EXPERIMENT_SETUP_JSP_PAGE = "simpleExperimentSetupPage";
     public static final String EXPERIMENT_RUN_JSP_PAGE = "experimentCommonRunPage";
-    public static final String EXPERIMENT_HISTORY_JSP_PAGE = "simpleExperimentHistoryPage";
+    public static final String EXPERIMENT_HISTORY_JSP_PAGE = "experimentCommonHistoryPage";
 
     private static String experimentType = SimpleExperiment.EXPERIMENT_TYPE;
     private static String LOGGER_NAME = AppLog.CONTROLLER;

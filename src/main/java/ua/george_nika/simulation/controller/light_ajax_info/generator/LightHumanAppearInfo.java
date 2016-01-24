@@ -15,12 +15,14 @@ public class LightHumanAppearInfo {
     protected int startTimeMs;
     protected int endTimeMs;
     protected double percent;
+    protected double variation;
 
     public LightHumanAppearInfo(HumanAppearInfo humanAppearInfo) {
         this.idHumanAppearInfo = humanAppearInfo.getIdHumanAppearInfo();
         this.startTimeMs = humanAppearInfo.getStartTimeMs();
         this.endTimeMs = humanAppearInfo.getEndTimeMs();
         this.percent = humanAppearInfo.getPercent();
+        this.variation = humanAppearInfo.getVariation();
     }
 
 
@@ -54,5 +56,13 @@ public class LightHumanAppearInfo {
 
     public void setPercent(double percent) {
         this.percent = percent;
+    }
+
+    public double getVariation() {
+        return variation;
+    }
+
+    public void setVariation(double variation) {
+        this.variation = variation;
     }
 }

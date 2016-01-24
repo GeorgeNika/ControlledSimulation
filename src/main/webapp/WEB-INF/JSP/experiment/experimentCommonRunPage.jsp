@@ -43,7 +43,9 @@
             <td width="5%">id generator</td>
             <td width="10%">type</td>
             <td width="30%">Name</td>
-            <td width="50%">info</td>
+            <td width="10%">create entity</td>
+            <td width="10%">destroy entity</td>
+            <td width="30%">info</td>
         </tr>
     </table>
 </div>
@@ -120,6 +122,8 @@
                     + "<td>" + generatorList[ind].idGenerator + "</td>"
                     + "<td>" + generatorList[ind].generatorType + "</td>"
                     + "<td>" + generatorList[ind].generatorName + "</td>"
+                    + "<td>" + generatorList[ind].createEntity + "</td>"
+                    + "<td>" + generatorList[ind].destroyEntity + "</td>"
                     + "<td>" + generatorList[ind].infoString + "</td>"
                     + "</tr>"
             );
@@ -129,7 +133,7 @@
     }
     function getAjaxContent() {
         $.ajax({
-            url: '${context}/ajax/getGeneratorRunList',
+            url: '${context}/ajax/getOneRunningExperiment',
             type: 'POST',
             datatype: 'json',
             data: {idExperimentHistory: ${experimentHistory.idExperimentHistory}},

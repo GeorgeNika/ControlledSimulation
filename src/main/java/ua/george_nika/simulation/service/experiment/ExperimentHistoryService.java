@@ -4,12 +4,13 @@ import org.springframework.stereotype.Service;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.experiment.ExperimentHistoryDao;
 import ua.george_nika.simulation.dao.experiment.ExperimentHistoryExtraDao;
+import ua.george_nika.simulation.dao.filter.ExperimentFilter;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 import ua.george_nika.simulation.model.experiment.ExperimentHistoryFactory;
 import ua.george_nika.simulation.service.error.ExperimentHistoryException;
-import ua.george_nika.simulation.util.AppLog;
-import ua.george_nika.simulation.util.XmlUtil;
+import ua.george_nika.simulation.service.error.RunningHistoryException;
+import ua.george_nika.simulation.util.*;
 
 import java.util.List;
 
@@ -79,11 +80,14 @@ public class ExperimentHistoryService {
     public static void closeExperimentHistory(ExperimentHistory experimentHistory) {
         try {
             AppLog.freeLoggerName(experimentHistory.getLoggerName());
-            // todo ?in future?    zip  - xml and log file
+            String oldLogFileName = experimentHistory.getLogFile();
+            experimentHistory.setLogFile(ZipUtil.createZipFile(AppConst.getPathLog(), oldLogFileName));
+            saveExperimentHistory(experimentHistory);
+            FileUtil.deleteFile(AppConst.getPathLog(), oldLogFileName);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in saving data for experiment history id - " +
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in closing data for experiment history id - " +
                     experimentHistory.getIdExperimentHistory(), ex);
-            throw new ExperimentHistoryException("Error in saving data for experiment history id - " +
+            throw new ExperimentHistoryException("Error in closing data for experiment history id - " +
                     experimentHistory.getIdExperimentHistory());
         }
     }
@@ -126,6 +130,37 @@ public class ExperimentHistoryService {
         } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy experiment history", ex);
             throw new ExperimentHistoryException("Error in get all lazy experiment history");
+        }
+    }
+
+    public List<ExperimentHistory> getLazyExperimentHistoryListByFilter(ExperimentFilter experimentFilter) {
+        try {
+            List<ExperimentHistory> resultExperimentHistoryList;
+            ExperimentHistoryDao experimentHistoryDao = DaoFactory.getExperimentHistoryDao();
+            resultExperimentHistoryList = experimentHistoryDao.getLazyExperimentHistoryListByFilter(experimentFilter);
+            return resultExperimentHistoryList;
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy experiment history list by filter", ex);
+            throw new ExperimentHistoryException("Error in get lazy experiment history list by filter");
+        }
+    }
+
+    public void deleteExperimentHistoryById(int idExperimentHistory) {
+        try {
+            if (RunningExperimentHolder.isNotRunningExperiment(idExperimentHistory)) {
+                ExperimentHistory experimentHistory = getExperimentHistoryById(idExperimentHistory);
+                FileUtil.deleteFile(AppConst.getPathLog(),experimentHistory.getLogFile());
+                FileUtil.deleteFile(AppConst.getPathXml(),experimentHistory.getXmlFile());
+                ExperimentHistoryDao experimentHistoryDao = DaoFactory.getExperimentHistoryDao();
+                experimentHistoryDao.deleteExperimentHistoryById(idExperimentHistory);
+            } else {
+                throw new RunningHistoryException("Try delete running experiment history id - " + idExperimentHistory);
+            }
+        } catch (RuntimeException ex) {
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in delete experiment history by id - "
+                    + idExperimentHistory, ex);
+            throw new ExperimentHistoryException("Error in delete experiment history by id - "
+                    + idExperimentHistory);
         }
     }
 }

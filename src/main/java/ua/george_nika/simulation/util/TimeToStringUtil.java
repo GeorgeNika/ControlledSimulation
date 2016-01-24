@@ -1,5 +1,7 @@
 /**
- * used for return string with date and time if exist
+ * Returns string representation of date
+ * if date is null then will return empty string
+ *
  * after lecture  JavaDoc + UnitTest = Documentation
  */
 package ua.george_nika.simulation.util;
@@ -8,9 +10,6 @@ import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 
-/**
- * Created by george on 19.01.2016.
- */
 public class TimeToStringUtil {
 
     private TimeToStringUtil() {

@@ -16,6 +16,8 @@ public class LightGeneratorRunInfo {
     private String generatorName;
     private String generatorType;
     private String infoString;
+    protected int createEntity;
+    protected int destroyEntity;
 
     public LightGeneratorRunInfo(GeneratorHistory generatorHistory) {
         this.idGeneratorHistory = generatorHistory.getIdGeneratorHistory();
@@ -23,6 +25,8 @@ public class LightGeneratorRunInfo {
         this.generatorName = generatorHistory.getGeneratorName();
         this.generatorType = generatorHistory.getGeneratorType();
         this.infoString = generatorHistory.getRunInfoString();
+        this.createEntity = generatorHistory.getCreateEntity();
+        this.destroyEntity = generatorHistory.getDestroyEntity();
     }
 
     public int getIdGeneratorHistory() {
@@ -63,5 +67,21 @@ public class LightGeneratorRunInfo {
 
     public void setInfoString(String infoString) {
         this.infoString = infoString;
+    }
+
+    public int getCreateEntity() {
+        return createEntity;
+    }
+
+    public void setCreateEntity(int createEntity) {
+        this.createEntity = createEntity;
+    }
+
+    public int getDestroyEntity() {
+        return destroyEntity;
+    }
+
+    public void setDestroyEntity(int destroyEntity) {
+        this.destroyEntity = destroyEntity;
     }
 }

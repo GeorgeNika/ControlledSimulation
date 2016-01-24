@@ -24,9 +24,6 @@ public interface Experiment {
     String getExperimentType();
 
 
-
-
-
     public int getIdExperiment();
 
     public void setIdExperiment(int idExperiment);
@@ -63,16 +60,20 @@ public interface Experiment {
 
     public void setCurrentTime(MutableDateTime currentTime);
 
+    public AtomicBoolean getWorking();
+
+    public void setWorking(AtomicBoolean working);
+
     public AtomicBoolean getRunning();
 
     public void setRunning(AtomicBoolean running);
 
-    public AtomicBoolean getPaused() ;
+    public AtomicBoolean getPaused();
 
-    public void setPaused(AtomicBoolean paused) ;
+    public void setPaused(AtomicBoolean paused);
 
     public ExperimentHistory getExperimentHistory();
 
-    public void setExperimentHistory(ExperimentHistory experimentHistory) ;
+    public void setExperimentHistory(ExperimentHistory experimentHistory);
 
 }

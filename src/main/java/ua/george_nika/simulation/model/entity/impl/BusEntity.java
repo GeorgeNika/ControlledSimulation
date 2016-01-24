@@ -51,10 +51,6 @@ public class BusEntity extends AbstractEntity {
         return entityInfoType;
     }
 
-    public EntityInfo getEntityInfo() {
-        return new BusEntityInfo(capacity, price);
-    }
-
     public void initEntityAction(Generator generator, Object specialInfo, DateTime creationTime) {
         super.initEntityAction(generator, specialInfo, creationTime);
         setSpecialInfo(specialInfo);
@@ -146,7 +142,7 @@ public class BusEntity extends AbstractEntity {
         List<Entity> receiveList = currentRelatedGenerator.sendEntityListToEntity(this);
         entityList.addAll(receiveList);
         BusHistory busHistory = ClassTypeUtil.getCheckedClass(entityHistory, BusHistory.class);
-        busHistory.setProcessedEntity(busHistory.getProcessedEntity() + receiveList.size());
+        busHistory.addEntityIntoHistory(this, receiveList.size());
         logAboutReceiveEntity(currentRelatedGenerator, receiveList.size());
     }
 
@@ -219,8 +215,7 @@ public class BusEntity extends AbstractEntity {
         }
         Generator nextGenerator = relationGeneratorDataList.get(nextRelationPoint).getRelatedGenerator();
         BusHistory busHistory = ClassTypeUtil.getCheckedClass(entityHistory, BusHistory.class);
-        busHistory.setNextRelationGeneratorName(nextGenerator.getGeneratorName());
-        busHistory.setNextRelationGeneratorTime(new MutableDateTime(nextRelationTime));
+        busHistory.setNextRelationPoint(nextGenerator, new MutableDateTime(nextRelationTime));
         logAboutSetNextRelationPoint(nextGenerator);
     }
 

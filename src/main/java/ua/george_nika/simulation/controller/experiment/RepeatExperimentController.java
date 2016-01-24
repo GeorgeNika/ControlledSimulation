@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
 public class RepeatExperimentController implements ExperimentExtraController {
     public static final String EXPERIMENT_SETUP_JSP_PAGE = "repeatExperimentSetupPage";
     public static final String EXPERIMENT_RUN_JSP_PAGE = "experimentCommonRunPage";
-    public static final String EXPERIMENT_HISTORY_JSP_PAGE = "repeatExperimentHistoryPage";
+    public static final String EXPERIMENT_HISTORY_JSP_PAGE = "experimentCommonHistoryPage";
 
     private static final String experimentType = RepeatExperiment.EXPERIMENT_TYPE;
     private static String LOGGER_NAME = AppLog.CONTROLLER;
@@ -64,7 +64,8 @@ public class RepeatExperimentController implements ExperimentExtraController {
     @Override
     public void addExtraDataToSetupPage(HttpServletRequest request, HttpSession session, Model model,
                                         Experiment experiment) {
-        model.addAttribute("repeatExperimentExtraDataForm", new RepeatExperimentExtraDataForm((RepeatExperiment) experiment));
+        model.addAttribute("repeatExperimentExtraDataForm",
+                new RepeatExperimentExtraDataForm((RepeatExperiment) experiment));
     }
 
     @Override

@@ -2,6 +2,7 @@ package ua.george_nika.simulation.service.generator;
 
 import org.springframework.stereotype.Service;
 import ua.george_nika.simulation.dao.DaoFactory;
+import ua.george_nika.simulation.dao.filter.GeneratorFilter;
 import ua.george_nika.simulation.dao.generator.GeneratorHistoryDao;
 import ua.george_nika.simulation.dao.generator.GeneratorHistoryExtraDao;
 import ua.george_nika.simulation.model.experiment.Experiment;
@@ -109,19 +110,15 @@ public class GeneratorHistoryService {
         }
     }
 
-    public List<GeneratorHistory> getAllLazyGeneratorHistoryByExperiment(int idExperimentHistory) {
+    public List<GeneratorHistory> getLazyGeneratorHistoryListByFilter(GeneratorFilter generatorFilter) {
         try {
             List<GeneratorHistory> resultGeneratorHistoryList;
             GeneratorHistoryDao generatorHistoryDao = DaoFactory.getGeneratorHistoryDao();
-            resultGeneratorHistoryList = generatorHistoryDao.getAllLazyGeneratorHistoryByExperiment(idExperimentHistory);
+            resultGeneratorHistoryList = generatorHistoryDao.getLazyGeneratorHistoryListByFilter(generatorFilter);
             return resultGeneratorHistoryList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy generator history by "
-                    + "experiment history id - " + idExperimentHistory, ex);
-            throw new GeneratorHistoryException("Error in get all lazy generator history by "
-                    + "experiment history id - " + idExperimentHistory);
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy generator history list by filter", ex);
+            throw new GeneratorHistoryException("Error in get lazy generator history list by filter");
         }
     }
-
-
 }

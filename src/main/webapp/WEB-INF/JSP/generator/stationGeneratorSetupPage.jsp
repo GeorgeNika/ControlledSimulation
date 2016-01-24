@@ -156,7 +156,7 @@
         var tempId = $(data.target).parent().attr('id');
         var selectedType = tempId.substring(4, tempId.length);
         $('#overlay').click();
-        $('#idEntityInfo').val("");
+        $('#idEntityInfo').val("0");
         $('#entityType').val(selectedType);
     }
     function useObtainedDataForSelectEntityType(data) {

@@ -32,11 +32,6 @@ public class BusEntityInfo implements EntityInfo {
     public BusEntityInfo() {
     }
 
-    public BusEntityInfo(int capacity, int priceInCent) {
-        this.capacity = capacity;
-        this.priceInCent = priceInCent;
-    }
-
 
     public String getEntityInfoType() {
         return ENTITY_INFO_TYPE;

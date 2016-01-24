@@ -25,8 +25,7 @@ public class EntityBusHistoryDao extends AbstractEntityHistoryExtraDao {
 
     private static final String TABLE_NAME = "ent_bus_history";
     private static final String ID_NAME = "id_entity_history";
-    private static final int QUANTITY_OF_FIELDS = 2;
-
+    private static final int QUANTITY_OF_FIELDS = 3;
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = EntityBusHistoryDao.class.getSimpleName();
@@ -44,7 +43,10 @@ public class EntityBusHistoryDao extends AbstractEntityHistoryExtraDao {
         fieldNameInTable.add(ID_NAME);
 
         fieldTypeInTable.add(TypeOfFiled.INT);
-        fieldNameInTable.add("id_generator_history");
+        fieldNameInTable.add("processed_entity");
+
+        fieldTypeInTable.add(TypeOfFiled.LONG);
+        fieldNameInTable.add("total_amount");
 
     }
 
@@ -72,7 +74,8 @@ public class EntityBusHistoryDao extends AbstractEntityHistoryExtraDao {
 
         BusHistory busHistory = ClassTypeUtil.getCheckedClass(entityHistory, BusHistory.class);
         busHistory.setIdEntityHistory((Integer) dataList.get(0));
-        busHistory.setIdGeneratorHistory((Integer) dataList.get(1));
+        busHistory.setProcessedEntity((Integer) dataList.get(1));
+        busHistory.setTotalAmount((Long) dataList.get(2));
     }
 
     @Override
@@ -81,8 +84,11 @@ public class EntityBusHistoryDao extends AbstractEntityHistoryExtraDao {
         BusHistory busHistory = ClassTypeUtil.getCheckedClass(entityHistory, BusHistory.class);
 
         resultList.add(busHistory.getIdEntityHistory());
-        resultList.add(busHistory.getIdGeneratorHistory());
+        resultList.add(busHistory.getProcessedEntity());
+        resultList.add(busHistory.getTotalAmount());
+
 
         return resultList;
     }
 }
+

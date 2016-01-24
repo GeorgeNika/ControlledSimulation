@@ -47,6 +47,8 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
     @XmlTransient
     protected volatile MutableDateTime currentTime;
     @XmlTransient
+    protected volatile AtomicBoolean working = new AtomicBoolean();
+    @XmlTransient
     protected volatile AtomicBoolean running = new AtomicBoolean();
     @XmlTransient
     protected volatile AtomicBoolean paused = new AtomicBoolean();
@@ -68,11 +70,12 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
     }
 
     protected void checkIsExperimentCorrect() {
-        // todo in future
+        // todo in future ??? check experiment for correct
     }
 
     protected void initExperimentWorkVariable() {
         currentTime = startTime.toMutableDateTime();
+        working.set(true);
         running.set(true);
         paused.set(false);
         experimentHistory = ExperimentHistoryService.getNewExperimentHistory(this);
@@ -134,10 +137,12 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
                             WaitThread.class.getCanonicalName(),
                             experimentHistory.getLogIdentifyMessage()
                                     + "Interrupt while waiting end of experiment ", e);
+                } finally {
+                    updateAllHistory();
+                    saveAllHistory();
+                    ExperimentHistoryService.closeExperimentHistory(experimentHistory);
+                    working.set(false);
                 }
-                updateAllHistory();
-                saveAllHistory();
-                ExperimentHistoryService.closeExperimentHistory(experimentHistory);
             }
         }
         new Thread(new WaitThread(workingThread)).start();
@@ -292,6 +297,14 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
 
     public void setCurrentTime(MutableDateTime currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public AtomicBoolean getWorking() {
+        return working;
+    }
+
+    public void setWorking(AtomicBoolean working) {
+        this.working = working;
     }
 
     public AtomicBoolean getRunning() {

@@ -38,13 +38,19 @@
     </div>
 </div>
 <div class="space5_div" id="info_string">
-    <span>Current time - <span id="currentTime">no info</span></span>
+    <span>Current time - <span id="currentTime">current time  -----  no info -----</span></span>
 </div>
 <div class="space5_div"></div>
 <div class="full_line_header">
     <div class="left10_div"> </div>
-    <div class="center80_div" id="entity_info_string">
-        <span id="entityInfo">no info</span>
+    <div class="center80_div" id="current_state_size">
+        <span id="current_state_string">no info</span>
+    </div>
+</div>
+<div class="full_line_header">
+    <div class="left10_div"> </div>
+    <div class="center80_div" id="global_state_size">
+        <span id="global_state_string">no info</span>
     </div>
 </div>
 <script src="${context}/resources/js/adaptive_size_v01.js"></script>
@@ -105,8 +111,9 @@
             $("#run_button").attr('hidden', true);
             $("#pause_button").attr('hidden', false);
         }
-        $("#mainTable").find("tr:gt(0)").remove();
-        $("#entityInfo").html(data.entityInfo);
+        $("#current_state_string").html(data.currentState);
+        $("#global_state_string").html(data.globalState);
+        adaptiveInfoString();
     }
     function getAjaxContent() {
         $.ajax({
@@ -123,12 +130,16 @@
             }
         });
     }
+    function adaptiveInfoString(){
+        $('#current_state_size').textfill({maxFontPixels: 70});
+        $('#global_state_size').textfill({maxFontPixels: 70});
+    }
     function adaptiveTextSize() {
         $('#general_header').textfill({maxFontPixels: 70});
         $('#run_header').textfill({maxFontPixels: 70});
         $('#info_header').textfill({maxFontPixels: 70});
         $('#info_string').textfill({maxFontPixels: 70});
-        $('#entity_info_string').textfill({maxFontPixels: 70});
+        adaptiveInfoString();
     }
     $(document).ready(function () {
         adaptiveTextSize();

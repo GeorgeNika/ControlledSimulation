@@ -35,7 +35,7 @@ abstract public class AbstractEntity implements Entity {
 
     @Override
     public void initEntityAction(Generator generator, Object specialInfo, DateTime creationTime) {
-        this.creationTime = generator.getExperimentStartTime();
+        this.creationTime = creationTime;
         this.relationGeneratorDataList = generator.getRelatedGeneratorDataList();
         setEntityInfo(generator.getEntityInfo());
 
@@ -87,5 +87,13 @@ abstract public class AbstractEntity implements Entity {
 
     public void setIdEntity(int idEntity) {
         this.idEntity = idEntity;
+    }
+
+    public DateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(DateTime creationTime) {
+        this.creationTime = creationTime;
     }
 }

@@ -1,5 +1,6 @@
 package ua.george_nika.simulation.model.entity;
 
+import org.joda.time.DateTime;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
 
@@ -17,7 +18,6 @@ public interface EntityHistory {
     String getLogIdentifyMessage();
 
 
-
     public int getIdEntityHistory();
 
     public void setIdEntityHistory(int idEntityHistory);
@@ -33,6 +33,18 @@ public interface EntityHistory {
     public int getIdGeneratorHistory();
 
     public void setIdGeneratorHistory(int idGeneratorHistory);
+
+    public int getIdExperiment();
+
+    public void setIdExperiment(int idExperiment);
+
+    public int getIdExperimentHistory();
+
+    public void setIdExperimentHistory(int idExperimentHistory);
+
+    public DateTime getCreateTime();
+
+    public void setCreateTime(DateTime createTime);
 
     public String getEntityType();
 

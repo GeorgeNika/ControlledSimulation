@@ -1,5 +1,6 @@
 package ua.george_nika.simulation.dao.generator;
 
+import ua.george_nika.simulation.dao.filter.GeneratorFilter;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface GeneratorHistoryDao {
 
     List<GeneratorHistory> getAllLazyGeneratorHistory();
 
-    List<GeneratorHistory> getAllLazyGeneratorHistoryByExperiment(int idExperimentHistory);
+    List<GeneratorHistory> getLazyGeneratorHistoryListByFilter(GeneratorFilter generatorFilter);
 
 }

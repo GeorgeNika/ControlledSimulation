@@ -4,7 +4,6 @@
     <link rel="shortcut icon" href="${context}/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${context}/resources/css/common_v01.css" type="text/css">
     <link rel="stylesheet" href="${context}/resources/css/common_table_v01.css" type="text/css">
-    <link rel="stylesheet" href="${context}/resources/css/common_modal_v01.css" type="text/css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
@@ -24,59 +23,11 @@
     </div>
     <div class="right33_div">
         <img src="${context}/resources/images/button_entity.png" alt="entity" class="round_button"
-             id="image_entity" onclick="chooseEntityType()">
+             id="image_entity" onclick="window.location.href='${context}/entityMainHistoryPage'">
     </div>
 </div>
-<div hidden>
-    <button id="start_small_modal_window"></button>
-</div>
-<div id="modal_form_small" hidden class="common_table" style="overflow: auto">
-    <table id="entitySelectTable">
-        <tr>
-            <td>
-                Entity Type
-            </td>
-        </tr>
-    </table>
-</div>
-<div id="overlay" hidden></div>
-<script src="${context}/resources/js/modal_window_v01.js"></script>
 <script src="${context}/resources/js/adaptive_size_v01.js"></script>
-
 <script>
-    function selectEntityType(data) {
-        var tempId = $(data.target).parent().attr('id');
-        var selectedType = tempId.substring(3, tempId.length);
-        $('#overlay').click();
-        window.location.href = '${context}/entityHistoryPage/' + selectedType;
-    }
-    function useObtainedDataForSelectEntityType(data) {
-        var entityList = data;
-        $("#entitySelectTable").find("tr:gt(0)").remove();
-        var index;
-        for (var ind in entityList) {
-            index = entityList[ind];
-            $('#entitySelectTable tr:last').after(""
-                    + "<tr id='idE" + index + "'>"
-                    + "<td>" + entityList[ind] + "</td>"
-                    + "</tr>"
-            );
-            $(document).off("click", "#idE" + index);
-            $(document).on("click", "#idE" + index, selectEntityType);
-        }
-        $('#start_small_modal_window').click();
-    }
-    function chooseEntityType() {
-        $.ajax({
-            url: '${context}/ajax/getEntityTypeList',
-            type: 'POST',
-            datatype: 'json',
-            data: {},
-            success: function (response) {
-                useObtainedDataForSelectEntityType(response);
-            }
-        });
-    }
     function adaptiveTextSize() {
         $('#general_header').textfill({maxFontPixels: 70});
         $('#history_header').textfill({maxFontPixels: 70});

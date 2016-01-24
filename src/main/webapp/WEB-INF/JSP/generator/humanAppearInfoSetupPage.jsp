@@ -33,9 +33,10 @@
     <table id="mainTable">
         <tr>
             <td width="10%">№ position</td>
-            <td width="30%">start time(ms)</td>
-            <td width="30%">end time(ms)</td>
-            <td width="20%">percent</td>
+            <td width="20%">start time(ms)</td>
+            <td width="20%">end time(ms)</td>
+            <td width="20%">percent of the total</td>
+            <td width="20%">variation(%)</td>
             <td width="5%">edit</td>
             <td width="5%">del</td>
         </tr>
@@ -79,7 +80,8 @@
                 idHumanAppearInfo: $("#idHumanAppearInfo").html(),
                 startTimeMs: $("#startTimeMs").val(),
                 endTimeMs: $("#endTimeMs").val(),
-                percent: $("#percent").val()
+                percent: $("#percent").val(),
+                variation: $("#variation").val()
             },
             success: function (response) {
                 if (response != true) {
@@ -108,6 +110,10 @@
                 + "<tr>"
                 + "<td> percent  </td> <td><input id='percent' type='number' min='0' value='"
                 + humanAppearInfo.percent + "'/></td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td> variation (%) </td> <td><input id='variation' type='number' min='0' value='"
+                + humanAppearInfo.variation + "'/></td>"
                 + "</tr>"
         );
         $('#start_big_modal_window').click();
@@ -158,7 +164,6 @@
     function useObtainedData(data) {
         $("#mainTable").find("tr:gt(0)").remove();
         var infoList = data;
-        var startTime, endTime;
         var index;
         for (var ind in infoList) {
             index = infoList[ind].idHumanAppearInfo;
@@ -168,6 +173,7 @@
                     + "<td>" + infoList[ind].startTimeMs + "</td>"
                     + "<td>" + infoList[ind].endTimeMs + "</td>"
                     + "<td>" + infoList[ind].percent + "</td>"
+                    + "<td>" + infoList[ind].variation + "</td>"
                     + "<td>" + "<img src='${context}/resources/images/button_ed.png' alt='edit' "
                     + "id='idE" + index + "'>" + "</td>"
                     + "<td>" + "<img src='${context}/resources/images/button_del.png' alt='delete' "

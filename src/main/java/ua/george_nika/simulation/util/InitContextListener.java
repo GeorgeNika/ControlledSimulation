@@ -1,3 +1,8 @@
+/**
+ * Set`s attribute "context"
+ * and also log when start or stop application
+ */
+
 package ua.george_nika.simulation.util;
 
 import javax.servlet.ServletContext;

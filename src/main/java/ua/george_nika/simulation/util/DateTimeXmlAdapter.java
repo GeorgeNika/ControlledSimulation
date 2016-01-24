@@ -1,12 +1,13 @@
+/**
+ * Use for JAXB xml convertation
+ */
+
 package ua.george_nika.simulation.util;
 
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-/**
- * Created by george on 13.12.2015.
- */
 public class DateTimeXmlAdapter  extends XmlAdapter<String, DateTime> {
 
 

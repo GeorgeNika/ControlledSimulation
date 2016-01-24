@@ -198,7 +198,7 @@ public class ExperimentService {
 
     public void continueExperiment(Experiment experiment) {
         try {
-            // todo in future.    We must Check about changes of experiment.
+            // todo in future.    We may Check about changes of experiment.
             experiment.continueExecution();
         } catch (RuntimeException ex) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in continue experiment id - " + experiment.getIdExperiment(), ex);

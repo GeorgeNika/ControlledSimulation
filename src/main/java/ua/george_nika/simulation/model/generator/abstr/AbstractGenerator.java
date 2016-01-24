@@ -66,6 +66,7 @@ abstract public class AbstractGenerator implements Generator {
     protected GeneratorHistory generatorHistory;
 
     public void initAction(Experiment experiment) {
+        dependentEntityList = new LinkedList<>();
         experimentStartTime = experiment.getStartTime();
         currentTime = experimentStartTime.toMutableDateTime();
         generatorHistory = GeneratorHistoryService.getNewGeneratorHistory(experiment, this);

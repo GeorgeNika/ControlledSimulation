@@ -1,6 +1,7 @@
 package ua.george_nika.simulation.dao.generator.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
+import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.generator.GeneratorDao;
 import ua.george_nika.simulation.dao.TypeOfFiled;
@@ -36,7 +37,7 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
 
     public int createdEmptyGeneratorByTypeAndGetNewId(String generatorType) {
         int resultId = createEmptyRecordWithOneFieldAndGetNewId(
-                AppConst.GEN_TYPE_IN_GEN_MAIN_TABLE, generatorType, TypeOfFiled.STRING);
+                DaoConst.GEN_TYPE_IN_GEN_MAIN_TABLE, generatorType, TypeOfFiled.STRING);
         return resultId;
     }
 

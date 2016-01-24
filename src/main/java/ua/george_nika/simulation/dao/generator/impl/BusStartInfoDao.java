@@ -1,6 +1,7 @@
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
+import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.AbstractDao;
 import ua.george_nika.simulation.model.generator.impl.BusStartInfo;
@@ -56,7 +57,7 @@ public class BusStartInfoDao extends AbstractDao {
     }
 
     public void createNewBusStartInfo(int idGenerator) {
-        createEmptyRecordWithOneFieldAndGetNewId(AppConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator, TypeOfFiled.INT);
+        createEmptyRecordWithOneFieldAndGetNewId(DaoConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator, TypeOfFiled.INT);
     }
 
     public void deleteBusStartInfo(int idBusStartInfo) {
@@ -71,7 +72,7 @@ public class BusStartInfoDao extends AbstractDao {
     public List<BusStartInfo> getAllBusStartInfoByGeneratorId(int idGenerator) {
         List<BusStartInfo> resultList = new ArrayList<>();
         List<List<Object>> resultDataListList = getAllRecordDataListByIntField(
-                AppConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator);
+                DaoConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator);
         for (List<Object> loopData : resultDataListList) {
             resultList.add(getBusStartInfoFromData(loopData));
         }

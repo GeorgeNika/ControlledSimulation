@@ -1,7 +1,9 @@
 package ua.george_nika.simulation.dao;
 
+import ua.george_nika.simulation.dao.entity.EntityHistoryDao;
 import ua.george_nika.simulation.dao.entity.EntityHistoryExtraDao;
 import ua.george_nika.simulation.dao.entity.EntityInfoExtraDao;
+import ua.george_nika.simulation.dao.entity.impl.EntityHistoryDaoImpl;
 import ua.george_nika.simulation.dao.error.ConnectionDaoException;
 import ua.george_nika.simulation.dao.error.GetDaoException;
 import ua.george_nika.simulation.dao.experiment.ExperimentExtraDao;
@@ -37,11 +39,15 @@ public class DaoFactory {
 
     private static DataSource dataSource;
 
-    private static final String JNDI_NAME = "java:/comp/env/jdbc/postgres/simulation";
-    private static String LOGGER_NAME = AppLog.DAO;
-    private static String CLASS_NAME = DaoFactory.class.getSimpleName();
+    private static final String LOGGER_NAME = AppLog.DAO;
+    private static final String CLASS_NAME = DaoFactory.class.getSimpleName();
 
-    static {
+    private DaoFactory() {
+    }
+
+    private static void setDataBaseConnection(String jndiName) {
+        // run from dispatcher-servlet.xml
+        String localJndiName = jndiName.replace(" ", "").replace("\n", "");
 
         InitialContext context;
         try {
@@ -52,14 +58,11 @@ public class DaoFactory {
         }
 
         try {
-            dataSource = (DataSource) context.lookup(JNDI_NAME);
+            dataSource = (DataSource) context.lookup(localJndiName);
         } catch (NamingException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Can't lookup " + JNDI_NAME, e);
-            throw new ConnectionDaoException("Can't lookup " + JNDI_NAME, e);
+            AppLog.error(LOGGER_NAME, CLASS_NAME, "Can't lookup " + jndiName, e);
+            throw new ConnectionDaoException("Can't lookup " + jndiName, e);
         }
-    }
-
-    private DaoFactory() {
     }
 
     public static void registerExperimentExtraClassInFactory(String type, String fullClassName) {
@@ -98,7 +101,7 @@ public class DaoFactory {
 
     public static ExperimentExtraDao getExperimentExtraDaoByType(String type) {
         try {
-            return  (ExperimentExtraDao) Class.forName(experimentExtraDaoClassMap.get(type)).newInstance();
+            return (ExperimentExtraDao) Class.forName(experimentExtraDaoClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Exception in get experiment extra dao. Type - " + type, e);
             throw new GetDaoException("Exception in get experiment extra dao. Type - " + type, e);
@@ -107,7 +110,7 @@ public class DaoFactory {
 
     public static GeneratorExtraDao getGeneratorExtraDaoByType(String type) {
         try {
-            return  (GeneratorExtraDao) Class.forName(generatorExtraDaoClassMap.get(type)).newInstance();
+            return (GeneratorExtraDao) Class.forName(generatorExtraDaoClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Exception in get generator extra dao. Type - " + type, e);
             throw new GetDaoException("Exception in get generator extra dao. Type - " + type, e);
@@ -123,17 +126,21 @@ public class DaoFactory {
         }
     }
 
-    public static ExperimentHistoryDao getExperimentHistoryDao(){
+    public static ExperimentHistoryDao getExperimentHistoryDao() {
         return new ExperimentHistoryDaoImpl();
     }
 
-    public static GeneratorHistoryDao getGeneratorHistoryDao(){
+    public static GeneratorHistoryDao getGeneratorHistoryDao() {
         return new GeneratorHistoryDaoImpl();
+    }
+
+    public static EntityHistoryDao getEntityHistoryDao() {
+        return new EntityHistoryDaoImpl();
     }
 
     public static ExperimentHistoryExtraDao getExperimentHistoryExtraDaoByType(String type) {
         try {
-            return  (ExperimentHistoryExtraDao) Class.forName(experimentHistoryExtraDaoClassMap.get(type)).newInstance();
+            return (ExperimentHistoryExtraDao) Class.forName(experimentHistoryExtraDaoClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Exception in get experiment history extra dao. Type - " + type, e);
             throw new GetDaoException("Exception in get experiment history extra dao. Type - " + type, e);
@@ -142,7 +149,7 @@ public class DaoFactory {
 
     public static GeneratorHistoryExtraDao getGeneratorHistoryExtraDaoByType(String type) {
         try {
-            return  (GeneratorHistoryExtraDao) Class.forName(generatorHistoryExtraDaoClassMap.get(type)).newInstance();
+            return (GeneratorHistoryExtraDao) Class.forName(generatorHistoryExtraDaoClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             AppLog.error(LOGGER_NAME, CLASS_NAME, "Exception in get generator history extra dao. Type - " + type, e);
             throw new GetDaoException("Exception in get generator history extra dao. Type - " + type, e);

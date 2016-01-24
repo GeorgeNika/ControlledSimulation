@@ -31,11 +31,6 @@ public class HumanEntityInfo implements EntityInfo {
     public HumanEntityInfo() {
     }
 
-    public HumanEntityInfo(int delayTimeToRemoveMs, int reasonablePrice) {
-        this.delayTimeToRemoveMs = delayTimeToRemoveMs;
-        this.reasonablePriceInCent = reasonablePrice;
-    }
-
 
     public String getEntityInfoType() {
         return ENTITY_INFO_TYPE;

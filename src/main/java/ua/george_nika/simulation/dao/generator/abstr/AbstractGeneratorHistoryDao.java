@@ -1,8 +1,11 @@
 package ua.george_nika.simulation.dao.generator.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
+import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.TypeOfFiled;
+import ua.george_nika.simulation.dao.filter.GeneratorFilter;
 import ua.george_nika.simulation.dao.generator.GeneratorHistoryDao;
+import ua.george_nika.simulation.model.generator.GeneratorFactory;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
 import ua.george_nika.simulation.util.AppConst;
 import ua.george_nika.simulation.util.AppLog;
@@ -23,7 +26,7 @@ abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements
     @Override
     public int createNewGeneratorHistoryRecord(GeneratorHistory generatorHistory) {
         int resultId = createEmptyRecordWithOneFieldAndGetNewId(
-                AppConst.GEN_TYPE_IN_GEN_HISTORY_MAIN_TABLE, generatorHistory.getGeneratorType(), TypeOfFiled.STRING);
+                DaoConst.GEN_TYPE_IN_GEN_HISTORY_MAIN_TABLE, generatorHistory.getGeneratorType(), TypeOfFiled.STRING);
         return resultId;
     }
 
@@ -50,16 +53,13 @@ abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements
         return resultGeneratorHistoryList;
     }
 
-    public List<GeneratorHistory> getAllLazyGeneratorHistoryByExperiment(int idExperimentHistory) {
+    public List<GeneratorHistory> getLazyGeneratorHistoryListByFilter(GeneratorFilter generatorFilter) {
         List<GeneratorHistory> resultGeneratorHistoryList = new ArrayList<>();
-        List<List<Object>> resultDataListList = getAllRecordDataList();
+        List<List<Object>> resultDataListList = getRecordDataListByFilter(generatorFilter);
         GeneratorHistory tempGeneratorHistory;
         for (List<Object> loopData : resultDataListList) {
             tempGeneratorHistory = getGeneratorHistoryFromData(loopData);
-            // todo in future  make normal method with pagination sort and filter
-            if (tempGeneratorHistory.getIdExperimentHistory() == idExperimentHistory) {
-                resultGeneratorHistoryList.add(tempGeneratorHistory);
-            }
+            resultGeneratorHistoryList.add(tempGeneratorHistory);
         }
         return resultGeneratorHistoryList;
     }

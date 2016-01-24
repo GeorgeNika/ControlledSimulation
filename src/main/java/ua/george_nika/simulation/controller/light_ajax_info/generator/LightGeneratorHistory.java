@@ -15,6 +15,8 @@ public class LightGeneratorHistory {
     protected int idExperiment;
     protected String generatorType;
     protected String generatorName;
+    protected int createEntity;
+    protected int destroyEntity;
 
     public LightGeneratorHistory(GeneratorHistory generatorHistory) {
         this.idGeneratorHistory = generatorHistory.getIdGeneratorHistory();
@@ -23,6 +25,8 @@ public class LightGeneratorHistory {
         this.idExperiment = generatorHistory.getIdExperiment();
         this.generatorType = generatorHistory.getGeneratorType();
         this.generatorName = generatorHistory.getGeneratorName();
+        this.createEntity = generatorHistory.getCreateEntity();
+        this.destroyEntity = generatorHistory.getDestroyEntity();
     }
 
     public int getIdGeneratorHistory() {
@@ -71,5 +75,21 @@ public class LightGeneratorHistory {
 
     public void setGeneratorName(String generatorName) {
         this.generatorName = generatorName;
+    }
+
+    public int getCreateEntity() {
+        return createEntity;
+    }
+
+    public void setCreateEntity(int createEntity) {
+        this.createEntity = createEntity;
+    }
+
+    public int getDestroyEntity() {
+        return destroyEntity;
+    }
+
+    public void setDestroyEntity(int destroyEntity) {
+        this.destroyEntity = destroyEntity;
     }
 }

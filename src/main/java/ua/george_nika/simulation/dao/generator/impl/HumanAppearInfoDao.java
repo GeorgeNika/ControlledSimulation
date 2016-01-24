@@ -1,6 +1,7 @@
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
+import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.AbstractDao;
 import ua.george_nika.simulation.model.generator.impl.HumanAppearInfo;
@@ -18,7 +19,7 @@ public class HumanAppearInfoDao extends AbstractDao {
 
     private static final String TABLE_NAME = "gen_human_appear_info";
     private static final String ID_NAME = "id_human_appear_info";
-    private static final int QUANTITY_OF_FIELDS = 5;
+    private static final int QUANTITY_OF_FIELDS = 6;
 
     public HumanAppearInfoDao() {
         fieldTypeInTable.clear();
@@ -38,6 +39,9 @@ public class HumanAppearInfoDao extends AbstractDao {
 
         fieldTypeInTable.add(TypeOfFiled.DOUBLE);
         fieldNameInTable.add("percent");
+
+        fieldTypeInTable.add(TypeOfFiled.DOUBLE);
+        fieldNameInTable.add("variation");
     }
 
 
@@ -54,7 +58,7 @@ public class HumanAppearInfoDao extends AbstractDao {
     }
 
     public void createHumanAppearInfo(int idGenerator) {
-        createEmptyRecordWithOneFieldAndGetNewId(AppConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator, TypeOfFiled.INT);
+        createEmptyRecordWithOneFieldAndGetNewId(DaoConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator, TypeOfFiled.INT);
     }
 
     public void deleteHumanAppearInfo(int idHumanAppearInfo) {
@@ -69,7 +73,7 @@ public class HumanAppearInfoDao extends AbstractDao {
     public List<HumanAppearInfo> getAllHumanAppearInfoByGeneratorId(int idGenerator) {
         List<HumanAppearInfo> resultList = new ArrayList<>();
         List<List<Object>> resultDataListList = getAllRecordDataListByIntField(
-                AppConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator);
+                DaoConst.GEN_ID_IN_GEN_EXTRA_DATA_TABLE, idGenerator);
         for (List<Object> loopData : resultDataListList) {
             resultList.add(getHumanAppearInfoFromData(loopData));
         }
@@ -83,6 +87,7 @@ public class HumanAppearInfoDao extends AbstractDao {
         resultHAInfo.setStartTimeMs((Integer) dataList.get(2));
         resultHAInfo.setEndTimeMs((Integer) dataList.get(3));
         resultHAInfo.setPercent((Double) dataList.get(4));
+        resultHAInfo.setVariation((Double) dataList.get(5));
         return resultHAInfo;
     }
 
@@ -93,6 +98,7 @@ public class HumanAppearInfoDao extends AbstractDao {
         resultList.add(humanAppearInfo.getStartTimeMs());
         resultList.add(humanAppearInfo.getEndTimeMs());
         resultList.add(humanAppearInfo.getPercent());
+        resultList.add(humanAppearInfo.getVariation());
         return resultList;
     }
 }
