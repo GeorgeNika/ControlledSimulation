@@ -1,3 +1,7 @@
+/**
+ * Base methods for work with entity history extra tables
+ */
+
 package ua.george_nika.simulation.dao.entity.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
@@ -6,9 +10,6 @@ import ua.george_nika.simulation.model.entity.EntityHistory;
 
 import java.util.List;
 
-/**
- * Created by george on 14.01.2016.
- */
 abstract public class AbstractEntityHistoryExtraDao extends AbstractDao implements EntityHistoryExtraDao {
 
 

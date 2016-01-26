@@ -1,3 +1,8 @@
+/**
+ * used for work with permissions
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +15,6 @@ import ua.george_nika.simulation.util.AppLog;
 
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by george on 30.12.2015.
- */
 @Service
 public class UserService {
 
@@ -24,14 +26,9 @@ public class UserService {
 
     public boolean loginAction(String userName, String password) {
         try {
-            if (userDao.isExist(userName, password)) {
-                return true;
-            } else {
-                return false;
-            }
+            return userDao.isExist(userName, password);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in login action", ex);
-            throw new LoginActionException("Error in login action");
+            throw new LoginActionException(LOGGER_NAME, CLASS_NAME, "Error in login action", ex);
         }
     }
 
@@ -41,13 +38,12 @@ public class UserService {
             if ((login == null) || (!(boolean) login)) {
                 throw new AccessDeniedException();
             }
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             if (ex instanceof AccessDeniedException) {
                 AppLog.userInfo(AppLog.CONTROLLER, session, "Try execute action without permission.");
                 throw new AccessDeniedException("Try execute action without permission.");
             } else {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in check permission", ex);
-                throw new LoginActionException("Error in check permission");
+                throw new LoginActionException(LOGGER_NAME, CLASS_NAME, "Error in check permission", ex);
             }
         }
     }

@@ -101,7 +101,7 @@
             data: {idExperiment: idExperiment},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -150,7 +150,7 @@
             data: {idExperimentHistory: id},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -167,7 +167,7 @@
             data: {idExperimentHistory: id},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -184,7 +184,7 @@
             data: {idExperimentHistory: id},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }

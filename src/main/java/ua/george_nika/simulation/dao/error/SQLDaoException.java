@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.dao.error;
 
-/**
- * Created by george on 06.12.2015.
- */
-public class SQLDaoException extends RuntimeException {
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class SQLDaoException extends NoUserFriendlyException {
     public SQLDaoException() {
     }
 
@@ -13,5 +14,9 @@ public class SQLDaoException extends RuntimeException {
 
     public SQLDaoException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public SQLDaoException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

@@ -1,8 +1,9 @@
+/**
+ * Here defined major fields in database
+ */
+
 package ua.george_nika.simulation.dao;
 
-/**
- * Created by george on 22.01.2016.
- */
 public interface DaoConst {
 
     String EXP_TYPE_IN_EXP_MAIN_TABLE = "experiment_type";
@@ -22,5 +23,6 @@ public interface DaoConst {
     String FIELD_FOR_ID_ENTITY_FILTER = "id_entity";
     String FIELD_FOR_ID_ENTITY_HISTORY_FILTER = "id_entity_history";
 
+    String FIELD_USER_PASSWORD_IN_USER_TABLE = "user_password";
 
 }

@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class DateTimeXmlAdapter  extends XmlAdapter<String, DateTime> {
+public class DateTimeXmlAdapter extends XmlAdapter<String, DateTime> {
 
 
     @Override

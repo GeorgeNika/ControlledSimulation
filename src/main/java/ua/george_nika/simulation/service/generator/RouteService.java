@@ -1,3 +1,8 @@
+/**
+ * Exclusive service for generator "Route"
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.service.generator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +13,11 @@ import ua.george_nika.simulation.model.generator.impl.BusStartInfo;
 import ua.george_nika.simulation.model.generator.impl.RouteGenerator;
 import ua.george_nika.simulation.service.error.GeneratorException;
 import ua.george_nika.simulation.service.error.WrongIdException;
-import ua.george_nika.simulation.service.error.WrongTypeException;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.List;
 
-/**
- * Created by george on 20.12.2015.
- */
 @Service
 public class RouteService {
 
@@ -35,9 +36,8 @@ public class RouteService {
             RouteGenerator routeGenerator = ClassTypeUtil.getCheckedClass(tempG, RouteGenerator.class);
             return routeGenerator.getBusStartInfoList();
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get bus start info list for generator id - " +
-                    idGenerator, ex);
-            throw new GeneratorException("Error in get bus start info list for generator id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get bus start info list for generator id - " + idGenerator, ex);
         }
     }
 
@@ -50,14 +50,11 @@ public class RouteService {
                     return loopInfo;
                 }
             }
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong id. Search bus start id -" + idBusStartInfo +
-                    ". Generator id -" + tempG.getIdGenerator());
-            throw new WrongIdException();
+            throw new WrongIdException(LOGGER_NAME, CLASS_NAME, "Wrong id. Search bus start id -" + idBusStartInfo +
+                    ". Generator id -" + tempG.getIdGenerator(), new RuntimeException());
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get bus start info id - " + idBusStartInfo +
-                    " for generator id - " + idGenerator, ex);
-            throw new GeneratorException("Error in get bus start info id - " + idBusStartInfo +
-                    " for generator id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME, "Error in get bus start info id - "
+                    + idBusStartInfo + " for generator id - " + idGenerator, ex);
         }
     }
 
@@ -65,10 +62,8 @@ public class RouteService {
         try {
             busStartInfoDao.createNewBusStartInfo(idGenerator);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in create new bus start info for generator id - " +
-                    idGenerator, ex);
-            throw new GeneratorException("Error in create new bus start info for generator id - " +
-                    idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in create new bus start info for generator id - " + idGenerator, ex);
         }
     }
 
@@ -76,8 +71,8 @@ public class RouteService {
         try {
             busStartInfoDao.deleteBusStartInfo(idBusStartInfo);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in delete bus start info id - " + idBusStartInfo, ex);
-            throw new GeneratorException("Error in delete bus start info id - " + idBusStartInfo);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in delete bus start info id - " + idBusStartInfo, ex);
         }
     }
 
@@ -85,10 +80,8 @@ public class RouteService {
         try {
             busStartInfoDao.updateBusStartInfo(busStartInfo);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in update bus start info id - " +
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME, "Error in update bus start info id - " +
                     busStartInfo.getIdBusStartInfo(), ex);
-            throw new GeneratorException("Error in update bus start info id - " +
-                    busStartInfo.getIdBusStartInfo());
         }
     }
 }

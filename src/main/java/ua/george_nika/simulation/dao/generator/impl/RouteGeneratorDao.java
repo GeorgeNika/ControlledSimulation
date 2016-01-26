@@ -1,9 +1,12 @@
+/**
+ * work`s with "route" generator table
+ * now it does not exist
+ */
+
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoFactory;
-import ua.george_nika.simulation.dao.generator.GeneratorExtraDao;
-import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.dao.generator.abstr.AbstractGeneratorExtraDao;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.impl.BusStartInfo;
@@ -13,9 +16,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.List;
 
-/**
- * Created by george on 29.12.2015.
- */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
 public class RouteGeneratorDao extends AbstractGeneratorExtraDao {
 

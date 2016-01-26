@@ -1,9 +1,12 @@
+/**
+ * work`s with generator history common table
+ */
+
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
-import ua.george_nika.simulation.dao.generator.GeneratorHistoryDao;
 import ua.george_nika.simulation.dao.generator.abstr.AbstractGeneratorHistoryDao;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
 import ua.george_nika.simulation.model.generator.GeneratorHistoryFactory;
@@ -12,9 +15,8 @@ import ua.george_nika.simulation.util.AppLog;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 11.01.2016.
- */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
 public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
 
@@ -23,7 +25,7 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
     private static final int QUANTITY_OF_FIELDS = 8;
 
     private static String LOGGER_NAME = AppLog.DAO;
-    private static String CLASS_NAME = GeneratorDaoImpl.class.getSimpleName();
+    private static String CLASS_NAME = GeneratorHistoryDaoImpl.class.getSimpleName();
 
     public GeneratorHistoryDaoImpl() {
         fieldTypeInTable.clear();
@@ -71,10 +73,8 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
         String type = (String) dataList.get(5);
         GeneratorHistory result = GeneratorHistoryFactory.getGeneratorHistoryByType(type);
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         result.setIdGeneratorHistory((Integer) dataList.get(0));
@@ -91,7 +91,7 @@ public class GeneratorHistoryDaoImpl extends AbstractGeneratorHistoryDao {
 
     @Override
     protected List<Object> getDataFromGeneratorHistory(GeneratorHistory generatorHistory) {
-        List<Object> resultList = new ArrayList<Object>();
+        List<Object> resultList = new ArrayList<>();
 
         resultList.add(generatorHistory.getIdGeneratorHistory());
         resultList.add(generatorHistory.getIdGenerator());

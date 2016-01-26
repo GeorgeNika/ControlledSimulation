@@ -1,3 +1,8 @@
+/**
+ * Common service for entity`s history
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.service.entity;
 
 import org.springframework.stereotype.Service;
@@ -10,14 +15,12 @@ import ua.george_nika.simulation.model.entity.EntityHistory;
 import ua.george_nika.simulation.model.entity.EntityHistoryFactory;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.service.error.EntityHistoryException;
-import ua.george_nika.simulation.service.error.GeneratorHistoryException;
 import ua.george_nika.simulation.util.AppLog;
 
 import java.util.List;
 
-/**
- * Created by george on 10.01.2016.
- */
+@SuppressWarnings("unused")
+
 @Service
 public class EntityHistoryService {
     private static String LOGGER_NAME = AppLog.SERVICE;
@@ -41,17 +44,16 @@ public class EntityHistoryService {
             //create record in extra history db
             EntityHistoryExtraDao entityHistoryExtraDao
                     = DaoFactory.getEntityHistoryExtraDaoByType(entityHistory.getEntityType());
-             entityHistoryExtraDao.createNewEntityHistoryExtraRecordById(idEntityHistory);
+            entityHistoryExtraDao.createNewEntityHistoryExtraRecordById(idEntityHistory);
 
             //first save in db
             saveEntityHistory(entityHistory);
 
             return entityHistory;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in creating entity history for generator id - " +
-                    generator.getIdGenerator() + " and entity type - " + entity.getEntityType(), ex);
-            throw new GeneratorHistoryException("Error in creating entity history for generator id - " +
-                    generator.getIdGenerator() + " and entity type - " + entity.getEntityType());
+            throw new EntityHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error in creating entity history for generator id - " +
+                            generator.getIdGenerator() + " and entity type - " + entity.getEntityType(), ex);
         }
     }
 
@@ -63,10 +65,8 @@ public class EntityHistoryService {
                     = DaoFactory.getEntityHistoryExtraDaoByType(entityHistory.getEntityType());
             entityHistoryExtraDao.saveEntityHistoryExtraData(entityHistory);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in saving data for entity history id - " +
-                    entityHistory.getIdEntityHistory(), ex);
-            throw new GeneratorHistoryException("Error in saving data for entity history id - " +
-                    entityHistory.getIdEntityHistory());
+            throw new EntityHistoryException(LOGGER_NAME, CLASS_NAME, "Error in saving data for entity history id - "
+                    + entityHistory.getIdEntityHistory(), ex);
         }
     }
 
@@ -78,10 +78,8 @@ public class EntityHistoryService {
             entityHistoryExtraDao.addExtraDataToEntityHistory(resultEntityHistory);
             return resultEntityHistory;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get entity history by id history - "
-                    + idEntityHistory, ex);
-            throw new EntityHistoryException("Error in get entity history by id history - "
-                    + idEntityHistory);
+            throw new EntityHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get entity history by id history - " + idEntityHistory, ex);
         }
     }
 
@@ -92,10 +90,8 @@ public class EntityHistoryService {
             resultEntityHistory = entityHistoryDao.getLazyEntityHistoryById(idEntityHistory);
             return resultEntityHistory;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy entity history by id history - "
-                    + idEntityHistory, ex);
-            throw new EntityHistoryException("Error in get lazy entity history by id history - "
-                    + idEntityHistory);
+            throw new EntityHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get lazy entity history by id history - " + idEntityHistory, ex);
         }
     }
 
@@ -106,20 +102,19 @@ public class EntityHistoryService {
             resultEntityHistoryList = entityHistoryDao.getAllLazyEntityHistory();
             return resultEntityHistoryList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy entity history", ex);
-            throw new EntityHistoryException("Error in get all lazy entity history");
+            throw new EntityHistoryException(LOGGER_NAME, CLASS_NAME, "Error in get all lazy entity history", ex);
         }
     }
 
     public List<EntityHistory> getLazyEntityHistoryListByFilter(EntityFilter entityFilter) {
         try {
             List<EntityHistory> resultEntityHistoryList;
-            EntityHistoryDao entityHistoryDao  = DaoFactory.getEntityHistoryDao();
+            EntityHistoryDao entityHistoryDao = DaoFactory.getEntityHistoryDao();
             resultEntityHistoryList = entityHistoryDao.getLazyEntityHistoryListByFilter(entityFilter);
             return resultEntityHistoryList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy entity history list by filter", ex);
-            throw new GeneratorHistoryException("Error in get lazy entity history list by filter");
+            throw new EntityHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get lazy entity history list by filter", ex);
         }
     }
 

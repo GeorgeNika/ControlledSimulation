@@ -1,3 +1,7 @@
+/**
+ * Work with "human" entity info table
+ */
+
 package ua.george_nika.simulation.dao.entity.impl;
 
 import org.springframework.stereotype.Repository;
@@ -13,9 +17,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
 public class EntityInfoHumanDao extends AbstractEntityInfoExtraDao {
 
@@ -62,10 +65,8 @@ public class EntityInfoHumanDao extends AbstractEntityInfoExtraDao {
     @Override
     protected void fillExtraDataInEntityInfo(List<Object> dataList, EntityInfo entityInfo) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         HumanEntityInfo humanEntityInfo = ClassTypeUtil.getCheckedClass(entityInfo, HumanEntityInfo.class);

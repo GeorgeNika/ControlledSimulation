@@ -109,7 +109,7 @@
                 </td>
             </tr>
             <tr>
-                <td> id entity </td>
+                <td> id entity</td>
                 <td>
                     <input id='filterIdEntity' type='number' min='0' step="1" value='0'/>
                     <button type="button" onclick="$('#filterIdEntity').val('0');">X</button>

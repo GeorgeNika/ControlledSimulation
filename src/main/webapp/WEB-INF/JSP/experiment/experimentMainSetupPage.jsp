@@ -64,7 +64,7 @@
             data: {experimentType: selectedType},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }

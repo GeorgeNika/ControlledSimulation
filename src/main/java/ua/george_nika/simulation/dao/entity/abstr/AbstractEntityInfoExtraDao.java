@@ -1,17 +1,17 @@
+/**
+ * Base methods for work with entity info extra tables
+ */
+
 package ua.george_nika.simulation.dao.entity.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
 import ua.george_nika.simulation.dao.entity.EntityInfoExtraDao;
 import ua.george_nika.simulation.model.entity.EntityInfo;
 import ua.george_nika.simulation.model.entity.EntityInfoFactory;
-import ua.george_nika.simulation.util.AppLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 09.12.2015.
- */
 abstract public class AbstractEntityInfoExtraDao extends AbstractDao implements EntityInfoExtraDao {
 
     abstract protected void fillExtraDataInEntityInfo(List<Object> dataList, EntityInfo entityInfo);

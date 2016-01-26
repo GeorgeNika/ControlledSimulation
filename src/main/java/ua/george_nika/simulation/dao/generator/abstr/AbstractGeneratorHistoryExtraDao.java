@@ -1,3 +1,7 @@
+/**
+ * Base methods for work with generator history extra table
+ */
+
 package ua.george_nika.simulation.dao.generator.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
@@ -6,9 +10,6 @@ import ua.george_nika.simulation.model.generator.GeneratorHistory;
 
 import java.util.List;
 
-/**
- * Created by george on 12.01.2016.
- */
 abstract public class AbstractGeneratorHistoryExtraDao extends AbstractDao implements GeneratorHistoryExtraDao {
 
     abstract protected void fillExtraDataInGeneratorHistory(List<Object> dataList, GeneratorHistory generatorHistory);

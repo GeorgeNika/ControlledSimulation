@@ -1,3 +1,8 @@
+/**
+ * Exclusive service for generator "Station"
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.service.generator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +13,11 @@ import ua.george_nika.simulation.model.generator.impl.HumanAppearInfo;
 import ua.george_nika.simulation.model.generator.impl.StationGenerator;
 import ua.george_nika.simulation.service.error.GeneratorException;
 import ua.george_nika.simulation.service.error.WrongIdException;
-import ua.george_nika.simulation.service.error.WrongTypeException;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.List;
 
-/**
- * Created by george on 20.12.2015.
- */
 @Service
 public class StationService {
 
@@ -35,9 +36,8 @@ public class StationService {
             StationGenerator stationGenerator = ClassTypeUtil.getCheckedClass(tempG, StationGenerator.class);
             return stationGenerator.getHumanAppearInfoList();
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get human appear info list for generator id - " +
-                    idGenerator, ex);
-            throw new GeneratorException("Error in get human appear info list for generator id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get human appear info list for generator id - " + idGenerator, ex);
         }
     }
 
@@ -50,14 +50,11 @@ public class StationService {
                     return loopInfo;
                 }
             }
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong id. Search human appear id -" + idHumanAppearInfo +
-                    ". Generator id -" + tempG.getIdGenerator());
-            throw new WrongIdException();
+            throw new WrongIdException(LOGGER_NAME, CLASS_NAME, "Wrong id. Search human appear id -"
+                    + idHumanAppearInfo + ". Generator id -" + tempG.getIdGenerator(), new RuntimeException());
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get human appear info id - " + idHumanAppearInfo +
-                    " for generator id - " + idGenerator, ex);
-            throw new GeneratorException("Error in get human appear info id - " + idHumanAppearInfo +
-                    " for generator id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME, "Error in get human appear info id - "
+                    + idHumanAppearInfo + " for generator id - " + idGenerator, ex);
         }
     }
 
@@ -65,10 +62,8 @@ public class StationService {
         try {
             humanAppearInfoDao.createHumanAppearInfo(idGenerator);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in create new human appear info for generator id - " +
-                    idGenerator, ex);
-            throw new GeneratorException("Error in create new human appear info for generator id - " +
-                    idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in create new human appear info for generator id - " + idGenerator, ex);
         }
     }
 
@@ -76,8 +71,8 @@ public class StationService {
         try {
             humanAppearInfoDao.deleteHumanAppearInfo(idHumanAppearInfo);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in delete human appear info id - " + idHumanAppearInfo, ex);
-            throw new GeneratorException("Error in delete human appear info id - " + idHumanAppearInfo);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in delete human appear info id - " + idHumanAppearInfo, ex);
         }
     }
 
@@ -85,12 +80,8 @@ public class StationService {
         try {
             humanAppearInfoDao.updateHumanAppearInfo(humanAppearInfo);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in update human appear info id - " +
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME, "Error in update human appear info id - " +
                     humanAppearInfo.getIdHumanAppearInfo(), ex);
-            throw new GeneratorException("Error in update human appear info id - " +
-                    humanAppearInfo.getIdHumanAppearInfo());
         }
     }
-
-
 }

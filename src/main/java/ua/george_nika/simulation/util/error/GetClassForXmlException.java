@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.util.error;
 
-/**
- * Created by george on 29.12.2015.
- */
-public class GetClassForXmlException extends RuntimeException {
+@SuppressWarnings("unused")
+
+public class GetClassForXmlException extends NoUserFriendlyException {
     public GetClassForXmlException() {
     }
 
@@ -13,5 +12,9 @@ public class GetClassForXmlException extends RuntimeException {
 
     public GetClassForXmlException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public GetClassForXmlException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

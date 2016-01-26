@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.service.error;
 
-/**
- * Created by george on 29.12.2015.
- */
-public class WrongIdException extends RuntimeException {
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class WrongIdException extends NoUserFriendlyException {
     public WrongIdException() {
     }
 
@@ -13,5 +14,9 @@ public class WrongIdException extends RuntimeException {
 
     public WrongIdException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public WrongIdException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

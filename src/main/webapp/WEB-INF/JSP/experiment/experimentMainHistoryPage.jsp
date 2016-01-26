@@ -112,7 +112,7 @@
             data: {idExperimentHistory: searchId},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication or Experiment is still running.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }

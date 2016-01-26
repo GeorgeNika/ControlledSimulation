@@ -81,7 +81,7 @@
                 data: {idGenerator: ${generator.idGenerator}, idRelatedGenerator: selectedRelatedId},
                 success: function (response) {
                     if (response != true) {
-                        alert('ERROR. You should check your authentication.');
+                        $('html').html(response);
                     }
                     getAjaxContent();
                 }
@@ -99,7 +99,7 @@
                 },
                 success: function (response) {
                     if (response != true) {
-                        alert('ERROR. You should check your authentication.');
+                        $('html').html(response);
                     }
                     getAjaxContent();
                 }
@@ -150,7 +150,7 @@
             data: {idGenerator: ${generator.idGenerator}, position: searchPosition},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -166,7 +166,7 @@
             data: {idGenerator: ${generator.idGenerator}, position: searchPosition},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -182,7 +182,7 @@
             data: {idGenerator: ${generator.idGenerator}, position: searchPosition},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -198,7 +198,7 @@
             data: {idGenerator: ${generator.idGenerator}, position: searchPosition, delayMs: $(event.target).val()},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }

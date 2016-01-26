@@ -114,7 +114,7 @@ public class StationGenerator extends AbstractGenerator {
         Entity tempEntity;
         for (int i = 0; i < quantityNewEntity; i++) {
             tempEntity = EntityFactory.getEntityByType(getEntityType());
-            tempEntity.initEntityAction(this, null, currentTime.toDateTime());
+            tempEntity.initEntityAction(this, new Object(), currentTime.toDateTime());
             dependentEntityList.add(tempEntity);
         }
         generatorHistory.addEntity(quantityNewEntity);

@@ -20,10 +20,11 @@ public class InitContextListener implements ServletContextListener {
         String contextPath = context.getContextPath();
         context.setAttribute("context", contextPath);
 
+        AppLog.initApplicationLog();
         AppLog.info(LOGGER_NAME, CLASS_NAME, "Program has been started");
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        AppLog.info(LOGGER_NAME,CLASS_NAME,"Program has been destroyed");
+        AppLog.info(LOGGER_NAME, CLASS_NAME, "Program has been destroyed");
     }
 }

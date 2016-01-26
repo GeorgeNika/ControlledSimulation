@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.service.error;
 
-/**
- * Created by george on 03.01.2016.
- */
-public class RunningHistoryException extends RuntimeException {
+import ua.george_nika.simulation.util.error.UserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class RunningHistoryException extends UserFriendlyException {
     public RunningHistoryException() {
     }
 
@@ -13,5 +14,9 @@ public class RunningHistoryException extends RuntimeException {
 
     public RunningHistoryException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public RunningHistoryException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

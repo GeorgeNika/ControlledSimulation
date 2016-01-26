@@ -1,3 +1,8 @@
+/**
+ * Common service for generators
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.service.generator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +19,6 @@ import ua.george_nika.simulation.util.AppLog;
 
 import java.util.List;
 
-/**
- * Created by george on 08.12.2015.
- */
 @Service
 public class GeneratorService {
     private static String LOGGER_NAME = AppLog.SERVICE;
@@ -37,13 +39,10 @@ public class GeneratorService {
         try {
             Generator resultGenerator;
             resultGenerator = generatorDao.getLazyGeneratorById(idGenerator);
-            addRelatedGeneratorDataToGenerator(resultGenerator);
-            addEntityInfoToGenerator(resultGenerator);
-            addExtraDataToGenerator(resultGenerator);
+            fillAdditionalDataToGenerator(resultGenerator);
             return resultGenerator;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get generator by id - " + idGenerator, ex);
-            throw new GeneratorException("Error in get generator by id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME, "Error in get generator by id - " + idGenerator, ex);
         }
     }
 
@@ -53,8 +52,8 @@ public class GeneratorService {
             resultGenerator = generatorDao.getLazyGeneratorById(idGenerator);
             return resultGenerator;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy generator by id - " + idGenerator, ex);
-            throw new GeneratorException("Error in get lazy generator by id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get lazy generator by id - " + idGenerator, ex);
         }
     }
 
@@ -64,8 +63,7 @@ public class GeneratorService {
             resultGeneratorList = generatorDao.getAllLazyGenerator();
             return resultGeneratorList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy generator", ex);
-            throw new GeneratorException("Error in get all lazy generator");
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME, "Error in get all lazy generator", ex);
         }
     }
 
@@ -74,14 +72,12 @@ public class GeneratorService {
             List<Generator> resultGeneratorList;
             resultGeneratorList = generatorDao.getAllLazyGeneratorByExperimentId(idExperiment);
             for (Generator loopGenerator : resultGeneratorList) {
-                addRelatedGeneratorDataToGenerator(loopGenerator);
-                addEntityInfoToGenerator(loopGenerator);
-                addExtraDataToGenerator(loopGenerator);
+                fillAdditionalDataToGenerator(loopGenerator);
             }
             return resultGeneratorList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all generator by experiment id - " + idExperiment, ex);
-            throw new GeneratorException("Error in get all generator by experiment id - " + idExperiment);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get all generator by experiment id - " + idExperiment, ex);
         }
     }
 
@@ -90,8 +86,8 @@ public class GeneratorService {
         try {
             generatorDao.createdEmptyGeneratorByTypeAndGetNewId(generatorType);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in create new generator by type - " + generatorType, ex);
-            throw new GeneratorException("Error in create new generator by type - " + generatorType);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in create new generator by type - " + generatorType, ex);
         }
     }
 
@@ -99,8 +95,8 @@ public class GeneratorService {
         try {
             generatorDao.updateLazyGenerator(generator);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in update lazy generator id - " + generator.getIdGenerator(), ex);
-            throw new GeneratorException("Error in update lazy generator id - " + generator.getIdGenerator());
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in update lazy generator id - " + generator.getIdGenerator(), ex);
         }
     }
 
@@ -108,11 +104,16 @@ public class GeneratorService {
         try {
             generatorDao.deleteLazyGeneratorById(idGenerator);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in delete generator by id - " + idGenerator, ex);
-            throw new GeneratorException("Error in delete generator by id - " + idGenerator);
+            throw new GeneratorException(LOGGER_NAME, CLASS_NAME,
+                    "Error in delete generator by id - " + idGenerator, ex);
         }
     }
 
+    protected void fillAdditionalDataToGenerator(Generator generator) {
+        addRelatedGeneratorDataToGenerator(generator);
+        addEntityInfoToGenerator(generator);
+        addExtraDataToGenerator(generator);
+    }
 
     protected void addExtraDataToGenerator(Generator generator) {
         generatorExtraDao = DaoFactory.getGeneratorExtraDaoByType(generator.getGeneratorType());

@@ -43,7 +43,7 @@ public class BusEntityInfoController implements EntityInfoExtraController {
 
     static {
         ControllerFactory.registerEntityInfoControllerClassInFactory(entityInfoType,
-                EntityExtraController.class.getCanonicalName());
+                BusEntityInfoController.class.getCanonicalName());
     }
 
     @Override

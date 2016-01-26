@@ -1,6 +1,6 @@
 /**
  * Holder for running experiment
- *
+ * <p>
  * This class hold all running experiments for application (all session)
  */
 
@@ -39,8 +39,7 @@ public class RunningExperimentHolder {
             }
             return runningExperimentList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error when get running experiment list", ex);
-            throw new RunningHistoryException("Error when get running experiment list");
+            throw new RunningHistoryException(LOGGER_NAME, CLASS_NAME, "Error when get running experiment list", ex);
         }
     }
 
@@ -48,8 +47,8 @@ public class RunningExperimentHolder {
         try {
             runningExperimentList.add(experiment);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in add experiment to running experiment list", ex);
-            throw new RunningHistoryException("Error in add experiment to running experiment list");
+            throw new RunningHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error in add experiment to running experiment list", ex);
         }
 
     }
@@ -61,12 +60,10 @@ public class RunningExperimentHolder {
                     return loopExp;
                 }
             }
-            throw new NoSuchHistory();
+            throw new NoSuchHistory("This history does not exist.");
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error when get running experiment by history id - " +
-                    idExperimentHistory, ex);
-            throw new RunningHistoryException("Error when get running experiment by history id - " +
-                    idExperimentHistory);
+            throw new RunningHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error when get running experiment by history id - " + idExperimentHistory, ex);
         }
     }
 
@@ -79,10 +76,8 @@ public class RunningExperimentHolder {
             }
             return true;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error when checking experiment by history id - " +
-                    idExperimentHistory, ex);
-            throw new RunningHistoryException("Error when checking experiment by history id - " +
-                    idExperimentHistory);
+            throw new RunningHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error when checking experiment by history id - " + idExperimentHistory, ex);
         }
     }
 
@@ -94,12 +89,11 @@ public class RunningExperimentHolder {
                     return loopGen;
                 }
             }
-            throw new NoSuchHistory();
+            throw new NoSuchHistory("This history does not exist.");
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error when get running generator by history id - " +
-                    idExperimentHistory + " in experiment with history id - " + idExperimentHistory, ex);
-            throw new RunningHistoryException("Error when get running generator by history id - " +
-                    idExperimentHistory + " in experiment with history id - " + idExperimentHistory);
+            throw new RunningHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error when get running generator by history id - " + idExperimentHistory
+                            + " in experiment with history id - " + idExperimentHistory, ex);
         }
     }
 
@@ -112,14 +106,12 @@ public class RunningExperimentHolder {
                     return loopEntity;
                 }
             }
-            throw new NoSuchHistory();
+            throw new NoSuchHistory("This history does not exist.");
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error when get running entity by history id - " + idEntityHistory
-                    + " in generator with history id - " + idExperimentHistory
-                    + " in experiment with history id - " + idExperimentHistory, ex);
-            throw new RunningHistoryException("Error when get running entity by history id - " + idEntityHistory
-                    + " in generator with history id - " + idExperimentHistory
-                    + " in experiment with history id - " + idExperimentHistory);
+            throw new RunningHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Error when get running entity by history id - " + idEntityHistory
+                            + " in generator with history id - " + idExperimentHistory
+                            + " in experiment with history id - " + idExperimentHistory, ex);
         }
     }
 

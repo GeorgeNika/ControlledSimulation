@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.dao.error;
 
-/**
- * Created by george on 06.12.2015.
- */
-public class WrongSetFieldDaoException extends RuntimeException {
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class WrongSetFieldDaoException extends NoUserFriendlyException {
     public WrongSetFieldDaoException() {
     }
 
@@ -13,5 +14,9 @@ public class WrongSetFieldDaoException extends RuntimeException {
 
     public WrongSetFieldDaoException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public WrongSetFieldDaoException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

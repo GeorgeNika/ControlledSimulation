@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.util.error;
 
-/**
- * Created by george on 29.12.2015.
- */
-public class DeleteFileException extends RuntimeException {
+@SuppressWarnings("unused")
+
+public class DeleteFileException extends UserFriendlyException {
     public DeleteFileException() {
     }
 
@@ -13,5 +12,9 @@ public class DeleteFileException extends RuntimeException {
 
     public DeleteFileException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public DeleteFileException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

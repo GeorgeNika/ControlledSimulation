@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.util.error;
 
-/**
- * Created by george on 03.01.2016.
- */
-public class NoEmptyLoggerInPool extends RuntimeException {
+@SuppressWarnings("unused")
+
+public class NoEmptyLoggerInPool extends UserFriendlyException {
     public NoEmptyLoggerInPool() {
     }
 
@@ -13,5 +12,9 @@ public class NoEmptyLoggerInPool extends RuntimeException {
 
     public NoEmptyLoggerInPool(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public NoEmptyLoggerInPool(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

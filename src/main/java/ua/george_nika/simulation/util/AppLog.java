@@ -1,8 +1,7 @@
 /**
  * Facade for log framework
- *
+ * <p>
  * now in application use log4j2
- *
  */
 
 package ua.george_nika.simulation.util;
@@ -34,8 +33,10 @@ public class AppLog {
     private static Map<String, String> loggerFileName = new HashMap<>();
     private static Map<String, String> currentLoggerFileName = new HashMap<>();
 
-    static {
+    private AppLog() {
+    }
 
+    public static void initApplicationLog() {
         // todo in future. It should convert log to db
 
         loggerFileName.put("LoggerPool1", "loggerPool1FileName");
@@ -47,18 +48,18 @@ public class AppLog {
         loggerFileName.put("LoggerPool7", "loggerPool7FileName");
         loggerFileName.put("LoggerPool8", "loggerPool8FileName");
         loggerFileName.put("LoggerPool9", "loggerPool9FileName");
-        loggerPool.put("LoggerPool1", false);
-        loggerPool.put("LoggerPool2", false);
-        loggerPool.put("LoggerPool3", false);
-        loggerPool.put("LoggerPool4", false);
-        loggerPool.put("LoggerPool5", false);
-        loggerPool.put("LoggerPool6", false);
-        loggerPool.put("LoggerPool7", false);
-        loggerPool.put("LoggerPool8", false);
-        loggerPool.put("LoggerPool9", false);
-    }
 
-    private AppLog() {
+        for (String loopLogger : loggerFileName.keySet()) {
+            loggerPool.put(loopLogger, false);
+            System.setProperty(loggerFileName.get(loopLogger),
+                    AppConst.getPathExperimentLog() + AppConst.EXPERIMENT_EMPTY_LOG);
+        }
+
+        System.setProperty(AppConst.APPLICATION_LOG_PATH, AppConst.getPathApplicationLog());
+        System.setProperty(AppConst.APPLICATION_ARCHIVE_LOG_PATH, AppConst.getPathArchiveApplicationLog());
+        LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        ctx.reconfigure();
+
     }
 
     public static void userInfo(String logger, HttpSession session, String message) {
@@ -77,7 +78,7 @@ public class AppLog {
 
     public static void info(String logger, String message) {
         Logger log = LogManager.getLogger(logger);
-        log.info(message);
+        log.info(message+"\n");
     }
 
     public static void info(String logger, String className, String message) {
@@ -111,12 +112,11 @@ public class AppLog {
             }
         }
         if (loggerName.isEmpty()) {
-            error(UTIL, CLASS_NAME, "No empty Logger in Pool");
-            throw new NoEmptyLoggerInPool("No empty Logger in Pool");
+            throw new NoEmptyLoggerInPool(UTIL, CLASS_NAME, "No empty Logger in Pool", new RuntimeException());
         }
         currentLoggerFileName.put(loggerName, getFileName(addInfo));
         System.setProperty(loggerFileName.get(loggerName),
-                AppConst.getPathLog() + currentLoggerFileName.get(loggerName));
+                AppConst.getPathExperimentLog() + currentLoggerFileName.get(loggerName));
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         ctx.reconfigure();
         return loggerName;
@@ -126,8 +126,8 @@ public class AppLog {
         if (loggerPool.containsKey(loggerName)) {
             return currentLoggerFileName.get(loggerName);
         } else {
-            error(UTIL, CLASS_NAME, "Wrong logger pool name " + loggerName);
-            throw new LoggerPoolWrongName("Wrong logger pool name " + loggerName);
+            throw new LoggerPoolWrongName(UTIL, CLASS_NAME, "Wrong logger pool name "
+                    + loggerName, new RuntimeException());
         }
     }
 
@@ -141,10 +141,10 @@ public class AppLog {
         if (loggerPool.containsKey(loggerName)) {
             loggerPool.put(loggerName, false);
         } else {
-            error(UTIL, CLASS_NAME, "Wrong logger pool name " + loggerName);
-            throw new LoggerPoolWrongName("Wrong logger pool name " + loggerName);
+            throw new LoggerPoolWrongName(UTIL, CLASS_NAME, "Wrong logger pool name "
+                    + loggerName, new RuntimeException());
         }
-        currentLoggerFileName.put(loggerName, "empty.log");
+        currentLoggerFileName.put(loggerName, AppConst.EXPERIMENT_EMPTY_LOG);
         System.setProperty(loggerFileName.get(loggerName), currentLoggerFileName.get(loggerName));
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         ctx.reconfigure();

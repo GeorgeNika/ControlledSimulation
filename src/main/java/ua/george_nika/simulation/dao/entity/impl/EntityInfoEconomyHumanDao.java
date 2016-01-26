@@ -1,3 +1,7 @@
+/**
+ * Work with "economy human" entity info table
+ */
+
 package ua.george_nika.simulation.dao.entity.impl;
 
 import org.springframework.stereotype.Repository;
@@ -6,18 +10,15 @@ import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.entity.abstr.AbstractEntityInfoExtraDao;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.model.entity.EntityInfo;
-import ua.george_nika.simulation.model.entity.impl.EconomyHumanEntity;
 import ua.george_nika.simulation.model.entity.impl.EconomyHumanEntityInfo;
-import ua.george_nika.simulation.model.entity.impl.HumanEntityInfo;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class EntityInfoEconomyHumanDao extends AbstractEntityInfoExtraDao {
 
@@ -67,10 +68,8 @@ public class EntityInfoEconomyHumanDao extends AbstractEntityInfoExtraDao {
     @Override
     protected void fillExtraDataInEntityInfo(List<Object> dataList, EntityInfo entityInfo) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         EconomyHumanEntityInfo economyHumanEntityInfo

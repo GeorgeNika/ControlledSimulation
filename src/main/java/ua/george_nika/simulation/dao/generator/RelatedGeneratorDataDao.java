@@ -1,12 +1,13 @@
+/**
+ * Work with related generator data
+ */
+
 package ua.george_nika.simulation.dao.generator;
 
 import ua.george_nika.simulation.model.generator.RelatedGeneratorData;
 
 import java.util.List;
 
-/**
- * Created by george on 20.12.2015.
- */
 public interface RelatedGeneratorDataDao {
 
     List<RelatedGeneratorData> getAllRelatedGeneratorDataById(int idExperiment);

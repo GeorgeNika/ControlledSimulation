@@ -1,14 +1,14 @@
+/**
+ * Base methods for work with generator common table
+ */
+
 package ua.george_nika.simulation.dao.generator.abstr;
 
-import ua.george_nika.simulation.dao.AbstractDao;
-import ua.george_nika.simulation.dao.DaoConst;
-import ua.george_nika.simulation.dao.DaoFactory;
+import ua.george_nika.simulation.dao.*;
 import ua.george_nika.simulation.dao.generator.GeneratorDao;
-import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.error.SQLDaoException;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.util.AppLog;
-import ua.george_nika.simulation.util.AppConst;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,9 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 06.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 abstract public class AbstractGeneratorDao extends AbstractDao implements GeneratorDao {
 
     private static String LOGGER_NAME = AppLog.DAO;
@@ -31,14 +30,12 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
 
     public Generator getLazyGeneratorById(int id) {
         List<Object> resultData = getSingleRecordDataById(id);
-        Generator resultGenerator = getGeneratorFromData(resultData);
-        return resultGenerator;
+        return getGeneratorFromData(resultData);
     }
 
     public int createdEmptyGeneratorByTypeAndGetNewId(String generatorType) {
-        int resultId = createEmptyRecordWithOneFieldAndGetNewId(
-                DaoConst.GEN_TYPE_IN_GEN_MAIN_TABLE, generatorType, TypeOfFiled.STRING);
-        return resultId;
+        return createEmptyRecordWithOneFieldAndGetNewId(DaoConst.GEN_TYPE_IN_GEN_MAIN_TABLE,
+                generatorType, TypeOfFiled.STRING);
     }
 
     public void updateLazyGenerator(Generator generator) {
@@ -51,7 +48,7 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
     }
 
     public List<Generator> getAllLazyGenerator() {
-        List<Generator> resultGeneratorList = new ArrayList<Generator>();
+        List<Generator> resultGeneratorList = new ArrayList<>();
         List<List<Object>> resultDataListList = getAllRecordDataList();
         Generator tempGenerator;
         for (List<Object> loopData : resultDataListList) {
@@ -63,7 +60,7 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
 
 
     public List<Generator> getAllLazyGeneratorByExperimentId(int idExperiment) {
-        List<Generator> resultGeneratorList = new ArrayList<Generator>();
+        List<Generator> resultGeneratorList = new ArrayList<>();
         List<List<Object>> resultDataListList = getAllGeneratorDataListByExperimentId(idExperiment);
         Generator tempGenerator;
         for (List<Object> loopData : resultDataListList) {
@@ -78,18 +75,18 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
                 "WHERE EG.id_experiment = ? " +
                 "AND EG.id_generator = " + getTableName() + "." + getIdName() + " ;";
 
-        List<List<Object>> resultDataListList = new ArrayList<List<Object>>();
+        List<List<Object>> resultDataListList = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, idExperiment);
             resultSet = pStatement.executeQuery();
             List<Object> resultDataList;
             while (resultSet.next()) {
-                resultDataList = new ArrayList<Object>();
+                resultDataList = new ArrayList<>();
                 // fields in jdbc starts from 1 instead 0
                 for (int i = 1; i <= getQuantityOfFields(); i++) {
                     resultDataList.add(getDataFromResultSet(i, resultSet));
@@ -100,20 +97,9 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
             AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
             throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultDataListList;
     }

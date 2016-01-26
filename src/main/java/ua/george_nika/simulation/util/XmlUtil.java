@@ -35,19 +35,17 @@ public class XmlUtil {
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(experiment, new FileWriter(AppConst.getPathXml() + fileName));
+            marshaller.marshal(experiment, new FileWriter(AppConst.getPathExperimentXml() + fileName));
         } catch (JAXBException | IOException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Save Experiment to Xml Error. File - " + fileName +
-                    " Experiment N - " + experiment.getIdExperiment(), e);
-            throw new SaveLoadXmlException("Save Experiment to Xml Error. File - " + fileName +
-                    " Experiment N - " + experiment.getIdExperiment(), e);
+            throw new SaveLoadXmlException(LOGGER_NAME, CLASS_NAME, "Error. Save experiment to xml file - "
+                    + fileName + " experiment N - " + experiment.getIdExperiment(), e);
         }
         return fileName;
     }
 
     public static synchronized Experiment loadExperimentFromMultipartFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        Experiment resultExperiment ;
+        Experiment resultExperiment;
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(getClassArrayOfAllRegisteredClass());
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -55,8 +53,8 @@ public class XmlUtil {
             Object temp = unmarshaller.unmarshal(reader);
             resultExperiment = ClassTypeUtil.getCheckedClass(temp, Experiment.class);
         } catch (JAXBException | IOException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Load Experiment From Xml Error. File - " + fileName, e);
-            throw new SaveLoadXmlException("Load Experiment From Xml Error. File - " + fileName, e);
+            throw new SaveLoadXmlException(LOGGER_NAME, CLASS_NAME, "Error. Load experiment from xml file - "
+                    + fileName, e);
         }
         return resultExperiment;
     }
@@ -74,8 +72,8 @@ public class XmlUtil {
                 resultClassList.add(Class.forName(loopString));
             }
         } catch (ClassNotFoundException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Class not found. Class list - " + stringClassName.toString(), e);
-            throw new GetClassForXmlException("Class not found. Class list - " + stringClassName.toString(), e);
+            throw new GetClassForXmlException(LOGGER_NAME, CLASS_NAME, "Class not found. Class list - "
+                    + stringClassName.toString(), e);
         }
         return resultClassList.toArray(new Class[resultClassList.size()]);
     }

@@ -1,13 +1,15 @@
+/**
+ * work`s with "time" experiment history table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.TypeOfFiled;
-import ua.george_nika.simulation.dao.error.WrongDaoSettingException;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.dao.experiment.abstr.AbstractExperimentHistoryExtraDao;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
-import ua.george_nika.simulation.model.experiment.impl.SimpleExperiment;
 import ua.george_nika.simulation.model.experiment.impl.TimeExperiment;
 import ua.george_nika.simulation.model.experiment.impl.TimeExperimentHistory;
 import ua.george_nika.simulation.util.AppLog;
@@ -16,16 +18,14 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao {
 
     private static final String TABLE_NAME = "experiment_time_history";
     private static final String ID_NAME = "id_experiment_history";
     private static final int QUANTITY_OF_FIELDS = 6;
-
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = ExperimentTimeHistoryDao.class.getSimpleName();
@@ -34,7 +34,8 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
         DaoFactory.registerExperimentHistoryExtraClassInFactory(TimeExperiment.EXPERIMENT_TYPE,
                 ExperimentTimeHistoryDao.class.getCanonicalName());
     }
-    public ExperimentTimeHistoryDao(){
+
+    public ExperimentTimeHistoryDao() {
         fieldTypeInTable.clear();
         fieldNameInTable.clear();
 
@@ -55,9 +56,7 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
 
         fieldTypeInTable.add(TypeOfFiled.STRING);
         fieldNameInTable.add("end_generator_name");
-
     }
-
 
     protected String getTableName() {
         return TABLE_NAME;
@@ -75,10 +74,8 @@ public class ExperimentTimeHistoryDao extends AbstractExperimentHistoryExtraDao 
     @Override
     protected void fillExtraDataInExperimentHistory(List<Object> dataList, ExperimentHistory experimentHistory) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         TimeExperimentHistory timeExperimentHistory =

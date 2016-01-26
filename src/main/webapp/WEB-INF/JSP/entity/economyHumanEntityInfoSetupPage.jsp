@@ -80,7 +80,7 @@
             data: {},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -99,7 +99,7 @@
             },
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 $('#overlay').click();
                 getAjaxContent();
@@ -114,7 +114,7 @@
             data: {idEntityInfo: $("#idEntityInfo").html()},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 $('#overlay').click();
                 getAjaxContent();

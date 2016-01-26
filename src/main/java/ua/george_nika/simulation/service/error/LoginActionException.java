@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.service.error;
 
-/**
- * Created by george on 04.01.2016.
- */
-public class LoginActionException extends RuntimeException {
+import ua.george_nika.simulation.util.error.UserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class LoginActionException extends UserFriendlyException {
     public LoginActionException() {
     }
 
@@ -13,5 +14,9 @@ public class LoginActionException extends RuntimeException {
 
     public LoginActionException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public LoginActionException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

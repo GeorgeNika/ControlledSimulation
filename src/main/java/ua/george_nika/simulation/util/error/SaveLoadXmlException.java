@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.util.error;
 
-/**
- * Created by george on 29.12.2015.
- */
-public class SaveLoadXmlException extends RuntimeException {
+@SuppressWarnings("unused")
+
+public class SaveLoadXmlException extends UserFriendlyException {
     public SaveLoadXmlException() {
     }
 
@@ -13,5 +12,9 @@ public class SaveLoadXmlException extends RuntimeException {
 
     public SaveLoadXmlException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public SaveLoadXmlException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

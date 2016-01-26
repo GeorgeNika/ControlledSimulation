@@ -1,8 +1,11 @@
+/**
+ * work`s with "simple" experiment history table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoFactory;
-import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.error.WrongDaoSettingException;
 import ua.george_nika.simulation.dao.experiment.abstr.AbstractExperimentHistoryExtraDao;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
@@ -11,9 +14,6 @@ import ua.george_nika.simulation.util.AppLog;
 
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
 @Repository
 public class ExperimentSimpleHistoryDao extends AbstractExperimentHistoryExtraDao {
 
@@ -42,29 +42,29 @@ public class ExperimentSimpleHistoryDao extends AbstractExperimentHistoryExtraDa
     }
 
     protected String getTableName() {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     protected String getIdName() {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     protected int getQuantityOfFields() {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     @Override
     protected void fillExtraDataInExperimentHistory(List<Object> dataList, ExperimentHistory experimentHistory) {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     @Override
     protected List<Object> getExtraDataFromExperimentHistory(ExperimentHistory experimentHistory) {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 }

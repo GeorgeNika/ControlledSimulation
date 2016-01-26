@@ -1,7 +1,11 @@
+/**
+ * Work with related generator data
+ */
+
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
-import ua.george_nika.simulation.dao.DaoFactory;
+import ua.george_nika.simulation.dao.DaoConnection;
 import ua.george_nika.simulation.dao.generator.RelatedGeneratorDataDao;
 import ua.george_nika.simulation.dao.error.SQLDaoException;
 import ua.george_nika.simulation.model.generator.RelatedGeneratorData;
@@ -14,11 +18,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 20.12.2015.
- */
+//@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
-public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
+public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao {
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = RelatedGeneratorDataDaoImpl.class.getSimpleName();
@@ -31,13 +34,13 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
                 "AND G.id_generator = GG.id_related_generator " +
                 "ORDER BY GG.related_position ;";
 
-        List<RelatedGeneratorData> resultRGInfoList = new ArrayList<RelatedGeneratorData>();
+        List<RelatedGeneratorData> resultRGInfoList = new ArrayList<>();
 
         Connection conn = null;
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, idGenerator);
             resultSet = pStatement.executeQuery();
@@ -54,25 +57,43 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
                 resultRGInfoList.add(tempRGInfo);
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultRGInfoList;
+    }
+
+    protected void closeResultSet(ResultSet resultSet, String sql) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+        }
+    }
+
+    protected void closePreparedStatement(PreparedStatement preparedStatement, String sql) {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+        }
+    }
+
+    protected void closeConnection(Connection connection, String sql) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+        }
     }
 
     public void setDelayToRelatedGeneratorData(int idGenerator, int relatedPosition, long delay) {
@@ -82,7 +103,7 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setLong(1, delay);
             pStatement.setInt(2, idGenerator);
@@ -90,20 +111,10 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
 
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -122,7 +133,7 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, position);
             pStatement.setInt(2, position);
@@ -141,20 +152,10 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
 
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -173,7 +174,7 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, idGenerator);
             pStatement.setInt(2, position);
@@ -195,20 +196,10 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
 
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -218,7 +209,7 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, idGenerator);
             pStatement.setInt(2, idRelatedGenerator);
@@ -226,20 +217,10 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
 
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -250,7 +231,7 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, idRelatedGenerator);
             pStatement.setInt(2, idGenerator);
@@ -258,20 +239,10 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
 
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -288,17 +259,14 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             conn.setAutoCommit(false);
 
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, idGenerator);
             pStatement.setInt(2, position);
             pStatement.executeUpdate();
-
-            if (pStatement != null) {
-                pStatement.close();
-            }
+            closePreparedStatement(pStatement, sql);
 
             sql = sqlNext;
             pStatement = conn.prepareStatement(sql);
@@ -306,31 +274,22 @@ public class RelatedGeneratorDataDaoImpl implements RelatedGeneratorDataDao{
             pStatement.setInt(2, idGenerator);
             pStatement.executeUpdate();
 
-
             conn.commit();
         } catch (SQLException e) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (SQLException e1) {
-                    AppLog.error(LOGGER_NAME, CLASS_NAME, " ROLLBACK execute error : " + sql + " ;", e);
-                    throw new SQLDaoException(" ROLLBACK execute error : " + sql + " ;", e);
-                }
-            }
-
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            rollBack(conn, sql);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
+        }
+    }
+
+    protected void rollBack(Connection connection, String sql) {
+        if (connection != null) {
             try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
+                connection.rollback();
             } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
+                throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " ROLLBACK execute error : " + sql + " ;", e);
             }
         }
     }

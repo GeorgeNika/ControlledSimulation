@@ -145,8 +145,7 @@
             data: {idExperiment: ${experiment.idExperiment}, experimentType: selectedType},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
-                    window.location.href = '${context}/experimentMainSetupPage';
+                    $('html').html(response);
                 } else {
                     window.location.href = '${context}/experimentSetupPage/${experiment.idExperiment}';
                 }
@@ -187,7 +186,7 @@
             data: {idExperiment: ${experiment.idExperiment}},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 } else {
                     window.location.href = '${context}/experimentMainSetupPage';
                 }

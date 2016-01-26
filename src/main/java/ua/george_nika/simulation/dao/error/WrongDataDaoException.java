@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.dao.error;
 
-/**
- * Created by george on 06.12.2015.
- */
-public class WrongDataDaoException extends RuntimeException {
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class WrongDataDaoException extends NoUserFriendlyException {
     public WrongDataDaoException() {
     }
 
@@ -13,5 +14,9 @@ public class WrongDataDaoException extends RuntimeException {
 
     public WrongDataDaoException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public WrongDataDaoException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

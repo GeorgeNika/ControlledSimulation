@@ -1,3 +1,7 @@
+/**
+ * work`s with "price" experiment table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.springframework.stereotype.Repository;
@@ -7,16 +11,14 @@ import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.dao.experiment.abstr.AbstractExperimentExtraDao;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.impl.PriceExperiment;
-import ua.george_nika.simulation.model.experiment.impl.RepeatExperiment;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentPriceDao extends AbstractExperimentExtraDao {
 
@@ -32,7 +34,8 @@ public class ExperimentPriceDao extends AbstractExperimentExtraDao {
         DaoFactory.registerExperimentExtraClassInFactory(PriceExperiment.EXPERIMENT_TYPE,
                 ExperimentPriceDao.class.getCanonicalName());
     }
-    public ExperimentPriceDao(){
+
+    public ExperimentPriceDao() {
         fieldTypeInTable.clear();
         fieldNameInTable.clear();
 
@@ -68,10 +71,8 @@ public class ExperimentPriceDao extends AbstractExperimentExtraDao {
     @Override
     protected void fillExtraDataInExperiment(List<Object> dataList, Experiment experiment) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         PriceExperiment priceExperiment = ClassTypeUtil.getCheckedClass(experiment, PriceExperiment.class);

@@ -1,3 +1,7 @@
+/**
+ * work`s with "time" experiment table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.springframework.stereotype.Repository;
@@ -6,7 +10,6 @@ import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.dao.experiment.abstr.AbstractExperimentExtraDao;
 import ua.george_nika.simulation.model.experiment.Experiment;
-import ua.george_nika.simulation.model.experiment.impl.RepeatExperiment;
 import ua.george_nika.simulation.model.experiment.impl.TimeExperiment;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
@@ -14,9 +17,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentTimeDao extends AbstractExperimentExtraDao {
 
@@ -32,7 +34,8 @@ public class ExperimentTimeDao extends AbstractExperimentExtraDao {
         DaoFactory.registerExperimentExtraClassInFactory(TimeExperiment.EXPERIMENT_TYPE,
                 ExperimentTimeDao.class.getCanonicalName());
     }
-    public ExperimentTimeDao(){
+
+    public ExperimentTimeDao() {
         fieldTypeInTable.clear();
         fieldNameInTable.clear();
 
@@ -62,10 +65,8 @@ public class ExperimentTimeDao extends AbstractExperimentExtraDao {
     @Override
     protected void fillExtraDataInExperiment(List<Object> dataList, Experiment experiment) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         TimeExperiment timeExperiment = ClassTypeUtil.getCheckedClass(experiment, TimeExperiment.class);

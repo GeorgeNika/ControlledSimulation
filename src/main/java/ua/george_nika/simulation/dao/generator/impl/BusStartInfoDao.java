@@ -1,24 +1,32 @@
+/**
+ * work`s with "bus start info" table
+ * it's additional table for "route" generator
+ */
+
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.AbstractDao;
+import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.model.generator.impl.BusStartInfo;
-import ua.george_nika.simulation.util.AppConst;
+import ua.george_nika.simulation.util.AppLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
 public class BusStartInfoDao extends AbstractDao {
 
     private static final String TABLE_NAME = "gen_bus_start_info";
     private static final String ID_NAME = "id_bus_start_info";
     private static final int QUANTITY_OF_FIELDS = 6;
+
+    private static String LOGGER_NAME = AppLog.DAO;
+    private static String CLASS_NAME = BusStartInfoDao.class.getSimpleName();
 
     public BusStartInfoDao() {
         fieldTypeInTable.clear();
@@ -80,7 +88,10 @@ public class BusStartInfoDao extends AbstractDao {
     }
 
     protected BusStartInfo getBusStartInfoFromData(List<Object> dataList) {
-
+        if (dataList.size() != getQuantityOfFields()) {
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
+        }
         BusStartInfo resultStartInfo = new BusStartInfo();
         resultStartInfo.setIdBusStartInfo((Integer) dataList.get(0));
         resultStartInfo.setIdGenerator((Integer) dataList.get(1));

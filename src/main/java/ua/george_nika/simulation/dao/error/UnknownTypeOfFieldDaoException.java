@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.dao.error;
 
-/**
- * Created by george on 06.12.2015.
- */
-public class UnknownTypeOfFieldDaoException extends RuntimeException {
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class UnknownTypeOfFieldDaoException extends NoUserFriendlyException {
     public UnknownTypeOfFieldDaoException() {
     }
 
@@ -13,5 +14,9 @@ public class UnknownTypeOfFieldDaoException extends RuntimeException {
 
     public UnknownTypeOfFieldDaoException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public UnknownTypeOfFieldDaoException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

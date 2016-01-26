@@ -1,3 +1,7 @@
+/**
+ * work`s with experiment history common table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.joda.time.DateTime;
@@ -13,9 +17,8 @@ import ua.george_nika.simulation.util.AppLog;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 05.01.2016.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentHistoryDaoImpl extends AbstractExperimentHistoryDao {
 
@@ -25,7 +28,7 @@ public class ExperimentHistoryDaoImpl extends AbstractExperimentHistoryDao {
 
 
     private static String LOGGER_NAME = AppLog.DAO;
-    private static String CLASS_NAME = ExperimentDaoImpl.class.getSimpleName();
+    private static String CLASS_NAME = ExperimentHistoryDaoImpl.class.getSimpleName();
 
     public ExperimentHistoryDaoImpl() {
         fieldTypeInTable.clear();
@@ -82,10 +85,8 @@ public class ExperimentHistoryDaoImpl extends AbstractExperimentHistoryDao {
         String type = (String) dataList.get(3);
         ExperimentHistory result = ExperimentHistoryFactory.getExperimentHistoryByType(type);
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         result.setIdExperimentHistory((Integer) dataList.get(0));
@@ -96,7 +97,7 @@ public class ExperimentHistoryDaoImpl extends AbstractExperimentHistoryDao {
         result.setExecuteDate(dataList.get(5) == null ? new DateTime(0) : new DateTime(dataList.get(5)));
         result.setExperimentStart(dataList.get(6) == null ? new DateTime(0) : new DateTime(dataList.get(6)));
         result.setExperimentEnd(dataList.get(7) == null ? new DateTime(0) : new DateTime(dataList.get(7)));
-        result.setLastPoint(dataList.get(8) == null ? new MutableDateTime(0): new MutableDateTime(dataList.get(8)));
+        result.setLastPoint(dataList.get(8) == null ? new MutableDateTime(0) : new MutableDateTime(dataList.get(8)));
         result.setLogFile(dataList.get(9) == null ? "" : (String) dataList.get(9));
         result.setXmlFile(dataList.get(10) == null ? "" : (String) dataList.get(10));
 
@@ -105,7 +106,7 @@ public class ExperimentHistoryDaoImpl extends AbstractExperimentHistoryDao {
 
     @Override
     protected List<Object> getDataFromExperimentHistory(ExperimentHistory experimentHistory) {
-        List<Object> resultList = new ArrayList<Object>();
+        List<Object> resultList = new ArrayList<>();
 
         resultList.add(experimentHistory.getIdExperimentHistory());
         resultList.add(experimentHistory.getIdExperiment());

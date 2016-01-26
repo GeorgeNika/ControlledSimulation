@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.service.error;
 
-/**
- * Created by george on 04.01.2016.
- */
-public class EntityInfoException extends RuntimeException {
+import ua.george_nika.simulation.util.error.UserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class EntityInfoException extends UserFriendlyException {
     public EntityInfoException() {
     }
 
@@ -13,5 +14,9 @@ public class EntityInfoException extends RuntimeException {
 
     public EntityInfoException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public EntityInfoException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

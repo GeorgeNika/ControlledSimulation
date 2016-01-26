@@ -1,32 +1,29 @@
+/**
+ * Work with entity history common table
+ */
+
 package ua.george_nika.simulation.dao.entity.impl;
 
 import org.joda.time.DateTime;
-import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.entity.abstr.AbstractEntityHistoryDao;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
-import ua.george_nika.simulation.dao.experiment.abstr.AbstractExperimentHistoryDao;
-import ua.george_nika.simulation.dao.experiment.impl.ExperimentDaoImpl;
 import ua.george_nika.simulation.model.entity.EntityHistory;
 import ua.george_nika.simulation.model.entity.EntityHistoryFactory;
-import ua.george_nika.simulation.model.experiment.ExperimentHistory;
-import ua.george_nika.simulation.model.experiment.ExperimentHistoryFactory;
 import ua.george_nika.simulation.util.AppLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 05.01.2016.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class EntityHistoryDaoImpl extends AbstractEntityHistoryDao {
 
     protected static final String TABLE_NAME = "entity_history";
     protected static final String ID_NAME = "id_entity_history";
     protected static final int QUANTITY_OF_FIELDS = 8;
-
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = EntityHistoryDaoImpl.class.getSimpleName();
@@ -77,10 +74,8 @@ public class EntityHistoryDaoImpl extends AbstractEntityHistoryDao {
         String type = (String) dataList.get(6);
         EntityHistory result = EntityHistoryFactory.getEntityHistoryByType(type);
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         result.setIdEntityHistory((Integer) dataList.get(0));
@@ -97,7 +92,7 @@ public class EntityHistoryDaoImpl extends AbstractEntityHistoryDao {
 
     @Override
     protected List<Object> getDataFromEntityHistory(EntityHistory entityHistory) {
-        List<Object> resultList = new ArrayList<Object>();
+        List<Object> resultList = new ArrayList<>();
 
         resultList.add(entityHistory.getIdEntityHistory());
         resultList.add(entityHistory.getIdEntity());
@@ -110,6 +105,4 @@ public class EntityHistoryDaoImpl extends AbstractEntityHistoryDao {
 
         return resultList;
     }
-
-
 }

@@ -17,12 +17,9 @@ public class ClassTypeUtil {
         if (neededClass.isAssignableFrom(checkedObject.getClass())) {
             return neededClass.cast(checkedObject);
         } else {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong type of data." +
+            throw new WrongTypeException(LOGGER_NAME, CLASS_NAME, "Wrong type of data." +
                     " Object class - " + checkedObject.getClass().getCanonicalName() + " ; " +
-                    " instead " + neededClass.getCanonicalName());
-            throw new WrongTypeException("Wrong type of data." +
-                    " Object class - " + checkedObject.getClass().getCanonicalName() + " ; " +
-                    " instead " + neededClass.getCanonicalName());
+                    " instead " + neededClass.getCanonicalName(), new RuntimeException());
         }
     }
 }

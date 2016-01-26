@@ -1,12 +1,13 @@
+/**
+ * Work with experiment common table
+ */
+
 package ua.george_nika.simulation.dao.experiment;
 
 import ua.george_nika.simulation.model.experiment.Experiment;
 
 import java.util.List;
 
-/**
- * Created by george on 03.12.2015.
- */
 public interface ExperimentDao {
 
     Experiment getLazyExperimentById(int id);

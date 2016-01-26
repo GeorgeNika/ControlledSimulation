@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.service.error;
 
-/**
- * Created by george on 01.01.2016.
- */
-public class AccessDeniedException extends RuntimeException {
+import ua.george_nika.simulation.util.error.UserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class AccessDeniedException extends UserFriendlyException {
     public AccessDeniedException() {
     }
 
@@ -13,5 +14,9 @@ public class AccessDeniedException extends RuntimeException {
 
     public AccessDeniedException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public AccessDeniedException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

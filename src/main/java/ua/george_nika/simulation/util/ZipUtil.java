@@ -17,12 +17,12 @@ public class ZipUtil {
     private static String CLASS_NAME = ZipUtil.class.getSimpleName();
 
     public static String createZipFile(String pathName, String fileName) {
-        String newFileName = fileName+".zip";
-        String newFullFileName = pathName+newFileName;
+        String newFileName = fileName + ".zip";
+        String newFullFileName = pathName + newFileName;
         try (ZipOutputStream zOut = new ZipOutputStream(new FileOutputStream(newFullFileName))) {
             ZipEntry zipEntry = new ZipEntry(fileName);
             zOut.putNextEntry(zipEntry);
-            try (FileInputStream in = new FileInputStream(pathName+fileName)) {
+            try (FileInputStream in = new FileInputStream(pathName + fileName)) {
                 byte[] bytes = new byte[1024];
                 int length;
                 while ((length = in.read(bytes)) >= 0) {
@@ -31,8 +31,7 @@ public class ZipUtil {
             }
             zOut.closeEntry();
         } catch (IOException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error. Can not zip file - " + pathName + fileName, e);
-            throw new ZipException("Error. Can not zip file - " + pathName + fileName, e);
+            throw new ZipException(LOGGER_NAME, CLASS_NAME, "Error. Could not zip file - " + pathName + fileName, e);
         }
         return newFileName;
     }

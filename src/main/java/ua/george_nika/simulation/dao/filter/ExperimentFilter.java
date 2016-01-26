@@ -1,3 +1,6 @@
+/**
+ * Filter for experiment history records
+ */
 package ua.george_nika.simulation.dao.filter;
 
 import ua.george_nika.simulation.dao.DaoConst;
@@ -7,9 +10,8 @@ import ua.george_nika.simulation.util.AppLog;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 21.01.2016.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 public class ExperimentFilter implements DaoFilter {
 
     private static String LOGGER_NAME = AppLog.DAO;
@@ -39,12 +41,9 @@ public class ExperimentFilter implements DaoFilter {
         }
 
         if (filterFieldNameList.size() != filterFiledValueList.size()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Non equal size : name - " + filterFieldNameList.size()
-                    + ", value - " + filterFiledValueList.size());
-            throw new WrongSetFieldDaoException("Non equal size : name - " + filterFieldNameList.size()
-                    + ", value - " + filterFiledValueList.size());
+            throw new WrongSetFieldDaoException(LOGGER_NAME, CLASS_NAME, "Non equal size : name - "
+                    + filterFieldNameList.size() + ", value - " + filterFiledValueList.size(), new RuntimeException());
         }
-
     }
 
     public int getIdExperiment() {

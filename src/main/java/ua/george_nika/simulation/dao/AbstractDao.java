@@ -1,3 +1,7 @@
+/**
+ * Base methods for work with database
+ */
+
 package ua.george_nika.simulation.dao;
 
 import org.joda.time.DateTime;
@@ -9,9 +13,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 03.12.2015.
- */
 abstract public class AbstractDao {
 
     private static String LOGGER_NAME = AppLog.DAO;
@@ -19,7 +20,6 @@ abstract public class AbstractDao {
 
     protected List<TypeOfFiled> fieldTypeInTable = new ArrayList<>();
     protected List<String> fieldNameInTable = new ArrayList<>();
-
 
 
     abstract protected String getTableName();
@@ -39,12 +39,12 @@ abstract public class AbstractDao {
     protected List<Object> getSingleRecordDataById(int id) {
         String sql = "SELECT * FROM " + getTableName() + " WHERE " + getIdName() + " = ?;";
 
-        List<Object> resultDataList = new ArrayList<Object>();
+        List<Object> resultDataList = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, id);
             resultSet = pStatement.executeQuery();
@@ -55,53 +55,68 @@ abstract public class AbstractDao {
                 }
 
             } else {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, "no result in table " + getTableName() + " ; " +
-                        "field - " + getIdName() + " ; value - " + id);
-                throw new NoResultDaoException("table - " + getTableName() + " ; " +
-                        "field - " + getIdName() + " ; value - " + id);
+                throw new NoResultDaoException(LOGGER_NAME, CLASS_NAME, "no result in table " + getTableName() + " ; "
+                        + "field - " + getIdName() + " ; value - " + id, new RuntimeException());
             }
             if (resultSet.next()) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, "not single result in table " + getTableName() + " ; " +
-                        "field - " + getIdName() + " ; value - " + id);
-                throw new NotSingleResultDaoException("table - " + getTableName() + " ; " +
-                        "field - " + getIdName() + " ; value - " + id);
+                throw new NotSingleResultDaoException(LOGGER_NAME, CLASS_NAME,
+                        "not single result in table " + getTableName() + " ; "
+                                + "field - " + getIdName() + " ; value - " + id, new RuntimeException());
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ; id - " + id, e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ; id - " + id, e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ; id - " + id, e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + id, e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ; id - " + id, e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultDataList;
+    }
+
+    protected void closeResultSet(ResultSet resultSet, String sql) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+        }
+    }
+
+    protected void closePreparedStatement(PreparedStatement preparedStatement, String sql) {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+        }
+    }
+
+    protected void closeConnection(Connection connection, String sql) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
+        }
     }
 
     protected List<List<Object>> getAllRecordDataList() {
         String sql = "SELECT * FROM " + getTableName() + " ORDER BY " + getIdName() + " ;";
 
-        List<List<Object>> resultDataListList = new ArrayList<List<Object>>();
+        List<List<Object>> resultDataListList = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             resultSet = pStatement.executeQuery();
             List<Object> resultDataList;
             while (resultSet.next()) {
-                resultDataList = new ArrayList<Object>();
+                resultDataList = new ArrayList<>();
                 // fields in jdbc starts from 1 instead 0
                 for (int i = 1; i <= getQuantityOfFields(); i++) {
                     resultDataList.add(getDataFromResultSet(i, resultSet));
@@ -109,23 +124,11 @@ abstract public class AbstractDao {
                 resultDataListList.add(resultDataList);
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultDataListList;
     }
@@ -154,7 +157,7 @@ abstract public class AbstractDao {
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             resultSet = pStatement.executeQuery();
             List<Object> resultDataList;
@@ -167,23 +170,11 @@ abstract public class AbstractDao {
                 resultDataListList.add(resultDataList);
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultDataListList;
     }
@@ -192,18 +183,18 @@ abstract public class AbstractDao {
         String sql = "SELECT * FROM " + getTableName() + " " +
                 "WHERE " + field + "=? " + " ORDER BY " + getIdName() + " ;";
 
-        List<List<Object>> resultDataListList = new ArrayList<List<Object>>();
+        List<List<Object>> resultDataListList = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, value);
             resultSet = pStatement.executeQuery();
             List<Object> resultDataList;
             while (resultSet.next()) {
-                resultDataList = new ArrayList<Object>();
+                resultDataList = new ArrayList<>();
                 // fields in jdbc starts from 1 instead 0
                 for (int i = 1; i <= getQuantityOfFields(); i++) {
                     resultDataList.add(getDataFromResultSet(i, resultSet));
@@ -211,23 +202,11 @@ abstract public class AbstractDao {
                 resultDataListList.add(resultDataList);
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultDataListList;
     }
@@ -247,7 +226,7 @@ abstract public class AbstractDao {
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             for (int i = 1; i < getQuantityOfFields(); i++) {
                 setDataToPrepareStatement(pStatement, i, getTypeOfField(i + 1), dataList.get(i));
@@ -256,20 +235,10 @@ abstract public class AbstractDao {
 
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -281,7 +250,7 @@ abstract public class AbstractDao {
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pStatement.executeUpdate();
             resultSet = pStatement.getGeneratedKeys();
@@ -289,23 +258,11 @@ abstract public class AbstractDao {
                 resultId = resultSet.getInt(getIdName());
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + resultId, e);
-            throw new SQLDaoException(" SQL close error : " + sql + " ; id - " + resultId, e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + resultId, e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + resultId, e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ; id - " + resultId, e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultId;
     }
@@ -316,25 +273,15 @@ abstract public class AbstractDao {
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, id);
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + id, e);
-            throw new SQLDaoException(" SQL close error : " + sql + " ; id - " + id, e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + id, e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + id, e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ; id - " + id, e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -346,7 +293,7 @@ abstract public class AbstractDao {
         PreparedStatement pStatement = null;
         ResultSet resultSet = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             setDataToPrepareStatement(pStatement, 1, valueType, value);
             pStatement.executeUpdate();
@@ -355,27 +302,17 @@ abstract public class AbstractDao {
                 resultId = resultSet.getInt(getIdName());
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; value - " + value, e);
-            throw new SQLDaoException(" SQL close error : " + sql + " ; value - " + value, e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; value - " + value, e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; value - " + value, e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ; value - " + value, e);
-            }
+            closeResultSet(resultSet, sql);
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
         return resultId;
     }
 
     protected void setValueToFieldById(String fieldName, Object value, TypeOfFiled valueType, int id) {
-        StringBuilder tempSql = new StringBuilder();
-        tempSql.append("UPDATE ").append(getTableName()).append(" SET ");
+        StringBuilder tempSql = new StringBuilder().append("UPDATE ").append(getTableName()).append(" SET ");
         tempSql.append(fieldName).append(" = ?");
         tempSql.append(" WHERE ").append(getIdName()).append("= ?;");
         String sql = tempSql.toString();
@@ -383,26 +320,16 @@ abstract public class AbstractDao {
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             setDataToPrepareStatement(pStatement, 1, valueType, value);
             setDataToPrepareStatement(pStatement, 2, getTypeOfField(1), id); // set ID
             pStatement.executeUpdate();
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ;", e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ;", e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -412,26 +339,16 @@ abstract public class AbstractDao {
         Connection conn = null;
         PreparedStatement pStatement = null;
         try {
-            conn = DaoFactory.getConnection();
+            conn = DaoConnection.getConnection();
             pStatement = conn.prepareStatement(sql);
             pStatement.setInt(1, id);
             pStatement.executeUpdate();
 
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ; id - " + id, e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ; id - " + id, e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ; id - " + id, e);
         } finally {
-            try {
-                if (pStatement != null) {
-                    pStatement.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL close error : " + sql + " ; id - " + id, e);
-                throw new SQLDaoException(" SQL close error : " + sql + " ; id - " + id, e);
-            }
+            closePreparedStatement(pStatement, sql);
+            closeConnection(conn, sql);
         }
     }
 
@@ -450,9 +367,8 @@ abstract public class AbstractDao {
         if ((i > 0) || (i <= getQuantityOfFields())) {
             return getFieldNameInTable(i - 1);
         }
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Incorrect set name of field. Quantity - " +
-                getQuantityOfFields() + " ; search - " + i);
-        throw new WrongSetFieldDaoException("Quantity - " + getQuantityOfFields() + " ; search - " + i);
+        throw new WrongSetFieldDaoException(LOGGER_NAME, CLASS_NAME, "Incorrect set name of field. Quantity - " +
+                getQuantityOfFields() + " ; search - " + i, new RuntimeException());
     }
 
     protected Object getDataFromResultSet(int i, ResultSet resultSet) throws SQLException {
@@ -476,10 +392,8 @@ abstract public class AbstractDao {
                 return (resultSet.getDouble(i));
             }
             default: {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, "Unknown type of field in table - " + getTableName() + " ;" +
-                        " type - " + getTypeOfField(i));
-                throw new UnknownTypeOfFieldDaoException("table - " + getTableName() + " ;" +
-                        " type - " + getTypeOfField(i));
+                throw new UnknownTypeOfFieldDaoException(LOGGER_NAME, CLASS_NAME, "Unknown type of field in table - "
+                        + getTableName() + " ;" + " type - " + getTypeOfField(i), new RuntimeException());
             }
         }
     }
@@ -512,12 +426,9 @@ abstract public class AbstractDao {
                 return;
             }
             default: {
-                AppLog.error(LOGGER_NAME, CLASS_NAME, "Unknown type of field in table - " + getTableName() + " ;" +
-                        " type - " + typeOfFiled);
-                throw new UnknownTypeOfFieldDaoException("table - " + getTableName() + " ;" +
-                        " type - " + typeOfFiled);
+                throw new UnknownTypeOfFieldDaoException(LOGGER_NAME, CLASS_NAME, "Unknown type of field in table - "
+                        + getTableName() + " ;" + " type - " + typeOfFiled, new RuntimeException());
             }
         }
     }
-
 }

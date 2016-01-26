@@ -1,3 +1,7 @@
+/**
+ * work`s with "simple" experiment table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.joda.time.DateTime;
@@ -14,9 +18,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentSimpleDao extends AbstractExperimentExtraDao {
 
@@ -68,10 +71,8 @@ public class ExperimentSimpleDao extends AbstractExperimentExtraDao {
     @Override
     protected void fillExtraDataInExperiment(List<Object> dataList, Experiment experiment) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         SimpleExperiment simpleExperiment = ClassTypeUtil.getCheckedClass(experiment, SimpleExperiment.class);

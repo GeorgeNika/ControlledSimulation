@@ -193,7 +193,7 @@
             data: {idGenerator: ${generator.idGenerator}},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 } else {
                     window.location.href = '${context}/generatorMainSetupPage';
                 }

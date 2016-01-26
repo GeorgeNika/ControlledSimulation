@@ -8,7 +8,7 @@ package ua.george_nika.simulation.controller;
 import ua.george_nika.simulation.controller.entity.EntityInfoExtraController;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.controller.entity.EntityExtraController;
-import ua.george_nika.simulation.controller.error.NoNormalExtraControllerRegistered;
+import ua.george_nika.simulation.controller.error.NoExtraControllerRegistered;
 import ua.george_nika.simulation.controller.experiment.ExperimentExtraController;
 import ua.george_nika.simulation.controller.generator.GeneratorExtraController;
 
@@ -48,8 +48,8 @@ public class ControllerFactory {
         try {
             return (ExperimentExtraController) Class.forName(experimentControllerClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
-            throw new NoNormalExtraControllerRegistered("Get controller exception. Type -" + type, e);
+            throw new NoExtraControllerRegistered(LOGGER_NAME, CLASS_NAME,
+                    "Get controller exception. Type - " + type, e);
         }
     }
 
@@ -57,8 +57,8 @@ public class ControllerFactory {
         try {
             return (GeneratorExtraController) Class.forName(generatorControllerClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
-            throw new NoNormalExtraControllerRegistered("Get controller exception. Type -" + type, e);
+            throw new NoExtraControllerRegistered(LOGGER_NAME, CLASS_NAME,
+                    "Get controller exception. Type - " + type, e);
         }
     }
 
@@ -66,8 +66,8 @@ public class ControllerFactory {
         try {
             return (EntityExtraController) Class.forName(entityControllerClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
-            throw new NoNormalExtraControllerRegistered("Get controller exception. Type -" + type, e);
+            throw new NoExtraControllerRegistered(LOGGER_NAME, CLASS_NAME,
+                    "Get controller exception. Type - " + type, e);
         }
     }
 
@@ -75,8 +75,8 @@ public class ControllerFactory {
         try {
             return (EntityInfoExtraController) Class.forName(entityInfoControllerClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get controller exception. Type -" + type, e);
-            throw new NoNormalExtraControllerRegistered("Get controller exception. Type -" + type, e);
+            throw new NoExtraControllerRegistered(LOGGER_NAME, CLASS_NAME,
+                    "Get controller exception. Type - " + type, e);
         }
     }
 

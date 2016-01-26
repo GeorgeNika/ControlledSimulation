@@ -1,3 +1,7 @@
+/**
+ * Base methods for work with experiment extra tables
+ */
+
 package ua.george_nika.simulation.dao.experiment.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
@@ -6,9 +10,6 @@ import ua.george_nika.simulation.model.experiment.Experiment;
 
 import java.util.List;
 
-/**
- * Created by george on 06.12.2015.
- */
 abstract public class AbstractExperimentExtraDao extends AbstractDao implements ExperimentExtraDao {
 
     abstract protected void fillExtraDataInExperiment(List<Object> dataList, Experiment experiment);

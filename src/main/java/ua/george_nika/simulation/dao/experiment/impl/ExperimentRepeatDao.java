@@ -1,3 +1,7 @@
+/**
+ * work`s with "repeat" experiment table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.springframework.stereotype.Repository;
@@ -13,9 +17,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentRepeatDao extends AbstractExperimentExtraDao {
 
@@ -31,7 +34,8 @@ public class ExperimentRepeatDao extends AbstractExperimentExtraDao {
         DaoFactory.registerExperimentExtraClassInFactory(RepeatExperiment.EXPERIMENT_TYPE,
                 ExperimentRepeatDao.class.getCanonicalName());
     }
-    public ExperimentRepeatDao(){
+
+    public ExperimentRepeatDao() {
         fieldTypeInTable.clear();
         fieldNameInTable.clear();
 
@@ -58,10 +62,8 @@ public class ExperimentRepeatDao extends AbstractExperimentExtraDao {
     @Override
     protected void fillExtraDataInExperiment(List<Object> dataList, Experiment experiment) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         RepeatExperiment repeatExperiment = ClassTypeUtil.getCheckedClass(experiment, RepeatExperiment.class);

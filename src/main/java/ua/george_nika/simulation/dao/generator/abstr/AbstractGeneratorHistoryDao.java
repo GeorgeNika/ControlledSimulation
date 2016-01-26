@@ -1,3 +1,7 @@
+/**
+ * Base methods for work with generator history common table
+ */
+
 package ua.george_nika.simulation.dao.generator.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
@@ -5,17 +9,11 @@ import ua.george_nika.simulation.dao.DaoConst;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.filter.GeneratorFilter;
 import ua.george_nika.simulation.dao.generator.GeneratorHistoryDao;
-import ua.george_nika.simulation.model.generator.GeneratorFactory;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
-import ua.george_nika.simulation.util.AppConst;
-import ua.george_nika.simulation.util.AppLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 12.01.2016.
- */
 abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements GeneratorHistoryDao {
 
 
@@ -25,9 +23,8 @@ abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements
 
     @Override
     public int createNewGeneratorHistoryRecord(GeneratorHistory generatorHistory) {
-        int resultId = createEmptyRecordWithOneFieldAndGetNewId(
-                DaoConst.GEN_TYPE_IN_GEN_HISTORY_MAIN_TABLE, generatorHistory.getGeneratorType(), TypeOfFiled.STRING);
-        return resultId;
+        return createEmptyRecordWithOneFieldAndGetNewId(DaoConst.GEN_TYPE_IN_GEN_HISTORY_MAIN_TABLE,
+                generatorHistory.getGeneratorType(), TypeOfFiled.STRING);
     }
 
     @Override
@@ -38,8 +35,7 @@ abstract public class AbstractGeneratorHistoryDao extends AbstractDao implements
 
     public GeneratorHistory getLazyGeneratorHistoryById(int idGeneratorHistory) {
         List<Object> resultData = getSingleRecordDataById(idGeneratorHistory);
-        GeneratorHistory resultGeneratorHistory = getGeneratorHistoryFromData(resultData);
-        return resultGeneratorHistory;
+        return getGeneratorHistoryFromData(resultData);
     }
 
     public List<GeneratorHistory> getAllLazyGeneratorHistory() {

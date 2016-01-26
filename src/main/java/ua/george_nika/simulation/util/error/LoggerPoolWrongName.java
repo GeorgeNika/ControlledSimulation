@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.util.error;
 
-/**
- * Created by george on 03.01.2016.
- */
-public class LoggerPoolWrongName extends RuntimeException {
+@SuppressWarnings("unused")
+
+public class LoggerPoolWrongName extends NoUserFriendlyException {
     public LoggerPoolWrongName() {
     }
 
@@ -13,5 +12,9 @@ public class LoggerPoolWrongName extends RuntimeException {
 
     public LoggerPoolWrongName(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public LoggerPoolWrongName(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

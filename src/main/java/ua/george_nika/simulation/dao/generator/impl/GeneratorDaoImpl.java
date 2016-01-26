@@ -1,3 +1,7 @@
+/**
+ * work`s with generator common table
+ */
+
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.joda.time.DateTime;
@@ -12,9 +16,8 @@ import ua.george_nika.simulation.util.AppLog;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 06.12.2015.
- */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
 public class GeneratorDaoImpl extends AbstractGeneratorDao {
 
@@ -54,7 +57,6 @@ public class GeneratorDaoImpl extends AbstractGeneratorDao {
         fieldNameInTable.add("updated");
     }
 
-
     protected String getTableName() {
         return TABLE_NAME;
     }
@@ -71,10 +73,8 @@ public class GeneratorDaoImpl extends AbstractGeneratorDao {
         String type = (String) dataList.get(2);
         Generator result = GeneratorFactory.getGeneratorByType(type);
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         result.setIdGenerator((Integer) dataList.get(0));

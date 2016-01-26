@@ -69,7 +69,7 @@
             data: {idExperiment: ${idExperiment}, idGenerator: selectedId},
             success: function (response) {
                 if (response != true) {
-                    alert('ERROR. You should check your authentication.');
+                    $('html').html(response);
                 }
                 getAjaxContent();
             }
@@ -118,6 +118,9 @@
             datatype: 'json',
             data: {idExperiment: ${idExperiment}, idGenerator: searchedId},
             success: function (response) {
+                if (response != true) {
+                    $('html').html(response);
+                }
                 getAjaxContent(response);
             }
         });

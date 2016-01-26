@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appenders>
-        <File name="MissingLogs" fileName="..\logs\simulation\missing_logs.log">
+        <File name="MissingLogs" fileName="${sys:SimulationLogPath}missing_logs.log">
             <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] [%logger{36}] %M - %msg%n"/>
         </File>
-        <RollingRandomAccessFile name="UserAll" fileName="..\logs\simulation\user_all.log"
-                                 filePattern="..\logs\simulation\arch\user_all-%d{yyyy_MM_dd__HH_mm_ss}.log">
+        <RollingRandomAccessFile name="UserAll" fileName="${sys:SimulationLogPath}user_all.log"
+                                 filePattern="${sys:SimulationArchiveLogPath}user_all-%d{yyyy_MM_dd__HH_mm_ss}.log">
             <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] %M - %msg%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="1 MB"></SizeBasedTriggeringPolicy>
             </Policies>
         </RollingRandomAccessFile>
-        <RollingRandomAccessFile name="UserError" fileName="..\logs\simulation\user_error.log"
-                                 filePattern="..\logs\simulation\arch\user_error-%d{yyyy_MM_dd__HH_mm_ss}.log">
+        <RollingRandomAccessFile name="UserError" fileName="${sys:SimulationLogPath}user_error.log"
+                                 filePattern="${sys:SimulationArchiveLogPath}user_error-%d{yyyy_MM_dd__HH_mm_ss}.log">
             <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] [%logger{36}] %M - %msg%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="1 MB"></SizeBasedTriggeringPolicy>
             </Policies>
         </RollingRandomAccessFile>
-        <RollingRandomAccessFile name="AppError" fileName="..\logs\simulation\app_error.log"
-                                 filePattern="..\logs\simulation\arch\error-%d{yyyy_MM_dd__HH_mm_ss}.log">
+        <RollingRandomAccessFile name="AppError" fileName="${sys:SimulationLogPath}app_error.log"
+                                 filePattern="${sys:SimulationArchiveLogPath}error-%d{yyyy_MM_dd__HH_mm_ss}.log">
             <PatternLayout pattern="[%-5level] %d{DEFAULT} [%t] [%logger{36}] %M - %msg%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>

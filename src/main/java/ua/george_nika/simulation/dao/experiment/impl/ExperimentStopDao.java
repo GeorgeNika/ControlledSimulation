@@ -1,6 +1,9 @@
+/**
+ * work`s with "stop" experiment table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.error.WrongDaoSettingException;
@@ -9,12 +12,8 @@ import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.impl.StopExperiment;
 import ua.george_nika.simulation.util.AppLog;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
 @Repository
 public class ExperimentStopDao extends AbstractExperimentExtraDao {
 
@@ -47,29 +46,29 @@ public class ExperimentStopDao extends AbstractExperimentExtraDao {
     }
 
     protected String getTableName() {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     protected String getIdName() {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     protected int getQuantityOfFields() {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
     @Override
     protected void fillExtraDataInExperiment(List<Object> dataList, Experiment experiment) {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 
 
     protected List<Object> getExtraDataFromExperiment(Experiment experiment) {
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME);
-        throw new WrongDaoSettingException("Wrong setting in - " + CLASS_NAME);
+        throw new WrongDaoSettingException(LOGGER_NAME, CLASS_NAME, "Wrong setting in - " + CLASS_NAME,
+                new RuntimeException());
     }
 }

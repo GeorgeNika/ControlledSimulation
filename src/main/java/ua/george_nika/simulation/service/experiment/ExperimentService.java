@@ -1,3 +1,8 @@
+/**
+ * Common service for experiments
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.service.experiment;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +19,6 @@ import ua.george_nika.simulation.util.RunningExperimentHolder;
 
 import java.util.List;
 
-/**
- * Created by george on 07.12.2015.
- */
 @Service
 public class ExperimentService {
     private static String LOGGER_NAME = AppLog.SERVICE;
@@ -30,9 +32,6 @@ public class ExperimentService {
     @Autowired
     private GeneratorService generatorService;
 
-    @Autowired
-    private ExperimentHistoryService experimentHistoryService;
-
 
     public Experiment getExperimentById(int idExperiment) {
         try {
@@ -43,8 +42,8 @@ public class ExperimentService {
             resultExperiment.setGeneratorList(tempGenList);
             return resultExperiment;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get experiment by id - " + idExperiment, ex);
-            throw new ExperimentException("Error in get experiment by id - " + idExperiment);
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get experiment by id - " + idExperiment, ex);
         }
     }
 
@@ -54,8 +53,8 @@ public class ExperimentService {
             resultExperiment = experimentDao.getLazyExperimentById(idExperiment);
             return resultExperiment;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get lazy experiment by id - " + idExperiment, ex);
-            throw new ExperimentException("Error in get lazy experiment by id - " + idExperiment);
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME,
+                    "Error in get lazy experiment by id - " + idExperiment, ex);
         }
     }
 
@@ -65,8 +64,7 @@ public class ExperimentService {
             resultExperimentList = experimentDao.getAllLazyExperiment();
             return resultExperimentList;
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in get all lazy experiment", ex);
-            throw new ExperimentException("Error in get all lazy experiment");
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in get all lazy experiment", ex);
         }
     }
 
@@ -77,8 +75,8 @@ public class ExperimentService {
             ExperimentExtraDao experimentExtraDao = DaoFactory.getExperimentExtraDaoByType(experimentType);
             experimentExtraDao.createNewExperimentExtraDataById(resultId);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in create new experiment by type - " + experimentType, ex);
-            throw new ExperimentException("Error in create new experiment by type - " + experimentType);
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME,
+                    "Error in create new experiment by type - " + experimentType, ex);
         }
     }
 
@@ -86,8 +84,8 @@ public class ExperimentService {
         try {
             experimentDao.updateLazyExperiment(experiment);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in update lazy experiment id - " + experiment.getIdExperiment(), ex);
-            throw new ExperimentException("Error in update lazy experiment id - " + experiment.getIdExperiment());
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in update lazy experiment id - "
+                    + experiment.getIdExperiment(), ex);
         }
     }
 
@@ -95,11 +93,10 @@ public class ExperimentService {
         try {
             experimentDao.deleteLazyExperimentById(idExperiment);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in delete experiment by id - " + idExperiment, ex);
-            throw new ExperimentException("Error in delete experiment by id - " + idExperiment);
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME,
+                    "Error in delete experiment by id - " + idExperiment, ex);
         }
     }
-
 
     public void addGeneratorToExperimentList(int idExperiment, int idGenerator) {
         try {
@@ -110,10 +107,8 @@ public class ExperimentService {
             }
             experimentDao.addGeneratorToExperimentList(idExperiment, idGenerator);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in add generator id - " + idGenerator +
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in add generator id - " + idGenerator +
                     " to experiment id - " + idExperiment, ex);
-            throw new ExperimentException("Error in add generator id - " + idGenerator +
-                    " to experiment id - " + idExperiment);
         }
     }
 
@@ -121,10 +116,8 @@ public class ExperimentService {
         try {
             experimentDao.deleteGeneratorFromExperimentList(idExperiment, idGenerator);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in delete generator id - " + idGenerator +
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in delete generator id - " + idGenerator +
                     " from experiment id - " + idExperiment, ex);
-            throw new ExperimentException("Error in delete generator id - " + idGenerator +
-                    " from experiment id - " + idExperiment);
         }
     }
 
@@ -134,9 +127,8 @@ public class ExperimentService {
             ExperimentExtraDao experimentExtraDao = DaoFactory.getExperimentExtraDaoByType(experiment.getExperimentType());
             experimentExtraDao.updateExperimentExtraData(experiment);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in update extra data in experiment id - " +
-                    experiment.getIdExperiment(), ex);
-            throw new ExperimentException("Error in update extra data in experiment id - " + experiment.getIdExperiment());
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in update extra data in experiment id - "
+                    + experiment.getIdExperiment(), ex);
         }
     }
 
@@ -160,10 +152,8 @@ public class ExperimentService {
             experimentExtraDao.deleteExperimentExtraData(idExperiment);
 
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in change experiment type id - " + idExperiment +
-                    " to type - " + newExperimentType, ex);
-            throw new ExperimentException("Error in change experiment type id - " + idExperiment +
-                    " to type - " + newExperimentType);
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in change experiment type id - "
+                    + idExperiment + " to type - " + newExperimentType, ex);
         }
 
     }
@@ -173,8 +163,8 @@ public class ExperimentService {
             experiment.startExecution();
             RunningExperimentHolder.addRunningExperiment(experiment);
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in start experiment id - " + experiment.getIdExperiment(), ex);
-            throw new ExperimentException("Error in start experiment id - " + experiment.getIdExperiment());
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in start experiment id - "
+                    + experiment.getIdExperiment(), ex);
         }
     }
 
@@ -182,8 +172,8 @@ public class ExperimentService {
         try {
             experiment.endExecution();
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in stop experiment id - " + experiment.getIdExperiment(), ex);
-            throw new ExperimentException("Error in stop experiment id - " + experiment.getIdExperiment());
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in stop experiment id - "
+                    + experiment.getIdExperiment(), ex);
         }
     }
 
@@ -191,18 +181,18 @@ public class ExperimentService {
         try {
             experiment.pauseExecution();
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in pause experiment id - " + experiment.getIdExperiment(), ex);
-            throw new ExperimentException("Error in pause experiment id - " + experiment.getIdExperiment());
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in pause experiment id - "
+                    + experiment.getIdExperiment(), ex);
         }
     }
 
     public void continueExperiment(Experiment experiment) {
         try {
-            // todo in future.    We may Check about changes of experiment.
+            // todo in future.    We may check about changes of experiment's setting and correct experiment .
             experiment.continueExecution();
         } catch (RuntimeException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error in continue experiment id - " + experiment.getIdExperiment(), ex);
-            throw new ExperimentException("Error in continue experiment id - " + experiment.getIdExperiment());
+            throw new ExperimentException(LOGGER_NAME, CLASS_NAME, "Error in continue experiment id - "
+                    + experiment.getIdExperiment(), ex);
         }
     }
 

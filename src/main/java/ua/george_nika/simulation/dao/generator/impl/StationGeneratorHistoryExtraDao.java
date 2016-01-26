@@ -1,3 +1,7 @@
+/**
+ * work`s with "station" generator history
+ */
+
 package ua.george_nika.simulation.dao.generator.impl;
 
 import org.springframework.stereotype.Repository;
@@ -14,16 +18,14 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 12.01.2016.
- */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
+
 @Repository
 public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExtraDao {
 
-    protected static final String TABLE_NAME = "gen_station_history";
-    protected static final String ID_NAME = "id_generator_history";
-    protected static final int QUANTITY_OF_FIELDS = 3;
-
+    private static final String TABLE_NAME = "gen_station_history";
+    private static final String ID_NAME = "id_generator_history";
+    private static final int QUANTITY_OF_FIELDS = 3;
 
     private static String LOGGER_NAME = AppLog.DAO;
     private static String CLASS_NAME = RouteGeneratorHistoryExtraDao.class.getSimpleName();
@@ -33,7 +35,7 @@ public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExt
                 StationGeneratorHistoryExtraDao.class.getCanonicalName());
     }
 
-    public StationGeneratorHistoryExtraDao(){
+    public StationGeneratorHistoryExtraDao() {
         fieldTypeInTable.clear();
         fieldNameInTable.clear();
 
@@ -62,10 +64,8 @@ public class StationGeneratorHistoryExtraDao extends AbstractGeneratorHistoryExt
     @Override
     protected void fillExtraDataInGeneratorHistory(List<Object> dataList, GeneratorHistory generatorHistory) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         StationGeneratorHistory stationGeneratorHistory =

@@ -1,16 +1,15 @@
+/**
+ * Base methods for work with experiment history extra tables
+ */
+
 package ua.george_nika.simulation.dao.experiment.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
-import ua.george_nika.simulation.dao.experiment.ExperimentExtraDao;
 import ua.george_nika.simulation.dao.experiment.ExperimentHistoryExtraDao;
-import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 
 import java.util.List;
 
-/**
- * Created by george on 06.12.2015.
- */
 abstract public class AbstractExperimentHistoryExtraDao extends AbstractDao implements ExperimentHistoryExtraDao {
 
     abstract protected void fillExtraDataInExperimentHistory(List<Object> dataList, ExperimentHistory experimentHistory);

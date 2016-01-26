@@ -1,3 +1,7 @@
+/**
+ * Work with entity history common table
+ */
+
 package ua.george_nika.simulation.dao.entity;
 
 import ua.george_nika.simulation.dao.filter.EntityFilter;
@@ -5,9 +9,6 @@ import ua.george_nika.simulation.model.entity.EntityHistory;
 
 import java.util.List;
 
-/**
- * Created by george on 11.01.2016.
- */
 public interface EntityHistoryDao {
 
     int createNewEntityHistoryRecord(EntityHistory entityHistory);

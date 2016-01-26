@@ -1,15 +1,16 @@
+/**
+ * Work with "bus" entity history table
+ */
+
 package ua.george_nika.simulation.dao.entity.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.TypeOfFiled;
 import ua.george_nika.simulation.dao.entity.abstr.AbstractEntityHistoryExtraDao;
-import ua.george_nika.simulation.dao.entity.abstr.AbstractEntityInfoExtraDao;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.model.entity.EntityHistory;
-import ua.george_nika.simulation.model.entity.EntityInfo;
 import ua.george_nika.simulation.model.entity.impl.BusEntity;
-import ua.george_nika.simulation.model.entity.impl.BusEntityInfo;
 import ua.george_nika.simulation.model.entity.impl.BusHistory;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
@@ -17,9 +18,8 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class EntityBusHistoryDao extends AbstractEntityHistoryExtraDao {
 
@@ -66,10 +66,8 @@ public class EntityBusHistoryDao extends AbstractEntityHistoryExtraDao {
     @Override
     protected void fillExtraDataInEntityHistory(List<Object> dataList, EntityHistory entityHistory) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         BusHistory busHistory = ClassTypeUtil.getCheckedClass(entityHistory, BusHistory.class);

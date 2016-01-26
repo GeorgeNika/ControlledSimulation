@@ -1,3 +1,7 @@
+/**
+ * Base methods for work with entity history common table
+ */
+
 package ua.george_nika.simulation.dao.entity.abstr;
 
 import ua.george_nika.simulation.dao.AbstractDao;
@@ -10,9 +14,6 @@ import ua.george_nika.simulation.model.entity.EntityHistory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 05.01.2016.
- */
 abstract public class AbstractEntityHistoryDao extends AbstractDao implements EntityHistoryDao {
 
     abstract protected EntityHistory getEntityHistoryFromData(List<Object> dataList);
@@ -22,21 +23,19 @@ abstract public class AbstractEntityHistoryDao extends AbstractDao implements En
 
     @Override
     public int createNewEntityHistoryRecord(EntityHistory entityHistory) {
-        int resultId = createEmptyRecordWithOneFieldAndGetNewId(
-                DaoConst.ENTITY_TYPE_IN_ENTITY_HISTORY_MAIN_TABLE, entityHistory.getEntityType(), TypeOfFiled.STRING);
-        return resultId;
+        return createEmptyRecordWithOneFieldAndGetNewId(DaoConst.ENTITY_TYPE_IN_ENTITY_HISTORY_MAIN_TABLE,
+                entityHistory.getEntityType(), TypeOfFiled.STRING);
     }
 
     @Override
     public void saveEntityHistory(EntityHistory entityHistory) {
         List<Object> resultData = getDataFromEntityHistory(entityHistory);
-        updateRecordDataById(entityHistory.getIdEntityHistory(),resultData);
+        updateRecordDataById(entityHistory.getIdEntityHistory(), resultData);
     }
 
     public EntityHistory getLazyEntityHistoryById(int id) {
         List<Object> resultData = getSingleRecordDataById(id);
-        EntityHistory resultEntityHistory = getEntityHistoryFromData(resultData);
-        return resultEntityHistory;
+        return getEntityHistoryFromData(resultData);
     }
 
     public List<EntityHistory> getAllLazyEntityHistory() {

@@ -51,16 +51,16 @@ public class FileController {
         ExperimentHistory expHistory = experimentHistoryService.getLazyExperimentHistoryById(idExperimentHistory);
         AppLog.userInfo(LOGGER_NAME, session, "Download Xml file " + expHistory.getXmlFile()
                 + " from experiment with history id - " + idExperimentHistory);
-        downloadFile(request, session, response, AppConst.getPathXml(), expHistory.getXmlFile());
+        downloadFile(request, session, response, AppConst.getPathExperimentXml(), expHistory.getXmlFile());
     }
 
     @RequestMapping("/downloadLogFile/{idExperimentHistory}")
     public void downloadLogFile(HttpServletRequest request, HttpSession session, HttpServletResponse response,
                                 @PathVariable(value = "idExperimentHistory") int idExperimentHistory) {
-        ExperimentHistory expHistory =   experimentHistoryService.getLazyExperimentHistoryById(idExperimentHistory);
+        ExperimentHistory expHistory = experimentHistoryService.getLazyExperimentHistoryById(idExperimentHistory);
         AppLog.userInfo(LOGGER_NAME, session, "Download Log file " + expHistory.getLogFile()
                 + " from experiment with history id - " + idExperimentHistory);
-        downloadFile(request, session, response, AppConst.getPathLog(), expHistory.getLogFile());
+        downloadFile(request, session, response, AppConst.getPathExperimentLog(), expHistory.getLogFile());
     }
 
     // put file in response
@@ -106,11 +106,11 @@ public class FileController {
             inputStream.close();
             outStream.close();
         } catch (FileNotFoundException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error. File not found for download - " + filePath + fileName, ex);
-            throw new DownloadFileException("Error. File not found for download - " + filePath + fileName);
+            throw new DownloadFileException(LOGGER_NAME, CLASS_NAME, "Error. File not found for download - "
+                    + filePath + fileName, ex);
         } catch (IOException ex) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error Input-Output. When download - " + filePath + fileName, ex);
-            throw new DownloadFileException("Error Input-Output. When download - " + filePath + fileName);
+            throw new DownloadFileException(LOGGER_NAME, CLASS_NAME, "Error Input-Output. When download - "
+                    + filePath + fileName, ex);
         }
     }
 

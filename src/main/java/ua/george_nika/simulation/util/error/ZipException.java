@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.util.error;
 
-/**
- * Created by george on 29.12.2015.
- */
-public class ZipException extends RuntimeException {
+@SuppressWarnings("unused")
+
+public class ZipException extends UserFriendlyException {
     public ZipException() {
     }
 
@@ -13,5 +12,9 @@ public class ZipException extends RuntimeException {
 
     public ZipException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public ZipException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

@@ -1,7 +1,7 @@
 /**
  * Returns string representation of date
  * if date is null then will return empty string
- *
+ * <p>
  * after lecture  JavaDoc + UnitTest = Documentation
  */
 package ua.george_nika.simulation.util;

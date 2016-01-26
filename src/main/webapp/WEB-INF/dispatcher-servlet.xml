@@ -20,19 +20,31 @@
     </bean>
     <context:property-placeholder location="classpath:config.properties"/>
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="ua.george_nika.simulation.util.AppConst.setPathLog"/>
+        <property name="staticMethod" value="ua.george_nika.simulation.util.AppConst.setPathApplicationLog"/>
         <property name="arguments">
-            <value>${path.log}</value>
+            <value>${path.application_log}</value>
         </property>
     </bean>
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="ua.george_nika.simulation.util.AppConst.setPathXml"/>
+        <property name="staticMethod" value="ua.george_nika.simulation.util.AppConst.setPathArchiveApplicationLog"/>
         <property name="arguments">
-            <value>${path.xml}</value>
+            <value>${path.application_archive_log}</value>
         </property>
     </bean>
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="ua.george_nika.simulation.dao.DaoFactory.setDataBaseConnection"/>
+        <property name="staticMethod" value="ua.george_nika.simulation.util.AppConst.setPathExperimentLog"/>
+        <property name="arguments">
+            <value>${path.experiment_log}</value>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="ua.george_nika.simulation.util.AppConst.setPathExperimentXml"/>
+        <property name="arguments">
+            <value>${path.experiment_xml}</value>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="ua.george_nika.simulation.dao.DaoConnection.setDataBaseConnection"/>
         <property name="arguments">
             <value>${db.jndi_name}</value>
         </property>
@@ -53,7 +65,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean class="ua.george_nika.simulation.util.AppSimulationExceptionResolver"/>
+    <bean class="ua.george_nika.simulation.util.AppExceptionResolver"/>
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="1000000"/>

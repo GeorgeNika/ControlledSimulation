@@ -1,24 +1,25 @@
+/**
+ * work`s with "price" experiment history table
+ */
+
 package ua.george_nika.simulation.dao.experiment.impl;
 
 import org.springframework.stereotype.Repository;
 import ua.george_nika.simulation.dao.DaoFactory;
 import ua.george_nika.simulation.dao.TypeOfFiled;
-import ua.george_nika.simulation.dao.error.WrongDaoSettingException;
 import ua.george_nika.simulation.dao.error.WrongDataDaoException;
 import ua.george_nika.simulation.dao.experiment.abstr.AbstractExperimentHistoryExtraDao;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 import ua.george_nika.simulation.model.experiment.impl.PriceExperiment;
 import ua.george_nika.simulation.model.experiment.impl.PriceExperimentHistory;
-import ua.george_nika.simulation.model.experiment.impl.RepeatExperiment;
 import ua.george_nika.simulation.util.AppLog;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 @Repository
 public class ExperimentPriceHistoryDao extends AbstractExperimentHistoryExtraDao {
 
@@ -28,13 +29,14 @@ public class ExperimentPriceHistoryDao extends AbstractExperimentHistoryExtraDao
 
 
     private static String LOGGER_NAME = AppLog.DAO;
-    private static String CLASS_NAME = ExperimentTimeHistoryDao.class.getSimpleName();
+    private static String CLASS_NAME = ExperimentPriceHistoryDao.class.getSimpleName();
 
     static {
         DaoFactory.registerExperimentHistoryExtraClassInFactory(PriceExperiment.EXPERIMENT_TYPE,
                 ExperimentPriceHistoryDao.class.getCanonicalName());
     }
-    public ExperimentPriceHistoryDao(){
+
+    public ExperimentPriceHistoryDao() {
         fieldTypeInTable.clear();
         fieldNameInTable.clear();
 
@@ -43,7 +45,6 @@ public class ExperimentPriceHistoryDao extends AbstractExperimentHistoryExtraDao
 
         fieldTypeInTable.add(TypeOfFiled.INT);
         fieldNameInTable.add("current_price");
-
     }
 
     protected String getTableName() {
@@ -62,10 +63,8 @@ public class ExperimentPriceHistoryDao extends AbstractExperimentHistoryExtraDao
     @Override
     protected void fillExtraDataInExperimentHistory(List<Object> dataList, ExperimentHistory experimentHistory) {
         if (dataList.size() != getQuantityOfFields()) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
-            throw new WrongDataDaoException("Data size - " + dataList.size() + " ; " +
-                    "Quantity - " + getQuantityOfFields());
+            throw new WrongDataDaoException(LOGGER_NAME, CLASS_NAME, "Wrong data. Data size - " + dataList.size()
+                    + " ; " + "Quantity - " + getQuantityOfFields(), new RuntimeException());
         }
 
         PriceExperimentHistory priceExperimentHistory =

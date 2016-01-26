@@ -24,8 +24,8 @@ public class FileUtil {
                 throw new DeleteFileException();
             }
         } catch (RuntimeException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Error. Can not delete file - " + pathName + fileName, e);
-            throw new DeleteFileException("Error. Can not delete file - " + pathName + fileName, e);
+            throw new DeleteFileException(LOGGER_NAME, CLASS_NAME, "Error. Could not delete file - "
+                    + pathName + fileName, e);
         }
     }
 }
