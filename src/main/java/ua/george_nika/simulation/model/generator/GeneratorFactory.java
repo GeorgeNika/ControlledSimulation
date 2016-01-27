@@ -1,3 +1,8 @@
+/**
+ * used for getting generator object
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.model.generator;
 
 import ua.george_nika.simulation.model.generator.error.GetGeneratorException;
@@ -7,12 +12,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 public class GeneratorFactory {
 
-    private static Map<String, String> generatorClassMap = new HashMap<String, String>();
+    private static Map<String, String> generatorClassMap = new HashMap<>();
     private static String LOGGER_NAME = AppLog.MODEL;
     private static String CLASS_NAME = GeneratorFactory.class.getSimpleName();
 
@@ -24,12 +28,10 @@ public class GeneratorFactory {
     }
 
     public static Generator getGeneratorByType(String type) {
-        Generator resultGenerator = null;
         try {
             return (Generator) Class.forName(generatorClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get generator exception. Type -" + type, e);
-            throw new GetGeneratorException("Type -" + type, e);
+            throw new GetGeneratorException(LOGGER_NAME, CLASS_NAME, "Get generator exception. Type -" + type, e);
         }
     }
 

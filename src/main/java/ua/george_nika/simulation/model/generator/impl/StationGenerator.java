@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "station" generator
+ */
+
 package ua.george_nika.simulation.model.generator.impl;
 
 import org.joda.time.DateTime;
@@ -7,7 +11,6 @@ import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
 import ua.george_nika.simulation.model.entity.impl.BusEntity;
 import ua.george_nika.simulation.model.entity.impl.HumanEntity;
-import ua.george_nika.simulation.model.entity.impl.HumanEntityInfo;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.*;
 import ua.george_nika.simulation.model.entity.Entity;
@@ -23,10 +26,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
-/**
- * Created by george on 23.11.2015.
- */
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Component
@@ -34,7 +33,7 @@ public class StationGenerator extends AbstractGenerator {
 
     public static final String GENERATOR_TYPE = "station";
     @XmlElementWrapper
-    protected List<HumanAppearInfo> humanAppearInfoList = new ArrayList<HumanAppearInfo>();
+    protected List<HumanAppearInfo> humanAppearInfoList = new ArrayList<>();
 
     static {
         GeneratorFactory.registerClassInFactory(GENERATOR_TYPE, StationGenerator.class.getCanonicalName());
@@ -216,8 +215,7 @@ public class StationGenerator extends AbstractGenerator {
         double entityQuantityForFullInterval = intervalInfo.getPercent() * entityQuantity
                 * intervalInfo.getCurrentVariationRatio() / 100;
 
-        int result = (int) Math.round(entityQuantityForFullInterval * percentOfSmallInterval / 100);
-        return result;
+        return (int) Math.round(entityQuantityForFullInterval * percentOfSmallInterval / 100);
     }
 
     public List<HumanAppearInfo> getHumanAppearInfoList() {
@@ -264,10 +262,8 @@ public class StationGenerator extends AbstractGenerator {
         if (nextRelationGeneratorSet.contains(
                 checkedEntity.getNextRelationGeneratorData().getRelatedGenerator())) {
             HumanEntity humanEntity = ClassTypeUtil.getCheckedClass(checkedEntity, HumanEntity.class);
-            if (busPrice <= humanEntity.getReasonablePriceInCent()) {
-                return true;
-            }
-            return false;
+            return (busPrice <= humanEntity.getReasonablePriceInCent());
+
         } else {
             return false;
         }

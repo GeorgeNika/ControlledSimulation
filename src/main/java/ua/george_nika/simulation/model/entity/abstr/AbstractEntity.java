@@ -1,3 +1,7 @@
+/**
+ * Common variables and methods for entity
+ */
+
 package ua.george_nika.simulation.model.entity.abstr;
 
 import org.joda.time.DateTime;
@@ -12,10 +16,6 @@ import ua.george_nika.simulation.util.AppLog;
 
 import java.util.List;
 
-/**
- * Created by george on 24.11.2015.
- */
-
 abstract public class AbstractEntity implements Entity {
 
     protected int idEntity;
@@ -27,7 +27,6 @@ abstract public class AbstractEntity implements Entity {
     protected MutableDateTime nextRelationTime = new MutableDateTime();
 
     protected EntityHistory entityHistory;
-
 
     protected MutableDateTime currentTime = new MutableDateTime();
 
@@ -43,7 +42,7 @@ abstract public class AbstractEntity implements Entity {
         AppLog.info(entityHistory.getLoggerName(), entityHistory.getLogIdentifyMessage()
                 + " init entity " + getEntityType() + " : " + "for generator " + generator.getGeneratorType() + " : "
                 + generator.getIdGenerator() + " - " + generator.getGeneratorName()
-                + " "+generator.getGeneratorHistory().getLogIdentifyMessage()
+                + " " + generator.getGeneratorHistory().getLogIdentifyMessage()
                 + " with history id - " + entityHistory.getIdEntityHistory());
     }
 
@@ -62,11 +61,7 @@ abstract public class AbstractEntity implements Entity {
     }
 
     public boolean isNeedRemove() {
-        if (needRemove) {
-            return true;
-        } else {
-            return false;
-        }
+        return needRemove;
     }
 
     public void setNewCurrentTime(MutableDateTime newCurrentTime) {

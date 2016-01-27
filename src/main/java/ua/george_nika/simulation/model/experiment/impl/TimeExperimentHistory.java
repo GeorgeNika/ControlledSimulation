@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "time" experiment history
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.springframework.stereotype.Component;
@@ -11,9 +15,6 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.List;
 
-/**
- * Created by george on 15.01.2016.
- */
 @Component
 public class TimeExperimentHistory extends AbstractExperimentHistory {
 

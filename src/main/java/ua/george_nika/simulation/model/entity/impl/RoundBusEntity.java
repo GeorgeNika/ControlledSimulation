@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "round_bus" entity
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.springframework.stereotype.Component;
@@ -6,13 +10,9 @@ import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.RelatedGeneratorData;
 import ua.george_nika.simulation.util.AppLog;
 
-/**
- * Created by george on 29.11.2015.
- */
-
 @Component
 
-public class BusRoundEntity extends BusEntity {
+public class RoundBusEntity extends BusEntity {
 
     public static final String ENTITY_TYPE = "round_bus";
     protected static String entityInfoType = BusEntityInfo.ENTITY_INFO_TYPE;
@@ -20,7 +20,7 @@ public class BusRoundEntity extends BusEntity {
     protected long roundDurationInMills;
 
     static {
-        EntityFactory.registerClassInFactory(ENTITY_TYPE, BusRoundEntity.class.getCanonicalName());
+        EntityFactory.registerClassInFactory(ENTITY_TYPE, RoundBusEntity.class.getCanonicalName());
     }
 
     public String getEntityType() {
@@ -100,9 +100,7 @@ public class BusRoundEntity extends BusEntity {
             tempGenerator = relationGeneratorDataList.get(tempPoint).getRelatedGenerator();
             result = result + tempResult;
         }
-
         return result;
-
     }
 
     @Override

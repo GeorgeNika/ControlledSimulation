@@ -1,3 +1,7 @@
+/**
+ * Interface for model object - entity
+ */
+
 package ua.george_nika.simulation.model.entity;
 
 import org.joda.time.DateTime;
@@ -5,11 +9,8 @@ import org.joda.time.MutableDateTime;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.RelatedGeneratorData;
 
-import java.util.List;
+@SuppressWarnings("unused")
 
-/**
- * Created by george on 23.11.2015.
- */
 public interface Entity {
 
 
@@ -32,16 +33,18 @@ public interface Entity {
     RelatedGeneratorData getNextRelationGeneratorData();
 
 
-    public EntityHistory getEntityHistory();
+    // getter and setter from abstract class
 
-    public void setEntityHistory(EntityHistory entityHistory);
+    EntityHistory getEntityHistory();
 
-    public int getIdEntity();
+    void setEntityHistory(EntityHistory entityHistory);
 
-    public void setIdEntity(int idEntity);
+    int getIdEntity();
 
-    public DateTime getCreationTime() ;
+    void setIdEntity(int idEntity);
 
-    public void setCreationTime(DateTime creationTime) ;
+    DateTime getCreationTime();
+
+    void setCreationTime(DateTime creationTime);
 
 }

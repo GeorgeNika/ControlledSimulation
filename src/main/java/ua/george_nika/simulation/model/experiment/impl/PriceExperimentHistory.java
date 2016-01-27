@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "price" experiment histroy
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.springframework.stereotype.Component;
@@ -6,9 +10,6 @@ import ua.george_nika.simulation.model.experiment.ExperimentHistoryFactory;
 import ua.george_nika.simulation.model.experiment.abstr.AbstractExperimentHistory;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
-/**
- * Created by george on 05.01.2016.
- */
 @Component
 public class PriceExperimentHistory extends AbstractExperimentHistory {
 

@@ -1,3 +1,7 @@
+/**
+ * Common variables and methods for experiment
+ */
+
 package ua.george_nika.simulation.model.experiment.abstr;
 
 import org.joda.time.DateTime;
@@ -14,10 +18,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-/**
- * Created by george on 23.11.2015.
- */
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -42,7 +42,7 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
 
     @XmlElementWrapper
     @XmlAnyElement(lax = true)
-    protected List<Generator> generatorList = new ArrayList<Generator>();
+    protected List<Generator> generatorList = new ArrayList<>();
 
     @XmlTransient
     protected volatile MutableDateTime currentTime;
@@ -59,7 +59,7 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
 
 
     public void startExecution() {
-        checkIsExperimentCorrect();
+        isExperimentCorrect();
         initExperimentWorkVariable();
         initAllGenerator();
         afterInitAllGenerator();
@@ -69,7 +69,7 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
         workingThread.start();
     }
 
-    protected void checkIsExperimentCorrect() {
+    protected void isExperimentCorrect() {
         // todo in future ??? check experiment for correct
     }
 
@@ -133,8 +133,7 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
                 try {
                     workingThread.join();
                 } catch (InterruptedException e) {
-                    AppLog.error(experimentHistory.getLoggerName(),
-                            WaitThread.class.getCanonicalName(),
+                    AppLog.error(experimentHistory.getLoggerName(), WaitThread.class.getCanonicalName(),
                             experimentHistory.getLogIdentifyMessage()
                                     + "Interrupt while waiting end of experiment ", e);
                 } finally {
@@ -224,8 +223,6 @@ abstract public class AbstractExperiment implements Experiment, Runnable {
         experimentHistory.updateExperimentHistoryData(this);
     }
 
-
-    //*********** Auto generated
 
     public int getIdExperiment() {
         return idExperiment;

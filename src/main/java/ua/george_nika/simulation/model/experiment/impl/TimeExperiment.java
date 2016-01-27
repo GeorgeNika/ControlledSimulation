@@ -1,12 +1,17 @@
+/**
+ * Special variables and methods for "time" experiment
+ * calculate fastest way from one generator to other
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.springframework.stereotype.Component;
-import ua.george_nika.simulation.model.entity.impl.BusRoundEntity;
+import ua.george_nika.simulation.model.entity.impl.RoundBusEntity;
 import ua.george_nika.simulation.model.experiment.ExperimentFactory;
 import ua.george_nika.simulation.model.experiment.abstr.AbstractExperiment;
+import ua.george_nika.simulation.model.experiment.error.AlgorithmError;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.RelatedGeneratorData;
-import ua.george_nika.simulation.model.generator.error.NoSuchGenerator;
 import ua.george_nika.simulation.model.generator.impl.RouteGenerator;
 import ua.george_nika.simulation.model.generator.impl.StationGenerator;
 import ua.george_nika.simulation.service.experiment.ExperimentHistoryService;
@@ -19,9 +24,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 
-/**
- * Created by george on 15.01.2016.
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Component
@@ -62,7 +64,7 @@ public class TimeExperiment extends AbstractExperiment {
     }
 
     public void startExecution() {
-        checkIsExperimentCorrect();
+        isExperimentCorrect();
         initExperimentWorkVariable();
         saveAllHistory();
 
@@ -96,11 +98,11 @@ public class TimeExperiment extends AbstractExperiment {
         this.idEndGenerator = idEndGenerator;
     }
 
-    public long getMinTime(){
-        if (currentMinTimeB== null){
+    public long getMinTime() {
+        if (currentMinTimeB == null) {
             return Long.MAX_VALUE;
         }
-        if (reflectMap == null){
+        if (reflectMap == null) {
             return Long.MAX_VALUE;
         }
         return currentMinTimeB[reflectMap.get(idEndGenerator)];
@@ -164,7 +166,7 @@ public class TimeExperiment extends AbstractExperiment {
             timeForNextStationInRoute[tempIndex] = loopRGData.getDelayMs();
         }
 
-        if (generator.getEntityType().equals(BusRoundEntity.ENTITY_TYPE)) {
+        if (generator.getEntityType().equals(RoundBusEntity.ENTITY_TYPE)) {
             // round bus situation
             int[] tempIdStationInRoute = new int[routeGenerator.getRelatedGeneratorDataList().size() * 2];
             long[] tempTimeForNextStationInRoute = new long[routeGenerator.getRelatedGeneratorDataList().size() * 2];
@@ -199,8 +201,8 @@ public class TimeExperiment extends AbstractExperiment {
 
         // create symmetry matrix (not necessary)
         if (timeMatrix[i][j] != timeMatrix[j][i]) {
-            AppLog.error(AppLog.MODEL, CLASS_NAME, "Error in algorithm. Non symmetry matrix");
-            throw new RuntimeException("Error in algorithm");
+            throw new AlgorithmError(AppLog.MODEL, CLASS_NAME,
+                    "Error in algorithm. Non symmetry matrix", new RuntimeException());
         }
         if (timeMatrix[i][j] > value) {
             timeMatrix[i][j] = value;
@@ -217,7 +219,6 @@ public class TimeExperiment extends AbstractExperiment {
 
         // third step
         logResult();
-
     }
 
     private void initializationThreeArrays() {
@@ -360,6 +361,5 @@ public class TimeExperiment extends AbstractExperiment {
 //    3.2.  Выдать z;
 //    3.3.  z:=C[z]. Если z = О, то конец,
 //    иначе перейти к 3.2.
-
 
 }

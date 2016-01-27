@@ -1,9 +1,12 @@
+/**
+ * Special variables and methods for "route" generator
+ */
+
 package ua.george_nika.simulation.model.generator.impl;
 
 import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
-import ua.george_nika.simulation.model.entity.impl.BusEntity;
 import ua.george_nika.simulation.model.entity.impl.BusHistory;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.generator.*;
@@ -19,12 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-/**
-
- *
- *
- */
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -100,7 +97,7 @@ public class RouteGenerator extends AbstractGenerator {
                 tempEntity.saveEntityHistory();
                 tempIterator.remove();
                 AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
-                        + "destroy " + getEntityType() + " - "+busHistory.getIdEntityHistory());
+                        + "destroy " + getEntityType() + " - " + busHistory.getIdEntityHistory());
             }
         }
     }
@@ -114,12 +111,10 @@ public class RouteGenerator extends AbstractGenerator {
     }
 
 
-
     @Override
     public List<Entity> sendEntityListToEntity(Entity recipientEntity) {
         // send empty list
-        List<Entity> resultList = new ArrayList<>();
-        return resultList;
+        return new ArrayList<>();
     }
 
     @Override

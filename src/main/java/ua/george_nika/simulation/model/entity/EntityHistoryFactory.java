@@ -1,3 +1,8 @@
+/**
+ * used for getting experiment object
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.model.entity;
 
 import ua.george_nika.simulation.model.entity.error.GetEntityHistoryException;
@@ -7,12 +12,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 public class EntityHistoryFactory {
 
-    private static Map<String, String> entityHistoryClassMap = new HashMap<String, String>();
+    private static Map<String, String> entityHistoryClassMap = new HashMap<>();
     private static String LOGGER_NAME = AppLog.MODEL;
     private static String CLASS_NAME = EntityHistoryFactory.class.getSimpleName();
 
@@ -27,8 +31,8 @@ public class EntityHistoryFactory {
         try {
             return (EntityHistory) Class.forName(entityHistoryClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get entity history exception. Type -" + type, e);
-            throw new GetEntityHistoryException("Type - " + type, e);
+            throw new GetEntityHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Get entity history exception. Type -" + type, e);
         }
     }
 

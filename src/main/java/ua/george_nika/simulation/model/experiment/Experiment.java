@@ -1,5 +1,8 @@
-package ua.george_nika.simulation.model.experiment;
+/**
+ * Interface for model object - experiment
+ */
 
+package ua.george_nika.simulation.model.experiment;
 
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
@@ -8,9 +11,8 @@ import ua.george_nika.simulation.model.generator.Generator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Created by george on 23.11.2015.
- */
+@SuppressWarnings("unused")
+
 public interface Experiment {
 
     void startExecution();
@@ -24,56 +26,58 @@ public interface Experiment {
     String getExperimentType();
 
 
-    public int getIdExperiment();
+    // getter and setter from abstract class
 
-    public void setIdExperiment(int idExperiment);
+    int getIdExperiment();
 
-    public String getExperimentName();
+    void setIdExperiment(int idExperiment);
 
-    public void setExperimentName(String experimentName);
+    String getExperimentName();
 
-    public DateTime getStartTime();
+    void setExperimentName(String experimentName);
 
-    public void setStartTime(DateTime startTime);
+    DateTime getStartTime();
 
-    public DateTime getEndTime();
+    void setStartTime(DateTime startTime);
 
-    public void setEndTime(DateTime endTime);
+    DateTime getEndTime();
 
-    public int getStepIntervalMs();
+    void setEndTime(DateTime endTime);
 
-    public void setStepIntervalMs(int intervalMs);
+    int getStepIntervalMs();
 
-    public DateTime getCreated();
+    void setStepIntervalMs(int intervalMs);
 
-    public void setCreated(DateTime created);
+    DateTime getCreated();
 
-    public DateTime getUpdated();
+    void setCreated(DateTime created);
 
-    public void setUpdated(DateTime updated);
+    DateTime getUpdated();
 
-    public List<Generator> getGeneratorList();
+    void setUpdated(DateTime updated);
 
-    public void setGeneratorList(List<Generator> generatorList);
+    List<Generator> getGeneratorList();
 
-    public MutableDateTime getCurrentTime();
+    void setGeneratorList(List<Generator> generatorList);
 
-    public void setCurrentTime(MutableDateTime currentTime);
+    MutableDateTime getCurrentTime();
 
-    public AtomicBoolean getWorking();
+    void setCurrentTime(MutableDateTime currentTime);
 
-    public void setWorking(AtomicBoolean working);
+    AtomicBoolean getWorking();
 
-    public AtomicBoolean getRunning();
+    void setWorking(AtomicBoolean working);
 
-    public void setRunning(AtomicBoolean running);
+    AtomicBoolean getRunning();
 
-    public AtomicBoolean getPaused();
+    void setRunning(AtomicBoolean running);
 
-    public void setPaused(AtomicBoolean paused);
+    AtomicBoolean getPaused();
 
-    public ExperimentHistory getExperimentHistory();
+    void setPaused(AtomicBoolean paused);
 
-    public void setExperimentHistory(ExperimentHistory experimentHistory);
+    ExperimentHistory getExperimentHistory();
+
+    void setExperimentHistory(ExperimentHistory experimentHistory);
 
 }

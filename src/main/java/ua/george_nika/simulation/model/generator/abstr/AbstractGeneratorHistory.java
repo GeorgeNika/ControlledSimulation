@@ -1,12 +1,13 @@
+/**
+ * Common variables and methods for generator history
+ */
+
 package ua.george_nika.simulation.model.generator.abstr;
 
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.GeneratorHistory;
 
-/**
- * Created by george on 10.01.2016.
- */
 abstract public class AbstractGeneratorHistory implements GeneratorHistory {
 
     protected int idExperimentHistory;
@@ -41,7 +42,7 @@ abstract public class AbstractGeneratorHistory implements GeneratorHistory {
         updateGeneratorHistoryExtraData(generator);
     }
 
-    public void addEntity(int quantity){
+    public void addEntity(int quantity) {
         createEntity += quantity;
     }
 

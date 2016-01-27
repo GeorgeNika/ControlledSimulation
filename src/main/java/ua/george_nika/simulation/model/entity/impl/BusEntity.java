@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "bus" entity
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.joda.time.DateTime;
@@ -15,10 +19,6 @@ import ua.george_nika.simulation.util.ClassTypeUtil;
 
 import java.util.*;
 
-/**
- * Created by george on 23.11.2015.
- */
-
 @Component
 public class BusEntity extends AbstractEntity {
 
@@ -29,12 +29,8 @@ public class BusEntity extends AbstractEntity {
     protected int repeatQuantity;
     protected boolean changeDirection;
 
-    protected int nextRelationPoint = 0;
-    protected MutableDateTime nextRelationTime = new MutableDateTime();
-
     protected int capacity;
     protected int price;
-
 
     protected List<Entity> entityList = new LinkedList<>();
     protected Set<Generator> nextRelationGeneratorSet = new HashSet<>();
@@ -104,7 +100,6 @@ public class BusEntity extends AbstractEntity {
         addNewGeneratorToRelationGeneratorSet();
 
         sendEntityToGenerator(currentRelatedGenerator);
-
         receiveEntityFromGenerator(currentRelatedGenerator);
     }
 
@@ -233,16 +228,8 @@ public class BusEntity extends AbstractEntity {
         return nextRelationGeneratorSet;
     }
 
-    public void setNextRelationGeneratorSet(Set<Generator> nextRelationGeneratorSet) {
-        this.nextRelationGeneratorSet = nextRelationGeneratorSet;
-    }
-
     public int getCapacity() {
         return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
     }
 
     public int getPrice() {
@@ -257,15 +244,7 @@ public class BusEntity extends AbstractEntity {
         return entityList;
     }
 
-    public void setEntityList(List<Entity> entityList) {
-        this.entityList = entityList;
-    }
-
     public MutableDateTime getNextRelationTime() {
         return nextRelationTime;
-    }
-
-    public void setNextRelationTime(MutableDateTime nextRelationTime) {
-        this.nextRelationTime = nextRelationTime;
     }
 }

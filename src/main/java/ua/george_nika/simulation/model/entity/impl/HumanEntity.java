@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "human" entity
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.joda.time.DateTime;
@@ -7,16 +11,10 @@ import ua.george_nika.simulation.model.entity.abstr.AbstractEntity;
 import ua.george_nika.simulation.model.entity.EntityFactory;
 import ua.george_nika.simulation.model.entity.EntityInfo;
 import ua.george_nika.simulation.model.entity.error.StationWithoutRoute;
-import ua.george_nika.simulation.model.entity.error.WrongTypeInfo;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
-/**
- * Created by george on 23.11.2015.
- */
-
 @Component
-
 public class HumanEntity extends AbstractEntity {
 
     public static final String ENTITY_TYPE = "human";
@@ -78,9 +76,5 @@ public class HumanEntity extends AbstractEntity {
 
     public int getReasonablePriceInCent() {
         return reasonablePriceInCent;
-    }
-
-    public void setReasonablePriceInCent(int reasonablePriceInCent) {
-        this.reasonablePriceInCent = reasonablePriceInCent;
     }
 }

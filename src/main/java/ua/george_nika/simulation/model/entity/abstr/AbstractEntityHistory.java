@@ -1,3 +1,7 @@
+/**
+ * Common variables and methods for entity history
+ */
+
 package ua.george_nika.simulation.model.entity.abstr;
 
 import org.joda.time.DateTime;
@@ -5,9 +9,6 @@ import ua.george_nika.simulation.model.entity.Entity;
 import ua.george_nika.simulation.model.entity.EntityHistory;
 import ua.george_nika.simulation.model.generator.Generator;
 
-/**
- * Created by george on 11.01.2016.
- */
 abstract public class AbstractEntityHistory implements EntityHistory {
 
     protected int idEntityHistory;
@@ -20,7 +21,6 @@ abstract public class AbstractEntityHistory implements EntityHistory {
     protected DateTime createTime;
 
     protected String loggerName;
-
 
     abstract protected void setInitialEntityHistoryExtraData(Generator generator, Entity entity);
 
@@ -41,7 +41,6 @@ abstract public class AbstractEntityHistory implements EntityHistory {
     }
 
     public void updateEntityHistory(Entity entity) {
-
         updateEntityHistoryExtraData(entity);
     }
 
@@ -122,6 +121,4 @@ abstract public class AbstractEntityHistory implements EntityHistory {
     public void setLoggerName(String loggerName) {
         this.loggerName = loggerName;
     }
-
-
 }

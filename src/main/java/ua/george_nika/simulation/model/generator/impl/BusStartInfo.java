@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "bus start" info for "route" generator
+ */
+
 package ua.george_nika.simulation.model.generator.impl;
 
 import org.springframework.stereotype.Component;
@@ -5,9 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-/**
- * Created by george on 26.11.2015.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @Component
 public class BusStartInfo {
@@ -19,8 +20,7 @@ public class BusStartInfo {
     protected int repeatQuantity;
     protected boolean changeDirection;
 
-
-    public BusStartInfo(){
+    public BusStartInfo() {
     }
 
     public BusStartInfo(int startTimeMs, boolean forwardDirection, int repeatQuantity, boolean changeDirection) {

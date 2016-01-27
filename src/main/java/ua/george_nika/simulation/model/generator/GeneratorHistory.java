@@ -1,10 +1,11 @@
+/**
+ * Interface for model object - generator history
+ */
+
 package ua.george_nika.simulation.model.generator;
 
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 
-/**
- * Created by george on 10.01.2016.
- */
 public interface GeneratorHistory {
 
     void setInitialGeneratorHistoryData(ExperimentHistory experimentHistory, Generator generator);
@@ -20,39 +21,41 @@ public interface GeneratorHistory {
     void destroyEntity(int quantity);
 
 
-    public int getIdGeneratorHistory();
+    // getter and setter from abstract class
 
-    public void setIdGeneratorHistory(int idGeneratorHistory);
+    int getIdGeneratorHistory();
 
-    public int getIdGenerator();
+    void setIdGeneratorHistory(int idGeneratorHistory);
 
-    public void setIdGenerator(int idGenerator);
+    int getIdGenerator();
 
-    public int getIdExperimentHistory();
+    void setIdGenerator(int idGenerator);
 
-    public void setIdExperimentHistory(int idExperimentHistory);
+    int getIdExperimentHistory();
 
-    public int getIdExperiment();
+    void setIdExperimentHistory(int idExperimentHistory);
 
-    public void setIdExperiment(int idExperiment);
+    int getIdExperiment();
 
-    public String getGeneratorName();
+    void setIdExperiment(int idExperiment);
 
-    public void setGeneratorName(String generatorName);
+    String getGeneratorName();
 
-    public String getGeneratorType();
+    void setGeneratorName(String generatorName);
 
-    public void setGeneratorType(String generatorType);
+    String getGeneratorType();
 
-    public String getLoggerName();
+    void setGeneratorType(String generatorType);
 
-    public void setLoggerName(String loggerName);
+    String getLoggerName();
 
-    public int getCreateEntity();
+    void setLoggerName(String loggerName);
 
-    public void setCreateEntity(int createEntity);
+    int getCreateEntity();
 
-    public int getDestroyEntity();
+    void setCreateEntity(int createEntity);
 
-    public void setDestroyEntity(int destroyEntity);
+    int getDestroyEntity();
+
+    void setDestroyEntity(int destroyEntity);
 }

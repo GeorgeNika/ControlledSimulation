@@ -1,18 +1,18 @@
+/**
+ * Special variables and methods for "route" generator history
+ */
+
 package ua.george_nika.simulation.model.generator.impl;
 
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.Entity;
 import ua.george_nika.simulation.model.entity.impl.BusEntity;
 import ua.george_nika.simulation.model.entity.impl.BusHistory;
-import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.GeneratorHistoryFactory;
 import ua.george_nika.simulation.model.generator.abstr.AbstractGeneratorHistory;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
-/**
- * Created by george on 11.01.2016.
- */
 @Component
 public class RouteGeneratorHistory extends AbstractGeneratorHistory {
 
@@ -21,7 +21,6 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
     protected int processedEntityFromDestroyedBus; // for save info when depend entity destroyed
     protected long totalAmountFromDestroyedBus; // for save info when depend entity destroyed
 
-
     protected int currentEntityCount;
     protected int currentDependEntityCount;
 
@@ -29,7 +28,6 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
         GeneratorHistoryFactory.registerClassInFactory(RouteGenerator.GENERATOR_TYPE,
                 RouteGeneratorHistory.class.getCanonicalName());
     }
-
 
     @Override
     protected void updateGeneratorHistoryExtraData(Generator generator) {
@@ -54,7 +52,7 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
                 + " : dependent entity count - " + currentDependEntityCount;
     }
 
-    public void addHistoryAboutDestroyedEntity(Entity entity){
+    public void addHistoryAboutDestroyedEntity(Entity entity) {
         BusEntity busEntity = ClassTypeUtil.getCheckedClass(entity, BusEntity.class);
         BusHistory busHistory = ClassTypeUtil.getCheckedClass(entity.getEntityHistory(), BusHistory.class);
         processedEntityFromDestroyedBus += busHistory.getProcessedEntity();
@@ -81,43 +79,11 @@ public class RouteGeneratorHistory extends AbstractGeneratorHistory {
         this.processedEntity = processedEntity;
     }
 
-    public int getProcessedEntityFromDestroyedBus() {
-        return processedEntityFromDestroyedBus;
-    }
-
-    public void setProcessedEntityFromDestroyedBus(int processedEntityFromDestroyedBus) {
-        this.processedEntityFromDestroyedBus = processedEntityFromDestroyedBus;
-    }
-
     public long getTotalAmount() {
         return totalAmount;
     }
 
     public void setTotalAmount(long totalAmount) {
         this.totalAmount = totalAmount;
-    }
-
-    public long getTotalAmountFromDestroyedBus() {
-        return totalAmountFromDestroyedBus;
-    }
-
-    public void setTotalAmountFromDestroyedBus(long totalAmountFromDestroyedBus) {
-        this.totalAmountFromDestroyedBus = totalAmountFromDestroyedBus;
-    }
-
-    public int getCurrentEntityCount() {
-        return currentEntityCount;
-    }
-
-    public void setCurrentEntityCount(int currentEntityCount) {
-        this.currentEntityCount = currentEntityCount;
-    }
-
-    public int getCurrentDependEntityCount() {
-        return currentDependEntityCount;
-    }
-
-    public void setCurrentDependEntityCount(int currentDependEntityCount) {
-        this.currentDependEntityCount = currentDependEntityCount;
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * Interface for model object - generator
+ */
+
 package ua.george_nika.simulation.model.generator;
 
 import org.joda.time.DateTime;
@@ -8,9 +12,8 @@ import ua.george_nika.simulation.model.experiment.Experiment;
 
 import java.util.List;
 
-/**
- * Created by george on 23.11.2015.
- */
+@SuppressWarnings("unused")
+
 public interface Generator {
 
     void initAction(Experiment experiment);
@@ -34,56 +37,58 @@ public interface Generator {
     void receiveEntityListFromEntity(List<Entity> entityList, Entity donorEntity);
 
 
-    public int getIdGenerator();
+    // getter and setter from abstract class
 
-    public void setIdGenerator(int idGenerator);
+    int getIdGenerator();
 
-    public String getGeneratorName();
+    void setIdGenerator(int idGenerator);
 
-    public void setGeneratorName(String generatorName);
+    String getGeneratorName();
 
-    public String getEntityType();
+    void setGeneratorName(String generatorName);
 
-    public void setEntityType(String entityType);
+    String getEntityType();
 
-    public int getIdEntityInfo();
+    void setEntityType(String entityType);
 
-    public void setIdEntityInfo(int idEntity);
+    int getIdEntityInfo();
 
-    public EntityInfo getEntityInfo();
+    void setIdEntityInfo(int idEntity);
 
-    public void setEntityInfo(EntityInfo entityInfo);
+    EntityInfo getEntityInfo();
 
-    public int getEntityQuantity();
+    void setEntityInfo(EntityInfo entityInfo);
 
-    public void setEntityQuantity(int quantityEntity);
+    int getEntityQuantity();
 
-    public DateTime getCreated();
+    void setEntityQuantity(int quantityEntity);
 
-    public void setCreated(DateTime created);
+    DateTime getCreated();
 
-    public DateTime getUpdated();
+    void setCreated(DateTime created);
 
-    public void setUpdated(DateTime updated);
+    DateTime getUpdated();
 
-    public List<RelatedGeneratorData> getRelatedGeneratorDataList();
+    void setUpdated(DateTime updated);
 
-    public void setRelatedGeneratorDataList(List<RelatedGeneratorData> relatedGeneratorDataList);
+    List<RelatedGeneratorData> getRelatedGeneratorDataList();
 
-    public List<Entity> getDependentEntityList();
+    void setRelatedGeneratorDataList(List<RelatedGeneratorData> relatedGeneratorDataList);
 
-    public void setDependentEntityList(List<Entity> dependentEntityList);
+    List<Entity> getDependentEntityList();
 
-    public DateTime getExperimentStartTime();
+    void setDependentEntityList(List<Entity> dependentEntityList);
 
-    public void setExperimentStartTime(DateTime experimentStartTime);
+    DateTime getExperimentStartTime();
 
-    public MutableDateTime getCurrentTime();
+    void setExperimentStartTime(DateTime experimentStartTime);
 
-    public void setCurrentTime(MutableDateTime currentTime);
+    MutableDateTime getCurrentTime();
 
-    public GeneratorHistory getGeneratorHistory();
+    void setCurrentTime(MutableDateTime currentTime);
 
-    public void setGeneratorHistory(GeneratorHistory generatorHistory);
+    GeneratorHistory getGeneratorHistory();
+
+    void setGeneratorHistory(GeneratorHistory generatorHistory);
 
 }

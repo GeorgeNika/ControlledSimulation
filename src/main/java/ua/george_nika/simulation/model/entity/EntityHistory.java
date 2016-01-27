@@ -1,12 +1,12 @@
+/**
+ * Interface for model object - entity history
+ */
+
 package ua.george_nika.simulation.model.entity;
 
 import org.joda.time.DateTime;
 import ua.george_nika.simulation.model.generator.Generator;
-import ua.george_nika.simulation.model.generator.GeneratorHistory;
 
-/**
- * Created by george on 10.01.2016.
- */
 public interface EntityHistory {
 
     void setInitialEntityHistoryData(Generator generator, Entity entity);
@@ -18,39 +18,41 @@ public interface EntityHistory {
     String getLogIdentifyMessage();
 
 
-    public int getIdEntityHistory();
+    // getter and setter from abstract class
 
-    public void setIdEntityHistory(int idEntityHistory);
+    int getIdEntityHistory();
 
-    public int getIdEntity();
+    void setIdEntityHistory(int idEntityHistory);
 
-    public void setIdEntity(int idEntity);
+    int getIdEntity();
 
-    public int getIdGenerator();
+    void setIdEntity(int idEntity);
 
-    public void setIdGenerator(int idGenerator);
+    int getIdGenerator();
 
-    public int getIdGeneratorHistory();
+    void setIdGenerator(int idGenerator);
 
-    public void setIdGeneratorHistory(int idGeneratorHistory);
+    int getIdGeneratorHistory();
 
-    public int getIdExperiment();
+    void setIdGeneratorHistory(int idGeneratorHistory);
 
-    public void setIdExperiment(int idExperiment);
+    int getIdExperiment();
 
-    public int getIdExperimentHistory();
+    void setIdExperiment(int idExperiment);
 
-    public void setIdExperimentHistory(int idExperimentHistory);
+    int getIdExperimentHistory();
 
-    public DateTime getCreateTime();
+    void setIdExperimentHistory(int idExperimentHistory);
 
-    public void setCreateTime(DateTime createTime);
+    DateTime getCreateTime();
 
-    public String getEntityType();
+    void setCreateTime(DateTime createTime);
 
-    public void setEntityType(String entityType);
+    String getEntityType();
 
-    public String getLoggerName();
+    void setEntityType(String entityType);
 
-    public void setLoggerName(String loggerName);
+    String getLoggerName();
+
+    void setLoggerName(String loggerName);
 }

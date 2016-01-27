@@ -1,3 +1,7 @@
+/**
+ * Common variables and methods for experiment history
+ */
+
 package ua.george_nika.simulation.model.experiment.abstr;
 
 import org.joda.time.DateTime;
@@ -5,9 +9,6 @@ import org.joda.time.MutableDateTime;
 import ua.george_nika.simulation.model.experiment.Experiment;
 import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 
-/**
- * Created by george on 05.01.2016.
- */
 abstract public class AbstractExperimentHistory implements ExperimentHistory {
 
     protected int idExperimentHistory;
@@ -24,9 +25,10 @@ abstract public class AbstractExperimentHistory implements ExperimentHistory {
     protected String xmlFile;
 
     abstract protected void setInitialExperimentHistoryExtraData(Experiment experiment);
+
     abstract protected void updateExperimentHistoryExtraData(Experiment experiment);
 
-    public void setInitialExperimentHistoryData(Experiment experiment){
+    public void setInitialExperimentHistoryData(Experiment experiment) {
         this.idExperiment = experiment.getIdExperiment();
         this.experimentName = experiment.getExperimentName();
         this.experimentType = experiment.getExperimentType();
@@ -47,7 +49,7 @@ abstract public class AbstractExperimentHistory implements ExperimentHistory {
 
     @Override
     public String getLogIdentifyMessage() {
-        return "[exp hist : "+idExperimentHistory+" ] - ";
+        return "[exp hist : " + idExperimentHistory + " ] - ";
     }
 
 

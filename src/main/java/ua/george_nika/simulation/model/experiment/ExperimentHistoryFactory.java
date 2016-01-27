@@ -1,3 +1,8 @@
+/**
+ * used for getting experiment history object
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.model.experiment;
 
 import ua.george_nika.simulation.model.experiment.error.GetExperimentHistoryException;
@@ -7,11 +12,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 public class ExperimentHistoryFactory {
-    private static Map<String, String> experimentHistoryClassMap = new HashMap<String, String>();
+    private static Map<String, String> experimentHistoryClassMap = new HashMap<>();
     private static String LOGGER_NAME = AppLog.MODEL;
     private static String CLASS_NAME = ExperimentHistoryFactory.class.getSimpleName();
 
@@ -26,8 +30,8 @@ public class ExperimentHistoryFactory {
         try {
             return (ExperimentHistory) Class.forName(experimentHistoryClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get experiment history exception. Type - " + type, e);
-            throw new GetExperimentHistoryException("Get experiment history exception. Type - " + type, e);
+            throw new GetExperimentHistoryException(LOGGER_NAME, CLASS_NAME,
+                    "Get experiment history exception. Type - " + type, e);
         }
     }
 

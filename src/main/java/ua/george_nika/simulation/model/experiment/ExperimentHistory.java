@@ -1,11 +1,12 @@
+/**
+ * Interface for model object - experiment history
+ */
+
 package ua.george_nika.simulation.model.experiment;
 
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 
-/**
- * Created by george on 05.01.2016.
- */
 public interface ExperimentHistory {
 
 
@@ -18,52 +19,53 @@ public interface ExperimentHistory {
 
     // todo in future.  Move history and log to separate function and then use AOP
 
+    // getter and setter from abstract class
 
-    public int getIdExperimentHistory();
+    int getIdExperimentHistory();
 
-    public void setIdExperimentHistory(int idExperimentHistory);
+    void setIdExperimentHistory(int idExperimentHistory);
 
-    public int getIdExperiment();
+    int getIdExperiment();
 
-    public void setIdExperiment(int idExperiment);
+    void setIdExperiment(int idExperiment);
 
-    public String getExperimentName();
+    String getExperimentName();
 
-    public void setExperimentName(String experimentName);
+    void setExperimentName(String experimentName);
 
-    public String getExperimentType();
+    String getExperimentType();
 
-    public void setExperimentType(String experimentType);
+    void setExperimentType(String experimentType);
 
-    public int getGeneratorQuantity() ;
+    int getGeneratorQuantity();
 
-    public void setGeneratorQuantity(int generatorQuantity) ;
+    void setGeneratorQuantity(int generatorQuantity);
 
-    public DateTime getExecuteDate();
+    DateTime getExecuteDate();
 
-    public void setExecuteDate(DateTime executeDate);
+    void setExecuteDate(DateTime executeDate);
 
-    public DateTime getExperimentStart();
+    DateTime getExperimentStart();
 
-    public void setExperimentStart(DateTime experimentStart);
+    void setExperimentStart(DateTime experimentStart);
 
-    public DateTime getExperimentEnd();
+    DateTime getExperimentEnd();
 
-    public void setExperimentEnd(DateTime experimentEnd);
+    void setExperimentEnd(DateTime experimentEnd);
 
-    public MutableDateTime getLastPoint();
+    MutableDateTime getLastPoint();
 
-    public void setLastPoint(MutableDateTime lastPoint);
+    void setLastPoint(MutableDateTime lastPoint);
 
-    public String getLoggerName();
+    String getLoggerName();
 
-    public void setLoggerName(String loggerName);
+    void setLoggerName(String loggerName);
 
-    public String getLogFile();
+    String getLogFile();
 
-    public void setLogFile(String logFile);
+    void setLogFile(String logFile);
 
-    public String getXmlFile();
+    String getXmlFile();
 
-    public void setXmlFile(String xmlFile);
+    void setXmlFile(String xmlFile);
 }

@@ -1,14 +1,14 @@
+/**
+ * Special variables and methods for "station" generator history
+ */
+
 package ua.george_nika.simulation.model.generator.impl;
 
 import org.springframework.stereotype.Component;
-import ua.george_nika.simulation.model.experiment.ExperimentHistory;
 import ua.george_nika.simulation.model.generator.Generator;
 import ua.george_nika.simulation.model.generator.GeneratorHistoryFactory;
 import ua.george_nika.simulation.model.generator.abstr.AbstractGeneratorHistory;
 
-/**
- * Created by george on 11.01.2016.
- */
 @Component
 public class StationGeneratorHistory extends AbstractGeneratorHistory {
 
@@ -16,7 +16,6 @@ public class StationGeneratorHistory extends AbstractGeneratorHistory {
     protected int receiveEntity;
 
     protected int currentEntityCount;
-
 
     static {
         GeneratorHistoryFactory.registerClassInFactory(StationGenerator.GENERATOR_TYPE,
@@ -28,13 +27,14 @@ public class StationGeneratorHistory extends AbstractGeneratorHistory {
         currentEntityCount = generator.getDependentEntityList().size();
     }
 
-    public void sendEntity(int quantity){
+    public void sendEntity(int quantity) {
         sendEntity += quantity;
     }
 
-    public void receiveEntity(int quantity){
+    public void receiveEntity(int quantity) {
         receiveEntity += quantity;
     }
+
     @Override
     public String getRunInfoString() {
         return "current entity count - " + currentEntityCount;
@@ -65,14 +65,5 @@ public class StationGeneratorHistory extends AbstractGeneratorHistory {
 
     public void setReceiveEntity(int receiveEntity) {
         this.receiveEntity = receiveEntity;
-    }
-
-
-    public int getCurrentEntityCount() {
-        return currentEntityCount;
-    }
-
-    public void setCurrentEntityCount(int currentEntityCount) {
-        this.currentEntityCount = currentEntityCount;
     }
 }

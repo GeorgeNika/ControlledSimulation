@@ -1,3 +1,8 @@
+/**
+ * Special variables and methods for "repeat" experiment
+ * repeat experiment N times
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.springframework.stereotype.Component;
@@ -10,10 +15,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-/**
- * Created by george on 23.11.2015.
- */
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -66,8 +67,7 @@ public class RepeatExperiment extends AbstractExperiment {
                 try {
                     workingThread.join();
                 } catch (InterruptedException e) {
-                    AppLog.error(experimentHistory.getLoggerName(),
-                            RepeatWaitThread.class.getCanonicalName(),
+                    AppLog.error(experimentHistory.getLoggerName(), RepeatWaitThread.class.getCanonicalName(),
                             experimentHistory.getLogIdentifyMessage()
                                     + "Interrupt while waiting end of experiment ", e);
                 } finally {

@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.model.generator.error;
 
-/**
- * Created by george on 08.12.2015.
- */
-public class GetGeneratorException extends RuntimeException {
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class GetGeneratorException extends NoUserFriendlyException {
     public GetGeneratorException() {
     }
 
@@ -13,5 +14,9 @@ public class GetGeneratorException extends RuntimeException {
 
     public GetGeneratorException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public GetGeneratorException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

@@ -1,13 +1,13 @@
+/**
+ * Special variables and methods for "economy human" entity
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.EntityFactory;
 import ua.george_nika.simulation.model.entity.EntityInfo;
 import ua.george_nika.simulation.util.ClassTypeUtil;
-
-/**
- * Created by george on 20.01.2016.
- */
 
 @Component
 public class EconomyHumanEntity extends HumanEntity{

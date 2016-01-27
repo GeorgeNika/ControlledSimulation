@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "bus" entity history
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.joda.time.MutableDateTime;
@@ -6,12 +10,8 @@ import ua.george_nika.simulation.model.entity.Entity;
 import ua.george_nika.simulation.model.entity.EntityHistoryFactory;
 import ua.george_nika.simulation.model.entity.abstr.AbstractEntityHistory;
 import ua.george_nika.simulation.model.generator.Generator;
-import ua.george_nika.simulation.model.generator.impl.RouteGenerator;
 import ua.george_nika.simulation.util.ClassTypeUtil;
 
-/**
- * Created by george on 11.01.2016.
- */
 @Component
 public class BusHistory extends AbstractEntityHistory {
 
@@ -25,7 +25,6 @@ public class BusHistory extends AbstractEntityHistory {
     static {
         EntityHistoryFactory.registerClassInFactory(BusEntity.ENTITY_TYPE, BusHistory.class.getCanonicalName());
     }
-
 
     @Override
     protected void setInitialEntityHistoryExtraData(Generator generator, Entity entity) {
@@ -43,13 +42,13 @@ public class BusHistory extends AbstractEntityHistory {
         currentEntityCount = busEntity.getEntityList().size();
     }
 
-    public void addEntityIntoHistory(Entity entity, int quantity){
+    public void addEntityIntoHistory(Entity entity, int quantity) {
         BusEntity busEntity = ClassTypeUtil.getCheckedClass(entity, BusEntity.class);
         processedEntity += quantity;
         totalAmount = processedEntity * busEntity.price;
     }
 
-    public void setNextRelationPoint(Generator generator, MutableDateTime nextTime){
+    public void setNextRelationPoint(Generator generator, MutableDateTime nextTime) {
         nextRelationGeneratorName = generator.getGeneratorName();
         nextRelationGeneratorTime = nextTime;
     }
@@ -72,10 +71,6 @@ public class BusHistory extends AbstractEntityHistory {
         return currentEntityCount;
     }
 
-    public void setCurrentEntityCount(int currentEntityCount) {
-        this.currentEntityCount = currentEntityCount;
-    }
-
     public long getTotalAmount() {
         return totalAmount;
     }
@@ -84,19 +79,4 @@ public class BusHistory extends AbstractEntityHistory {
         this.totalAmount = totalAmount;
     }
 
-    public String getNextRelationGeneratorName() {
-        return nextRelationGeneratorName;
-    }
-
-    public void setNextRelationGeneratorName(String nextRelationGeneratorName) {
-        this.nextRelationGeneratorName = nextRelationGeneratorName;
-    }
-
-    public MutableDateTime getNextRelationGeneratorTime() {
-        return nextRelationGeneratorTime;
-    }
-
-    public void setNextRelationGeneratorTime(MutableDateTime nextRelationGeneratorTime) {
-        this.nextRelationGeneratorTime = nextRelationGeneratorTime;
-    }
 }

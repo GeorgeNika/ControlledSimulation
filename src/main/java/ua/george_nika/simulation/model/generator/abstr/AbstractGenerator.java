@@ -1,3 +1,7 @@
+/**
+ * Common variables and methods for generator
+ */
+
 package ua.george_nika.simulation.model.generator.abstr;
 
 import org.joda.time.DateTime;
@@ -16,24 +20,9 @@ import ua.george_nika.simulation.util.DateTimeXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * First need       initAction
- * Second           afterInitAction
- * <p>
- * <p>
- * startGenerator  (activeGenerator set true)
- * pauseGenerator    ()
- * continueGenerator ()
- * stopGenerator     ()
- * <p>
- * <p>
- * executeMainAction
- * executeDependentAction
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 abstract public class AbstractGenerator implements Generator {
@@ -57,7 +46,7 @@ abstract public class AbstractGenerator implements Generator {
     protected List<RelatedGeneratorData> relatedGeneratorDataList = new ArrayList<>();
 
     @XmlTransient
-    protected List<Entity> dependentEntityList = new LinkedList<Entity>();
+    protected List<Entity> dependentEntityList = new LinkedList<>();
     @XmlTransient
     protected DateTime experimentStartTime;
     @XmlTransient
@@ -74,16 +63,16 @@ abstract public class AbstractGenerator implements Generator {
     }
 
     public void afterInitAction(Experiment experiment) {
-       logAboutAfterInitAction();
+        logAboutAfterInitAction();
     }
 
-    protected void logAboutInitAction(){
+    protected void logAboutInitAction() {
         AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                 + "init generator " + getGeneratorType() + " : " + idGenerator + " - " + generatorName
                 + " with history id - " + generatorHistory.getIdGeneratorHistory());
     }
 
-    protected void logAboutAfterInitAction(){
+    protected void logAboutAfterInitAction() {
         AppLog.info(generatorHistory.getLoggerName(), generatorHistory.getLogIdentifyMessage()
                 + "after init generator");
     }

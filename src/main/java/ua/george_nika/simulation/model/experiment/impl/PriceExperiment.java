@@ -1,8 +1,12 @@
+/**
+ * Special variables and methods for "price" experiment
+ * repeat N times with different price
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.springframework.stereotype.Component;
 import ua.george_nika.simulation.model.entity.impl.BusEntityInfo;
-import ua.george_nika.simulation.model.entity.impl.EconomyHumanEntityInfo;
 import ua.george_nika.simulation.model.experiment.ExperimentFactory;
 import ua.george_nika.simulation.model.experiment.abstr.AbstractExperiment;
 import ua.george_nika.simulation.model.generator.Generator;
@@ -15,10 +19,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-/**
- * Created by george on 23.11.2015.
- */
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -71,7 +71,7 @@ public class PriceExperiment extends AbstractExperiment {
         if (zeroVariation) {
             for (Generator loopGenerator : generatorList) {
                 if (loopGenerator instanceof StationGenerator) {
-                    for(HumanAppearInfo loopHAInfo : ((StationGenerator) loopGenerator).getHumanAppearInfoList()){
+                    for (HumanAppearInfo loopHAInfo : ((StationGenerator) loopGenerator).getHumanAppearInfoList()) {
                         loopHAInfo.setVariation(0);
                     }
                 }
@@ -110,8 +110,7 @@ public class PriceExperiment extends AbstractExperiment {
                 try {
                     workingThread.join();
                 } catch (InterruptedException e) {
-                    AppLog.error(experimentHistory.getLoggerName(),
-                            RepeatWaitThread.class.getCanonicalName(),
+                    AppLog.error(experimentHistory.getLoggerName(), RepeatWaitThread.class.getCanonicalName(),
                             experimentHistory.getLogIdentifyMessage()
                                     + "Interrupt while waiting end of experiment ", e);
                 } finally {
@@ -161,19 +160,7 @@ public class PriceExperiment extends AbstractExperiment {
         this.zeroVariation = zeroVariation;
     }
 
-    public int getRepeatLeft() {
-        return repeatLeft;
-    }
-
-    public void setRepeatLeft(int repeatLeft) {
-        this.repeatLeft = repeatLeft;
-    }
-
     public int getCurrentPrice() {
         return currentPrice;
-    }
-
-    public void setCurrentPrice(int currentPrice) {
-        this.currentPrice = currentPrice;
     }
 }

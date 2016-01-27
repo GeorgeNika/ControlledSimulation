@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "human" entity info
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.springframework.stereotype.Component;
@@ -8,9 +12,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Created by george on 28.11.2015.
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 
@@ -23,14 +24,12 @@ public class HumanEntityInfo implements EntityInfo {
     protected int delayTimeToRemoveMs;
     protected int reasonablePriceInCent;
 
-
     static {
         EntityInfoFactory.registerClassInFactory(ENTITY_INFO_TYPE, HumanEntityInfo.class.getCanonicalName());
     }
 
     public HumanEntityInfo() {
     }
-
 
     public String getEntityInfoType() {
         return ENTITY_INFO_TYPE;
@@ -46,7 +45,8 @@ public class HumanEntityInfo implements EntityInfo {
 
     @Override
     public String getInfoString() {
-        return "HUMAN: id-" + idEntityInfo + ", wait(ms) -" + delayTimeToRemoveMs + ", price(cent) -" + reasonablePriceInCent;
+        return "HUMAN: id-" + idEntityInfo + ", wait(ms) -" + delayTimeToRemoveMs
+                + ", price(cent) -" + reasonablePriceInCent;
     }
 
     public int getDelayTimeToRemoveMs() {

@@ -1,5 +1,5 @@
 /**
- * used for getting dao object for :
+ * used for getting dao object of :
  * experiment extra class
  * history extra class
  * entity info extra class

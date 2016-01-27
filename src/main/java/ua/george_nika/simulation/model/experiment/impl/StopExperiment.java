@@ -1,3 +1,8 @@
+/**
+ * Special variables and methods for "price" experiment
+ * do our experiment 1 time with pause after each iteration
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.springframework.stereotype.Component;
@@ -8,15 +13,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Created by george on 23.11.2015.
- */
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-
 @Component
-
 public class StopExperiment extends AbstractExperiment {
 
     public static final String EXPERIMENT_TYPE = "stop";
@@ -24,6 +23,7 @@ public class StopExperiment extends AbstractExperiment {
     static {
         ExperimentFactory.registerClassInFactory(EXPERIMENT_TYPE, StopExperiment.class.getCanonicalName());
     }
+
     public String getExperimentType() {
         return EXPERIMENT_TYPE;
     }

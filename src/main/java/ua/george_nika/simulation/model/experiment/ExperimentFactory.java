@@ -1,3 +1,8 @@
+/**
+ * used for getting experiment object
+ * after lecture  JavaDoc + UnitTest = Documentation
+ */
+
 package ua.george_nika.simulation.model.experiment;
 
 import ua.george_nika.simulation.model.experiment.error.GetExperimentException;
@@ -7,12 +12,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by george on 04.12.2015.
- */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+
 public class ExperimentFactory {
 
-    private static Map<String, String> experimentClassMap = new HashMap<String, String>();
+    private static Map<String, String> experimentClassMap = new HashMap<>();
     private static String LOGGER_NAME = AppLog.MODEL;
     private static String CLASS_NAME = ExperimentFactory.class.getSimpleName();
 
@@ -25,10 +29,9 @@ public class ExperimentFactory {
 
     public static Experiment getExperimentByType(String type) {
         try {
-            return  (Experiment) Class.forName(experimentClassMap.get(type)).newInstance();
+            return (Experiment) Class.forName(experimentClassMap.get(type)).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, "Get experiment exception. Type -" + type, e);
-            throw new GetExperimentException("Type -" + type, e);
+            throw new GetExperimentException(LOGGER_NAME, CLASS_NAME, "Get experiment exception. Type -" + type, e);
         }
     }
 

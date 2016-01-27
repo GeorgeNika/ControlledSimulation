@@ -1,3 +1,7 @@
+/**
+ * Special variables and methods for "bus" entity info
+ */
+
 package ua.george_nika.simulation.model.entity.impl;
 
 import org.springframework.stereotype.Component;
@@ -8,9 +12,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Created by george on 28.11.2015.
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 

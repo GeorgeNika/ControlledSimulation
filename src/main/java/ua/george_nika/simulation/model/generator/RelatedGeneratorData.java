@@ -1,10 +1,11 @@
+/**
+ * Object with information about generator relation between each other
+ */
+
 package ua.george_nika.simulation.model.generator;
 
 import javax.xml.bind.annotation.*;
 
-/**
- * Created by george on 26.11.2015.
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 
@@ -19,7 +20,7 @@ public class RelatedGeneratorData {
     @XmlTransient
     protected Generator relatedGenerator;
 
-    public RelatedGeneratorData(){
+    public RelatedGeneratorData() {
     }
 
 

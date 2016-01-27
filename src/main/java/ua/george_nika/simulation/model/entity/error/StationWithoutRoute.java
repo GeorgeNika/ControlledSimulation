@@ -1,9 +1,8 @@
 package ua.george_nika.simulation.model.entity.error;
 
-/**
- * Created by george on 28.11.2015.
- */
-public class StationWithoutRoute extends RuntimeException{
+@SuppressWarnings("unused")
+
+public class StationWithoutRoute extends RuntimeException {
     public StationWithoutRoute() {
     }
 

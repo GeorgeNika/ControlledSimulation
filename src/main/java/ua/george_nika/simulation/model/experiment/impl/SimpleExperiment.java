@@ -1,3 +1,8 @@
+/**
+ * Special variables and methods for "simple" experiment
+ * do our experiment 1 time
+ */
+
 package ua.george_nika.simulation.model.experiment.impl;
 
 import org.joda.time.DateTime;
@@ -11,15 +16,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/**
- * Created by george on 23.11.2015.
- */
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-
 @Component
-
 public class SimpleExperiment extends AbstractExperiment {
 
     public static final String EXPERIMENT_TYPE = "simple";
@@ -33,6 +32,7 @@ public class SimpleExperiment extends AbstractExperiment {
     static {
         ExperimentFactory.registerClassInFactory(EXPERIMENT_TYPE, SimpleExperiment.class.getCanonicalName());
     }
+
     public String getExperimentType() {
         return EXPERIMENT_TYPE;
     }

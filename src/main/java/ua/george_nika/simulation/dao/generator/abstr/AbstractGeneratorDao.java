@@ -94,8 +94,7 @@ abstract public class AbstractGeneratorDao extends AbstractDao implements Genera
                 resultDataListList.add(resultDataList);
             }
         } catch (SQLException e) {
-            AppLog.error(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
-            throw new SQLDaoException(" SQL execute error : " + sql + " ;", e);
+            throw new SQLDaoException(LOGGER_NAME, CLASS_NAME, " SQL execute error : " + sql + " ;", e);
         } finally {
             closeResultSet(resultSet, sql);
             closePreparedStatement(pStatement, sql);

@@ -1,9 +1,10 @@
 package ua.george_nika.simulation.model.experiment.error;
 
-/**
- * Created by george on 04.12.2015.
- */
-public class GetExperimentException extends RuntimeException{
+import ua.george_nika.simulation.util.error.NoUserFriendlyException;
+
+@SuppressWarnings("unused")
+
+public class GetExperimentException extends NoUserFriendlyException {
 
     public GetExperimentException() {
         super();
@@ -15,5 +16,9 @@ public class GetExperimentException extends RuntimeException{
 
     public GetExperimentException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public GetExperimentException(String loggerName, String className, String message, Throwable cause) {
+        super(loggerName, className, message, cause);
     }
 }

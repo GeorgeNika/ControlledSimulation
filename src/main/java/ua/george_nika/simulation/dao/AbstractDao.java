@@ -357,9 +357,8 @@ abstract public class AbstractDao {
         if ((i > 0) || (i <= getQuantityOfFields())) {
             return getFieldTypeInTable(i - 1);
         }
-        AppLog.error(LOGGER_NAME, CLASS_NAME, "Incorrect set type of field. Quantity - " +
-                getQuantityOfFields() + " ; search - " + i);
-        throw new WrongSetFieldDaoException("Quantity - " + getQuantityOfFields() + " ; search - " + i);
+        throw new WrongSetFieldDaoException(LOGGER_NAME, CLASS_NAME, "Incorrect set type of field. Quantity - " +
+                getQuantityOfFields() + " ; search - " + i, new RuntimeException());
     }
 
     protected String getNameOfField(int i) {
