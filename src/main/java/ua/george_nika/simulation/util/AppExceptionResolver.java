@@ -30,7 +30,7 @@ public class AppExceptionResolver extends SimpleMappingExceptionResolver {
             Throwable causeException = ex.getCause() == null ? ex : ex.getCause();
             if (causeException instanceof AccessDeniedException) {
                 AppLog.userInfo(AppLog.CONTROLLER, session, " Access denied in " + request.getRequestURI());
-                return new ModelAndView("redirect:/login");
+                return new ModelAndView("redirect:/accessDenied");
             }
             if (causeException instanceof UserFriendlyException){
                 AppLog.error(AppLog.CONTROLLER, CLASS_NAME, "\n User Friendly Error ", ex);

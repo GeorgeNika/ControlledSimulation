@@ -43,6 +43,11 @@ public class UserController {
         return "main/userLoginPage";
     }
 
+    @RequestMapping("/accessDenied")
+    public String accessDenied(HttpServletRequest request, HttpSession session, Model model) {
+        return "main/accessDeniedPage";
+    }
+
     @RequestMapping("/loginAction")
     public String loginAction(HttpServletRequest request, HttpSession session, Model model,
                               @ModelAttribute("loginForm") LoginForm loginForm) {
